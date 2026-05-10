@@ -1,71 +1,91 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const dotenv = require("dotenv");
 const path = require("path");
-
-dotenv.config();
+require("dotenv").config();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-/* =========================
-   ROUTES
-========================= */
-
-const landRoutes = require("./routes/landRoutes");
-const uploadRoutes = require("./routes/uploadRoutes");
-
-app.use("/api/lands", landRoutes);
-app.use("/api/upload", uploadRoutes);
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected ✅"))
+  .catch((err) => console.log(err));
 
 /* =========================
-   STATIC UPLOADS
+   PROJECT MODEL
 ========================= */
 
-app.use(
-  "/uploads",
-  express.static(path.join(__dirname, "uploads"))
-);
+const projectSchema = new mongoose.Schema({
+  name: String,
+  location: String,
+  budget: String,
+});
+
+const Project = mongoose.model("Project", projectSchema);
+
+/* =========================
+   LAND MODEL
+========================= */
+
+const landSchema = new mongoose.Schema({
+  title: String,
+  location: String,
+  price: String,
+  image: String,
+});
+
+const Land = mongoose.model("Land", landSchema);
+
+/* =========================
+   PROJECT ROUTES
+========================= */
+
+app.get("/api/projects", async (req, res) => {
+  const projects = await Project.find();
+  res.json(projects);
+});
+
+app.post("/api/projects", async (req, res) => {
+  const project = new Project(req.body);
+  await project.save();
+  res.json(project);
+});
+
+/* =========================
+   LAND ROUTES
+========================= */
+
+app.get("/api/lands", async (req, res) => {
+  const lands = await Land.find();
+  res.json(lands);
+});
+
+app.post("/api/lands", async (req, res) => {
+  const land = new Land(req.body);
+  await land.save();
+  res.json(land);
+});
 
 /* =========================
    FRONTEND BUILD
 ========================= */
 
-const frontendPath = path.join(
-  __dirname,
-  "../frontend/dist"
+app.use(
+  express.static(
+    path.join(__dirname, "../frontend/dist")
+  )
 );
 
-app.use(express.static(frontendPath));
-
-app.get(/(.*)/, (req, res) => {
+app.get("*", (req, res) => {
   res.sendFile(
-    path.join(frontendPath, "index.html")
+    path.join(__dirname, "../frontend/dist/index.html")
   );
 });
 
-/* =========================
-   MONGODB CONNECT
-========================= */
-
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("MongoDB Connected ✅");
-  })
-  .catch((err) => {
-    console.log("Mongo Error ❌");
-    console.log(err);
-  });
-
-/* =========================
-   SERVER
-========================= */
-
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, () => {
   console.log(`Server iri gukora kuri port ${PORT} 🚀`);
