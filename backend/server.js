@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const path = require("path");
+
 require("dotenv").config();
 
 const authRoutes = require("./routes/authRoutes");
@@ -13,7 +15,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("BuildWise Backend API irakora neza 🚀");
 });
 
@@ -21,6 +23,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/materials", materialRoutes);
 app.use("/api/lands", landRoutes);
+
+app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+});
 
 mongoose
   .connect(process.env.MONGO_URI)
