@@ -1,0 +1,56 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+@media (max-width: 900px) {
+  aside {
+    width: 100% !important;
+    height: auto !important;
+    position: relative !important;
+  }
+
+  main {
+    padding: 16px !important;
+  }
+
+  div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  h1 {
+    font-size: 30px !important;
+  }
+
+  h2 {
+    font-size: 24px !important;
+  }
+
+  input,
+  select,
+  button {
+    width: 100% !important;
+  }
+
+  table {
+    min-width: 700px;
+  }
+}
+
+@media (max-width: 600px) {
+  div[style*="display: flex"] {
+    flex-wrap: wrap;
+  }
+
+  h1 {
+    font-size: 26px !important;
+  }
+
+  .hide-mobile {
+    display: none !important;
+  }
+}
