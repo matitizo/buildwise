@@ -12,77 +12,62 @@ app.use(express.json());
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected ✅"))
-  .catch((err) => console.log(err));
+  .catch((err) => console.log("MongoDB Error ❌", err));
 
-/* =========================
-   PROJECT MODEL
-========================= */
-
-const projectSchema = new mongoose.Schema({
-  name: String,
-  location: String,
-  budget: String,
-});
-
-const Project = mongoose.model("Project", projectSchema);
-
-/* =========================
-   LAND MODEL
-========================= */
-
-const landSchema = new mongoose.Schema({
-  title: String,
-  location: String,
-  price: String,
-  image: String,
-});
+const landSchema = new mongoose.Schema(
+  {
+    title: String,
+    location: String,
+    size: String,
+    price: Number,
+    image: String,
+    status: {
+      type: String,
+      default: "Kiragurishwa",
+    },
+  },
+  { timestamps: true }
+);
 
 const Land = mongoose.model("Land", landSchema);
 
-/* =========================
-   PROJECT ROUTES
-========================= */
-
-app.get("/api/projects", async (req, res) => {
-  const projects = await Project.find();
-  res.json(projects);
+app.get("/api", (req, res) => {
+  res.json({ message: "BuildWise Backend API irakora neza 🚀" });
 });
-
-app.post("/api/projects", async (req, res) => {
-  const project = new Project(req.body);
-  await project.save();
-  res.json(project);
-});
-
-/* =========================
-   LAND ROUTES
-========================= */
 
 app.get("/api/lands", async (req, res) => {
-  const lands = await Land.find();
-  res.json(lands);
+  try {
+    const lands = await Land.find().sort({ createdAt: -1 });
+    res.json(lands);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch lands" });
+  }
 });
 
 app.post("/api/lands", async (req, res) => {
-  const land = new Land(req.body);
-  await land.save();
-  res.json(land);
+  try {
+    const land = await Land.create(req.body);
+    res.status(201).json(land);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to create land" });
+  }
 });
 
-/* =========================
-   FRONTEND BUILD
-========================= */
+app.delete("/api/lands/:id", async (req, res) => {
+  try {
+    await Land.findByIdAndDelete(req.params.id);
+    res.json({ message: "Land deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete land" });
+  }
+});
 
-app.use(
-  express.static(
-    path.join(__dirname, "../frontend/dist")
-  )
-);
+const frontendPath = path.join(__dirname, "../frontend/dist");
 
-app.get("*", (req, res) => {
-  res.sendFile(
-    path.join(__dirname, "../frontend/dist/index.html")
-  );
+app.use(express.static(frontendPath));
+
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
 });
 
 const PORT = process.env.PORT || 10000;
