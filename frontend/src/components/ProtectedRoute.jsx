@@ -1,9 +1,13 @@
 import { Navigate } from "react-router-dom";
 
 export default function ProtectedRoute({ children }) {
-  const user = localStorage.getItem("buildwise_user");
+  const token =
+    localStorage.getItem("buildwise_token") ||
+    localStorage.getItem("token") ||
+    localStorage.getItem("buildwiseUser") ||
+    localStorage.getItem("buildwise_user");
 
-  if (!user) {
+  if (!token) {
     return <Navigate to="/login" replace />;
   }
 
