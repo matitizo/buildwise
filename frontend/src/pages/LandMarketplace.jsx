@@ -1,320 +1,55 @@
 import { useEffect, useState } from "react";
-import API from "../api";
 
-export default function LandMarketplace() {
+function LandMarketplace() {
   const [lands, setLands] = useState([]);
-  const [image, setImage] = useState(null);
-
-  const [formData, setFormData] = useState({
-    title: "",
-    location: "",
-    size: "",
-    price: "",
-  });
-
-  const fetchLands = async () => {
-    try {
-      const res = await API.get("/lands");
-      setLands(res.data);
-    } catch (error) {
-      console.log("FETCH LANDS ERROR:", error);
-      alert("Ibibanza ntibyabashije kuza");
-    }
-  };
 
   useEffect(() => {
-    fetchLands();
+    fetch("https://buildwise-mxvk.onrender.com/api/lands")
+      .then((res) => res.json())
+      .then((data) => setLands(data))
+      .catch((err) => console.log(err));
   }, []);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const addLand = async (e) => {
-    e.preventDefault();
-
-    if (!formData.title || !formData.location || !formData.size || !formData.price) {
-      alert("Uzuza ibisabwa byose");
-      return;
-    }
-
-    try {
-      let uploadedImage = "";
-
-      if (image) {
-        const imageData = new FormData();
-        imageData.append("image", image);
-
-        const uploadRes = await API.post("/upload", imageData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-
-        uploadedImage = uploadRes.data.imageUrl;
-      }
-
-      const res = await API.post("/lands", {
-        title: formData.title,
-        location: formData.location,
-        size: formData.size,
-        price: Number(formData.price),
-        status: "Kiragurishwa",
-        image: uploadedImage,
-      });
-
-      setLands([res.data, ...lands]);
-
-      setFormData({
-        title: "",
-        location: "",
-        size: "",
-        price: "",
-      });
-
-      setImage(null);
-
-      alert("Ikibanza cyongeweho neza ✅");
-    } catch (error) {
-      console.log("ADD LAND ERROR:", error);
-      alert(error.response?.data?.message || "Hari ikibazo cyo kongeramo ikibanza");
-    }
-  };
-
-  const deleteLand = async (id) => {
-    if (!window.confirm("Urashaka gusiba iki kibanza?")) return;
-
-    try {
-      await API.delete(`/lands/${id}`);
-      setLands(lands.filter((land) => land._id !== id));
-      alert("Ikibanza gisibwe ✅");
-    } catch (error) {
-      console.log("DELETE LAND ERROR:", error);
-      alert("Ntibyakunze gusiba ikibanza");
-    }
-  };
-
   return (
-    <div style={page}>
-      <div style={top}>
-        <h1 style={title}>Isoko ry’Ibibanza</h1>
-        <p style={subtitle}>Ongeramo, shakisha kandi ucunge ibibanza bifite amafoto.</p>
-      </div>
+    <div className="p-8">
+      <h1 className="text-4xl font-bold mb-8 text-blue-900">
+        Isoko ry'Ibibanza 🏡
+      </h1>
 
-      <form onSubmit={addLand} style={form}>
-        <input
-          type="text"
-          name="title"
-          placeholder="Izina ry’ikibanza"
-          value={formData.title}
-          onChange={handleChange}
-          style={input}
-        />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {lands.map((land) => (
+          <div
+            key={land._id}
+            className="bg-white rounded-2xl shadow-lg overflow-hidden"
+          >
+            <img
+              src={land.image}
+              alt={land.title}
+              className="h-52 w-full object-cover"
+            />
 
-        <input
-          type="text"
-          name="location"
-          placeholder="Aho giherereye"
-          value={formData.location}
-          onChange={handleChange}
-          style={input}
-        />
+            <div className="p-5">
+              <h2 className="text-2xl font-bold text-gray-800">
+                {land.title}
+              </h2>
 
-        <input
-          type="text"
-          name="size"
-          placeholder="Ubunini: 400 m²"
-          value={formData.size}
-          onChange={handleChange}
-          style={input}
-        />
+              <p className="text-gray-500 mt-2">
+                📍 {land.location}
+              </p>
 
-        <input
-          type="number"
-          name="price"
-          placeholder="Igiciro"
-          value={formData.price}
-          onChange={handleChange}
-          style={input}
-        />
+              <p className="text-blue-700 font-bold text-xl mt-4">
+                {land.price}
+              </p>
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setImage(e.target.files[0])}
-          style={input}
-        />
-
-        <button type="submit" style={button}>
-          + Ongeramo Ikibanza
-        </button>
-      </form>
-
-      {lands.length === 0 ? (
-        <div style={emptyBox}>Nta bibanza birashyirwamo</div>
-      ) : (
-        <div style={grid}>
-          {lands.map((land) => (
-            <div key={land._id} style={card}>
-              <div style={imageWrapper}>
-                <img
-                  src={
-                    land.image
-                      ? `https://buildwise-mxvk.onrender.com${land.image}`
-                      : "https://images.unsplash.com/photo-1506744038136-46273834b3fb"
-                  }
-                  alt="Ikibanza"
-                  style={imageStyle}
-                />
-
-                <span style={badge}>Kiragurishwa</span>
-              </div>
-
-              <div style={content}>
-                <h2 style={landTitle}>{land.title}</h2>
-
-                <p style={muted}>📍 {land.location}</p>
-                <p style={muted}>📐 {land.size}</p>
-
-                <h3 style={price}>
-                  {Number(land.price || 0).toLocaleString()} RWF
-                </h3>
-
-                <button onClick={() => deleteLand(land._id)} style={deleteBtn}>
-                  Siba Ikibanza
-                </button>
-              </div>
+              <button className="mt-5 bg-blue-900 text-white px-5 py-2 rounded-xl hover:bg-blue-700">
+                Reba byinshi
+              </button>
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
-const page = {
-  minHeight: "100vh",
-};
-
-const top = {
-  marginBottom: "24px",
-};
-
-const title = {
-  margin: 0,
-  fontSize: "42px",
-  fontWeight: "900",
-  color: "#071739",
-};
-
-const subtitle = {
-  color: "#64748b",
-  fontSize: "18px",
-};
-
-const form = {
-  background: "white",
-  padding: "24px",
-  borderRadius: "24px",
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-  gap: "16px",
-  marginBottom: "28px",
-};
-
-const input = {
-  padding: "16px",
-  borderRadius: "14px",
-  border: "1px solid #cbd5e1",
-  fontSize: "16px",
-  outline: "none",
-};
-
-const button = {
-  background: "#0f52ff",
-  color: "white",
-  border: "none",
-  padding: "14px",
-  borderRadius: "14px",
-  fontWeight: "900",
-  cursor: "pointer",
-  fontSize: "16px",
-};
-
-const emptyBox = {
-  background: "white",
-  padding: "35px",
-  borderRadius: "22px",
-  textAlign: "center",
-  color: "#64748b",
-  fontWeight: "800",
-};
-
-const grid = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-  gap: "22px",
-};
-
-const card = {
-  background: "white",
-  borderRadius: "22px",
-  overflow: "hidden",
-  boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-};
-
-const imageWrapper = {
-  position: "relative",
-};
-
-const imageStyle = {
-  width: "100%",
-  height: "220px",
-  objectFit: "cover",
-  display: "block",
-};
-
-const badge = {
-  position: "absolute",
-  top: "14px",
-  right: "14px",
-  background: "#16a34a",
-  color: "white",
-  padding: "8px 16px",
-  borderRadius: "999px",
-  fontWeight: "900",
-};
-
-const content = {
-  padding: "22px",
-};
-
-const landTitle = {
-  margin: 0,
-  fontSize: "26px",
-  color: "#071739",
-};
-
-const muted = {
-  color: "#64748b",
-  fontSize: "16px",
-};
-
-const price = {
-  color: "#0f52ff",
-  fontSize: "24px",
-};
-
-const deleteBtn = {
-  width: "100%",
-  background: "#ef4444",
-  color: "white",
-  border: "none",
-  padding: "14px",
-  borderRadius: "14px",
-  fontWeight: "900",
-  cursor: "pointer",
-};
+export default LandMarketplace;
