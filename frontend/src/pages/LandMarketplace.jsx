@@ -3,6 +3,8 @@ import API from "../api";
 
 export default function LandMarketplace() {
   const [lands, setLands] = useState([]);
+  const [image, setImage] = useState(null);
+
   const [formData, setFormData] = useState({
     title: "",
     location: "",
@@ -40,13 +42,28 @@ export default function LandMarketplace() {
     }
 
     try {
+      let uploadedImage = "";
+
+      if (image) {
+        const imageData = new FormData();
+        imageData.append("image", image);
+
+        const uploadRes = await API.post("/upload", imageData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        uploadedImage = uploadRes.data.imageUrl;
+      }
+
       const res = await API.post("/lands", {
         title: formData.title,
         location: formData.location,
         size: formData.size,
         price: Number(formData.price),
         status: "Kiragurishwa",
-        image: "🌄",
+        image: uploadedImage,
       });
 
       setLands([res.data, ...lands]);
@@ -57,6 +74,8 @@ export default function LandMarketplace() {
         size: "",
         price: "",
       });
+
+      setImage(null);
 
       alert("Ikibanza cyongeweho neza ✅");
     } catch (error) {
@@ -82,7 +101,7 @@ export default function LandMarketplace() {
     <div style={page}>
       <div style={top}>
         <h1 style={title}>Isoko ry’Ibibanza</h1>
-        <p style={subtitle}>Ongeramo, shakisha kandi ucunge ibibanza.</p>
+        <p style={subtitle}>Ongeramo, shakisha kandi ucunge ibibanza bifite amafoto.</p>
       </div>
 
       <form onSubmit={addLand} style={form}>
@@ -122,6 +141,13 @@ export default function LandMarketplace() {
           style={input}
         />
 
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImage(e.target.files[0])}
+          style={input}
+        />
+
         <button type="submit" style={button}>
           + Ongeramo Ikibanza
         </button>
@@ -135,9 +161,13 @@ export default function LandMarketplace() {
             <div key={land._id} style={card}>
               <div style={imageWrapper}>
                 <img
-                  src="https://images.unsplash.com/photo-1506744038136-46273834b3fb"
+                  src={
+                    land.image
+                      ? `https://buildwise-mxvk.onrender.com${land.image}`
+                      : "https://images.unsplash.com/photo-1506744038136-46273834b3fb"
+                  }
                   alt="Ikibanza"
-                  style={image}
+                  style={imageStyle}
                 />
 
                 <span style={badge}>Kiragurishwa</span>
@@ -240,7 +270,7 @@ const imageWrapper = {
   position: "relative",
 };
 
-const image = {
+const imageStyle = {
   width: "100%",
   height: "220px",
   objectFit: "cover",

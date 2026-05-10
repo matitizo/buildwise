@@ -1,55 +1,72 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const dotenv = require("dotenv");
 const path = require("path");
-require("dotenv").config();
 
-const authRoutes = require("./routes/authRoutes");
-const projectRoutes = require("./routes/projectRoutes");
-const materialRoutes = require("./routes/materialRoutes");
-const landRoutes = require("./routes/landRoutes");
+dotenv.config();
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// API Test
-app.get("/api", (req, res) => {
-  res.json({
-    message: "BuildWise Backend API irakora neza 🚀",
-  });
-});
+/* =========================
+   ROUTES
+========================= */
 
-// Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/projects", projectRoutes);
-app.use("/api/materials", materialRoutes);
+const landRoutes = require("./routes/landRoutes");
+const uploadRoutes = require("./routes/uploadRoutes");
+
 app.use("/api/lands", landRoutes);
+app.use("/api/upload", uploadRoutes);
 
-// Serve frontend build
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
+/* =========================
+   STATIC UPLOADS
+========================= */
 
-// React frontend route
-app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"))
+);
+
+/* =========================
+   FRONTEND BUILD
+========================= */
+
+const frontendPath = path.join(
+  __dirname,
+  "../frontend/dist"
+);
+
+app.use(express.static(frontendPath));
+
+app.get(/(.*)/, (req, res) => {
+  res.sendFile(
+    path.join(frontendPath, "index.html")
+  );
 });
 
-// MongoDB Connect
+/* =========================
+   MONGODB CONNECT
+========================= */
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB Connected ✅");
   })
   .catch((err) => {
-    console.log("MongoDB Error:", err);
+    console.log("Mongo Error ❌");
+    console.log(err);
   });
 
-// Port
+/* =========================
+   SERVER
+========================= */
+
 const PORT = process.env.PORT || 5000;
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Server iri gukora kuri port ${PORT} 🚀`);
 });
