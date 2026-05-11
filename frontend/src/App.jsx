@@ -7,6 +7,8 @@ import Materials from "./pages/Materials";
 import Projects from "./pages/Projects";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
+import Escrow from "./pages/Escrow";
+import CostEstimator from "./pages/CostEstimator";
 
 export default function App() {
   return (
@@ -46,6 +48,24 @@ export default function App() {
           element={
             <Layout>
               <Projects />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/estimator"
+          element={
+            <Layout>
+              <CostEstimator />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/escrow"
+          element={
+            <Layout>
+              <Escrow />
             </Layout>
           }
         />
