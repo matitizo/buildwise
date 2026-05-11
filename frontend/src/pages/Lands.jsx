@@ -9,12 +9,20 @@ export default function Lands() {
   const [reserveLand, setReserveLand] = useState(null);
   const [editingLand, setEditingLand] = useState(null);
   const [favorites, setFavorites] = useState([]);
+  const [showInquiry, setShowInquiry] = useState(false);
+  const [inquiryLand, setInquiryLand] = useState(null);
+
+  const [buyerInquiry, setBuyerInquiry] = useState({
+    names: "",
+    phone: "",
+    message: "",
+  });
 
   const [sellers, setSellers] = useState([
     {
       id: 1,
       names: "Jean Broker",
-      phone: "+250 788 000 111",
+      phone: "+250788000111",
       email: "jean@buildwise.rw",
       role: "Broker/Agent",
       verified: true,
@@ -30,6 +38,32 @@ export default function Lands() {
     landDocument: "",
     verified: true,
   });
+
+  const emptyLand = {
+    title: "",
+    province: "",
+    district: "",
+    sector: "",
+    cell: "",
+    village: "",
+    gps: "",
+    size: "",
+    price: "",
+    type: "Residential",
+    image: "",
+    road: false,
+    electricity: false,
+    water: false,
+    titleStatus: "Pending Verification",
+    seller: "",
+    sellerType: "Land Owner",
+    sellerVerified: true,
+    comments: "",
+    status: "Available",
+    featured: false,
+  };
+
+  const [newLand, setNewLand] = useState(emptyLand);
 
   const [lands, setLands] = useState([
     {
@@ -82,35 +116,8 @@ export default function Lands() {
     },
   ]);
 
-  const emptyLand = {
-    title: "",
-    province: "",
-    district: "",
-    sector: "",
-    cell: "",
-    village: "",
-    gps: "",
-    size: "",
-    price: "",
-    type: "Residential",
-    image: "",
-    road: false,
-    electricity: false,
-    water: false,
-    titleStatus: "Pending Verification",
-    seller: "",
-    sellerType: "Land Owner",
-    sellerVerified: true,
-    comments: "",
-    status: "Available",
-    featured: false,
-  };
-
-  const [newLand, setNewLand] = useState(emptyLand);
-
   const filteredLands = lands.filter((land) => {
     const keyword = search.toLowerCase();
-
     return (
       land.title.toLowerCase().includes(keyword) ||
       land.district.toLowerCase().includes(keyword) ||
@@ -123,15 +130,7 @@ export default function Lands() {
 
   const addSeller = (e) => {
     e.preventDefault();
-
-    setSellers([
-      {
-        ...newSeller,
-        id: Date.now(),
-      },
-      ...sellers,
-    ]);
-
+    setSellers([{ ...newSeller, id: Date.now() }, ...sellers]);
     setNewSeller({
       names: "",
       phone: "",
@@ -141,24 +140,25 @@ export default function Lands() {
       landDocument: "",
       verified: true,
     });
-
     setShowSellerForm(false);
   };
 
   const addLand = (e) => {
     e.preventDefault();
 
-    const landToAdd = {
-      ...newLand,
-      id: Date.now(),
-      size: Number(newLand.size),
-      price: Number(newLand.price),
-      image:
-        newLand.image ||
-        "https://images.unsplash.com/photo-1500382017468-9049fed747ef",
-    };
+    setLands([
+      {
+        ...newLand,
+        id: Date.now(),
+        size: Number(newLand.size),
+        price: Number(newLand.price),
+        image:
+          newLand.image ||
+          "https://images.unsplash.com/photo-1500382017468-9049fed747ef",
+      },
+      ...lands,
+    ]);
 
-    setLands([landToAdd, ...lands]);
     setNewLand(emptyLand);
     setShowAddForm(false);
   };
@@ -168,11 +168,9 @@ export default function Lands() {
   };
 
   const toggleFavorite = (id) => {
-    if (favorites.includes(id)) {
-      setFavorites(favorites.filter((item) => item !== id));
-    } else {
-      setFavorites([...favorites, id]);
-    }
+    setFavorites((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
   };
 
   const saveEdit = () => {
@@ -187,7 +185,6 @@ export default function Lands() {
           : land
       )
     );
-
     setEditingLand(null);
   };
 
@@ -198,7 +195,6 @@ export default function Lands() {
           <h1 className="text-4xl font-bold text-slate-800">
             Land Marketplace 📍
           </h1>
-
           <p className="text-gray-500 mt-2 text-lg">
             Module y’ibibanza: Land Owners, Brokers, Real Estate Agents na Buyers.
           </p>
@@ -222,7 +218,10 @@ export default function Lands() {
       </div>
 
       <div className="grid md:grid-cols-4 gap-6">
-        <StatCard title="Verified Sellers" value={sellers.filter((s) => s.verified).length} />
+        <StatCard
+          title="Verified Sellers"
+          value={sellers.filter((s) => s.verified).length}
+        />
         <StatCard title="Land Listings" value={lands.length} />
         <StatCard
           title="Available Lands"
@@ -237,10 +236,9 @@ export default function Lands() {
             <h2 className="text-3xl font-bold text-slate-800">
               Seller Verification Center ✅
             </h2>
-
             <p className="text-gray-500 mt-2 text-lg">
-              Land Owner, Broker/Agent cyangwa Real Estate Agent abanza kwiyandikisha
-              no kohereza ibyangombwa kugira ngo abe Verified Seller.
+              Land Owner, Broker/Agent cyangwa Real Estate Agent abanza
+              kwiyandikisha no kohereza ibyangombwa kugira ngo abe Verified Seller.
             </p>
           </div>
 
@@ -254,12 +252,10 @@ export default function Lands() {
             title="1. Land Owner"
             desc="Nyir’ikibanza yuzuza amazina, telefone, email, ID na title deed."
           />
-
           <RoleCard
             title="2. Broker / Agent"
             desc="Umuhuza ashyiraho amakuru ye, ID verification n’ibyangombwa by’ubutaka."
           />
-
           <RoleCard
             title="3. Buyer / Client"
             desc="Umukiriya ashaka ikibanza, akabika gusura cyangwa akishyura reservation."
@@ -314,26 +310,22 @@ export default function Lands() {
               value={newSeller.names}
               onChange={(value) => setNewSeller({ ...newSeller, names: value })}
             />
-
             <TextInput
               label="Telefone"
               value={newSeller.phone}
               onChange={(value) => setNewSeller({ ...newSeller, phone: value })}
             />
-
             <TextInput
               label="Email"
               type="email"
               value={newSeller.email}
               onChange={(value) => setNewSeller({ ...newSeller, email: value })}
             />
-
             <SelectInput
               value={newSeller.role}
               onChange={(value) => setNewSeller({ ...newSeller, role: value })}
               options={["Land Owner", "Broker/Agent", "Real Estate Agent"]}
             />
-
             <TextInput
               label="ID verification file / URL"
               value={newSeller.idDocument}
@@ -341,7 +333,6 @@ export default function Lands() {
                 setNewSeller({ ...newSeller, idDocument: value })
               }
             />
-
             <TextInput
               label="Land documents file / URL"
               value={newSeller.landDocument}
@@ -380,140 +371,28 @@ export default function Lands() {
           </h2>
 
           <div className="grid md:grid-cols-3 gap-5">
-            <TextInput
-              label="Izina ry’ikibanza"
-              value={newLand.title}
-              onChange={(value) => setNewLand({ ...newLand, title: value })}
-            />
+            <TextInput label="Izina ry’ikibanza" value={newLand.title} onChange={(value) => setNewLand({ ...newLand, title: value })} />
+            <TextInput label="Province" value={newLand.province} onChange={(value) => setNewLand({ ...newLand, province: value })} />
+            <TextInput label="District" value={newLand.district} onChange={(value) => setNewLand({ ...newLand, district: value })} />
+            <TextInput label="Sector" value={newLand.sector} onChange={(value) => setNewLand({ ...newLand, sector: value })} />
+            <TextInput label="Cell" value={newLand.cell} onChange={(value) => setNewLand({ ...newLand, cell: value })} />
+            <TextInput label="Village" value={newLand.village} onChange={(value) => setNewLand({ ...newLand, village: value })} />
+            <TextInput label="GPS location" value={newLand.gps} onChange={(value) => setNewLand({ ...newLand, gps: value })} />
+            <TextInput label="Size sqm" type="number" value={newLand.size} onChange={(value) => setNewLand({ ...newLand, size: value })} />
+            <TextInput label="Price RWF" type="number" value={newLand.price} onChange={(value) => setNewLand({ ...newLand, price: value })} />
+            <TextInput label="Image URL" required={false} value={newLand.image} onChange={(value) => setNewLand({ ...newLand, image: value })} />
+            <TextInput label="Seller name" value={newLand.seller} onChange={(value) => setNewLand({ ...newLand, seller: value })} />
+            <TextInput label="Comments" value={newLand.comments} onChange={(value) => setNewLand({ ...newLand, comments: value })} />
 
-            <TextInput
-              label="Province"
-              value={newLand.province}
-              onChange={(value) => setNewLand({ ...newLand, province: value })}
-            />
+            <SelectInput value={newLand.type} onChange={(value) => setNewLand({ ...newLand, type: value })} options={["Residential", "Commercial", "Farming"]} />
+            <SelectInput value={newLand.sellerType} onChange={(value) => setNewLand({ ...newLand, sellerType: value })} options={["Land Owner", "Broker/Agent", "Real Estate Agent"]} />
+            <SelectInput value={newLand.titleStatus} onChange={(value) => setNewLand({ ...newLand, titleStatus: value })} options={["Pending Verification", "Verified Title Deed", "Rejected Documents"]} />
+            <SelectInput value={newLand.status} onChange={(value) => setNewLand({ ...newLand, status: value })} options={["Available", "Reserved", "Sold"]} />
 
-            <TextInput
-              label="District"
-              value={newLand.district}
-              onChange={(value) => setNewLand({ ...newLand, district: value })}
-            />
-
-            <TextInput
-              label="Sector"
-              value={newLand.sector}
-              onChange={(value) => setNewLand({ ...newLand, sector: value })}
-            />
-
-            <TextInput
-              label="Cell"
-              value={newLand.cell}
-              onChange={(value) => setNewLand({ ...newLand, cell: value })}
-            />
-
-            <TextInput
-              label="Village"
-              value={newLand.village}
-              onChange={(value) => setNewLand({ ...newLand, village: value })}
-            />
-
-            <TextInput
-              label="GPS location"
-              value={newLand.gps}
-              onChange={(value) => setNewLand({ ...newLand, gps: value })}
-            />
-
-            <TextInput
-              label="Size sqm"
-              type="number"
-              value={newLand.size}
-              onChange={(value) => setNewLand({ ...newLand, size: value })}
-            />
-
-            <TextInput
-              label="Price RWF"
-              type="number"
-              value={newLand.price}
-              onChange={(value) => setNewLand({ ...newLand, price: value })}
-            />
-
-            <TextInput
-              label="Image URL"
-              required={false}
-              value={newLand.image}
-              onChange={(value) => setNewLand({ ...newLand, image: value })}
-            />
-
-            <TextInput
-              label="Seller name"
-              value={newLand.seller}
-              onChange={(value) => setNewLand({ ...newLand, seller: value })}
-            />
-
-            <TextInput
-              label="Comments"
-              value={newLand.comments}
-              onChange={(value) => setNewLand({ ...newLand, comments: value })}
-            />
-
-            <SelectInput
-              value={newLand.type}
-              onChange={(value) => setNewLand({ ...newLand, type: value })}
-              options={["Residential", "Commercial", "Farming"]}
-            />
-
-            <SelectInput
-              value={newLand.sellerType}
-              onChange={(value) =>
-                setNewLand({ ...newLand, sellerType: value })
-              }
-              options={["Land Owner", "Broker/Agent", "Real Estate Agent"]}
-            />
-
-            <SelectInput
-              value={newLand.titleStatus}
-              onChange={(value) =>
-                setNewLand({ ...newLand, titleStatus: value })
-              }
-              options={[
-                "Pending Verification",
-                "Verified Title Deed",
-                "Rejected Documents",
-              ]}
-            />
-
-            <SelectInput
-              value={newLand.status}
-              onChange={(value) => setNewLand({ ...newLand, status: value })}
-              options={["Available", "Reserved", "Sold"]}
-            />
-
-            <CheckBox
-              label="Featured Listing"
-              checked={newLand.featured}
-              onChange={(checked) =>
-                setNewLand({ ...newLand, featured: checked })
-              }
-            />
-
-            <CheckBox
-              label="Access road"
-              checked={newLand.road}
-              onChange={(checked) => setNewLand({ ...newLand, road: checked })}
-            />
-
-            <CheckBox
-              label="Electricity"
-              checked={newLand.electricity}
-              onChange={(checked) =>
-                setNewLand({ ...newLand, electricity: checked })
-              }
-            />
-
-            <CheckBox
-              label="Water nearby"
-              checked={newLand.water}
-              onChange={(checked) => setNewLand({ ...newLand, water: checked })}
-            />
+            <CheckBox label="Featured Listing" checked={newLand.featured} onChange={(checked) => setNewLand({ ...newLand, featured: checked })} />
+            <CheckBox label="Access road" checked={newLand.road} onChange={(checked) => setNewLand({ ...newLand, road: checked })} />
+            <CheckBox label="Electricity" checked={newLand.electricity} onChange={(checked) => setNewLand({ ...newLand, electricity: checked })} />
+            <CheckBox label="Water nearby" checked={newLand.water} onChange={(checked) => setNewLand({ ...newLand, water: checked })} />
           </div>
 
           <button className="bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold hover:bg-blue-700">
@@ -524,16 +403,9 @@ export default function Lands() {
 
       <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
         {filteredLands.map((land) => (
-          <div
-            key={land.id}
-            className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition"
-          >
+          <div key={land.id} className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition">
             <div className="relative">
-              <img
-                src={land.image}
-                alt={land.title}
-                className="w-full h-56 object-cover"
-              />
+              <img src={land.image} alt={land.title} className="w-full h-56 object-cover" />
 
               <div className="absolute top-4 left-4 flex gap-2 flex-wrap">
                 {land.featured && (
@@ -541,9 +413,7 @@ export default function Lands() {
                     ⭐ Featured
                   </span>
                 )}
-
-                <span
-                  className={`px-3 py-2 rounded-full text-xs font-bold ${
+                <span className={`px-3 py-2 rounded-full text-xs font-bold ${
                     land.status === "Available"
                       ? "bg-green-100 text-green-700"
                       : land.status === "Reserved"
@@ -559,17 +429,13 @@ export default function Lands() {
             <div className="p-6">
               <div className="flex justify-between gap-3">
                 <div>
-                  <h3 className="text-2xl font-bold text-slate-800">
-                    {land.title}
-                  </h3>
-
+                  <h3 className="text-2xl font-bold text-slate-800">{land.title}</h3>
                   <p className="text-gray-500 mt-1">
                     {land.district} • {land.size} sqm
                   </p>
                 </div>
 
-                <span
-                  className={`h-fit px-3 py-2 rounded-full text-sm font-semibold ${
+                <span className={`h-fit px-3 py-2 rounded-full text-sm font-semibold ${
                     land.sellerVerified
                       ? "bg-green-100 text-green-700"
                       : "bg-yellow-100 text-yellow-700"
@@ -590,40 +456,25 @@ export default function Lands() {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <button
-                  onClick={() => setSelectedLand(land)}
-                  className="bg-blue-600 text-white py-3 rounded-2xl font-semibold"
-                >
+                <button onClick={() => setSelectedLand(land)} className="bg-blue-600 text-white py-3 rounded-2xl font-semibold">
                   View Details
                 </button>
 
-                <button
-                  onClick={() => setBookingLand(land)}
-                  className="bg-slate-100 text-slate-800 py-3 rounded-2xl font-semibold"
-                >
+                <button onClick={() => setBookingLand(land)} className="bg-slate-100 text-slate-800 py-3 rounded-2xl font-semibold">
                   Book Visit
                 </button>
               </div>
 
-              <button
-                onClick={() => setReserveLand(land)}
-                className="w-full mt-3 bg-green-600 text-white py-3 rounded-2xl font-semibold"
-              >
+              <button onClick={() => setReserveLand(land)} className="w-full mt-3 bg-green-600 text-white py-3 rounded-2xl font-semibold">
                 Reserve This Land
               </button>
 
               <div className="grid grid-cols-3 gap-3 mt-3">
-                <button
-                  onClick={() => setEditingLand(land)}
-                  className="bg-slate-100 py-3 rounded-2xl font-semibold"
-                >
+                <button onClick={() => setEditingLand(land)} className="bg-slate-100 py-3 rounded-2xl font-semibold">
                   ✏ Edit
                 </button>
 
-                <button
-                  onClick={() => deleteLand(land.id)}
-                  className="bg-red-100 text-red-700 py-3 rounded-2xl font-semibold"
-                >
+                <button onClick={() => deleteLand(land.id)} className="bg-red-100 text-red-700 py-3 rounded-2xl font-semibold">
                   🗑 Delete
                 </button>
 
@@ -648,13 +499,9 @@ export default function Lands() {
           <div className="space-y-8">
             <div className="flex flex-col lg:flex-row lg:justify-between gap-6">
               <div>
-                <h2 className="text-4xl font-bold text-slate-800">
-                  {selectedLand.title}
-                </h2>
-
+                <h2 className="text-4xl font-bold text-slate-800">{selectedLand.title}</h2>
                 <p className="text-gray-500 mt-2 text-lg">
-                  {selectedLand.province}, {selectedLand.district},{" "}
-                  {selectedLand.sector}
+                  {selectedLand.province}, {selectedLand.district}, {selectedLand.sector}
                 </p>
               </div>
 
@@ -666,10 +513,7 @@ export default function Lands() {
               </div>
             </div>
 
-            <img
-              src={selectedLand.image}
-              className="w-full h-[400px] object-cover rounded-3xl"
-            />
+            <img src={selectedLand.image} className="w-full h-[400px] object-cover rounded-3xl" />
 
             <div className="grid md:grid-cols-4 gap-5">
               <FeatureCard title="Land Size" value={`${selectedLand.size} sqm`} />
@@ -680,7 +524,6 @@ export default function Lands() {
 
             <div className="bg-slate-50 rounded-3xl p-8">
               <h3 className="text-2xl font-bold mb-5">Land Features</h3>
-
               <div className="grid md:grid-cols-3 gap-5">
                 <Utility available={selectedLand.road} label="Road Access" />
                 <Utility available={selectedLand.electricity} label="Electricity" />
@@ -690,22 +533,16 @@ export default function Lands() {
 
             <div className="bg-white border rounded-3xl p-8">
               <h3 className="text-2xl font-bold mb-5">Seller Profile</h3>
-
               <p className="font-bold text-xl">{selectedLand.seller}</p>
               <p className="text-gray-500">{selectedLand.sellerType}</p>
-
-              <span
-                className={`inline-block mt-4 px-4 py-2 rounded-full font-semibold ${
+              <span className={`inline-block mt-4 px-4 py-2 rounded-full font-semibold ${
                   selectedLand.sellerVerified
                     ? "bg-green-100 text-green-700"
                     : "bg-yellow-100 text-yellow-700"
                 }`}
               >
-                {selectedLand.sellerVerified
-                  ? "✔ Verified Seller"
-                  : "Pending Verification"}
+                {selectedLand.sellerVerified ? "✔ Verified Seller" : "Pending Verification"}
               </span>
-
               <p className="mt-5 text-gray-600">{selectedLand.comments}</p>
             </div>
 
@@ -717,22 +554,27 @@ export default function Lands() {
             ></iframe>
 
             <div className="grid md:grid-cols-3 gap-5">
-              <button
-                onClick={() => setBookingLand(selectedLand)}
-                className="bg-blue-600 text-white py-5 rounded-2xl text-lg font-semibold"
-              >
+              <button onClick={() => setBookingLand(selectedLand)} className="bg-blue-600 text-white py-5 rounded-2xl text-lg font-semibold">
                 📅 Book Site Visit
               </button>
 
-              <button className="bg-green-600 text-white py-5 rounded-2xl text-lg font-semibold">
-                💬 Chat Seller
-              </button>
+              <a
+                href={`https://wa.me/250788000111?text=Hello%20I%20am%20interested%20in%20${encodeURIComponent(selectedLand.title)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="bg-green-600 text-white py-5 rounded-2xl text-lg font-semibold text-center"
+              >
+                💬 WhatsApp Seller
+              </a>
 
               <button
-                onClick={() => setReserveLand(selectedLand)}
+                onClick={() => {
+                  setInquiryLand(selectedLand);
+                  setShowInquiry(true);
+                }}
                 className="bg-slate-900 text-white py-5 rounded-2xl text-lg font-semibold"
               >
-                🔒 Reserve This Land
+                ✉ Send Inquiry
               </button>
             </div>
           </div>
@@ -747,16 +589,10 @@ export default function Lands() {
           <div className="grid md:grid-cols-2 gap-4 mt-6">
             <input type="date" className="bg-slate-50 border rounded-2xl px-5 py-4" />
             <input type="time" className="bg-slate-50 border rounded-2xl px-5 py-4" />
-            <input
-              placeholder="Phone number"
-              className="md:col-span-2 bg-slate-50 border rounded-2xl px-5 py-4"
-            />
+            <input placeholder="Phone number" className="md:col-span-2 bg-slate-50 border rounded-2xl px-5 py-4" />
           </div>
 
-          <button
-            onClick={() => setBookingLand(null)}
-            className="mt-6 bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold"
-          >
+          <button onClick={() => setBookingLand(null)} className="mt-6 bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold">
             Confirm Booking
           </button>
         </Modal>
@@ -769,22 +605,71 @@ export default function Lands() {
 
           <div className="bg-green-50 rounded-3xl p-6 mt-6">
             <p className="text-gray-600">Reservation Deposit</p>
-
             <h3 className="text-3xl font-bold text-green-700 mt-2">
               500,000 Frw
             </h3>
-
             <p className="text-sm text-gray-500 mt-3">
               Amafaranga azabikwa na platform kugeza transaction irangiye.
               Platform ikuramo commission transaction irangiye.
             </p>
           </div>
 
-          <button
-            onClick={() => setReserveLand(null)}
-            className="mt-6 bg-green-600 text-white px-8 py-4 rounded-2xl font-semibold"
-          >
+          <button onClick={() => setReserveLand(null)} className="mt-6 bg-green-600 text-white px-8 py-4 rounded-2xl font-semibold">
             Pay Reservation Deposit
+          </button>
+        </Modal>
+      )}
+
+      {showInquiry && inquiryLand && (
+        <Modal
+          onClose={() => {
+            setShowInquiry(false);
+            setInquiryLand(null);
+          }}
+        >
+          <h2 className="text-3xl font-bold">Buyer Inquiry</h2>
+          <p className="text-gray-500 mt-2">{inquiryLand.title}</p>
+
+          <div className="grid gap-5 mt-6">
+            <input
+              placeholder="Your names"
+              value={buyerInquiry.names}
+              onChange={(e) =>
+                setBuyerInquiry({ ...buyerInquiry, names: e.target.value })
+              }
+              className="bg-slate-50 border rounded-2xl px-5 py-4"
+            />
+
+            <input
+              placeholder="Phone number"
+              value={buyerInquiry.phone}
+              onChange={(e) =>
+                setBuyerInquiry({ ...buyerInquiry, phone: e.target.value })
+              }
+              className="bg-slate-50 border rounded-2xl px-5 py-4"
+            />
+
+            <textarea
+              rows="5"
+              placeholder="Message"
+              value={buyerInquiry.message}
+              onChange={(e) =>
+                setBuyerInquiry({ ...buyerInquiry, message: e.target.value })
+              }
+              className="bg-slate-50 border rounded-2xl px-5 py-4"
+            />
+          </div>
+
+          <button
+            onClick={() => {
+              alert("Inquiry sent successfully!");
+              setBuyerInquiry({ names: "", phone: "", message: "" });
+              setShowInquiry(false);
+              setInquiryLand(null);
+            }}
+            className="mt-6 bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold"
+          >
+            Send Inquiry
           </button>
         </Modal>
       )}
@@ -794,67 +679,16 @@ export default function Lands() {
           <h2 className="text-3xl font-bold mb-6">Edit Land Listing</h2>
 
           <div className="grid md:grid-cols-2 gap-5">
-            <input
-              value={editingLand.title}
-              onChange={(e) =>
-                setEditingLand({ ...editingLand, title: e.target.value })
-              }
-              className="bg-slate-50 border rounded-2xl px-5 py-4"
-            />
+            <input value={editingLand.title} onChange={(e) => setEditingLand({ ...editingLand, title: e.target.value })} className="bg-slate-50 border rounded-2xl px-5 py-4" />
+            <input type="number" value={editingLand.price} onChange={(e) => setEditingLand({ ...editingLand, price: e.target.value })} className="bg-slate-50 border rounded-2xl px-5 py-4" />
+            <input type="number" value={editingLand.size} onChange={(e) => setEditingLand({ ...editingLand, size: e.target.value })} className="bg-slate-50 border rounded-2xl px-5 py-4" />
 
-            <input
-              type="number"
-              value={editingLand.price}
-              onChange={(e) =>
-                setEditingLand({ ...editingLand, price: e.target.value })
-              }
-              className="bg-slate-50 border rounded-2xl px-5 py-4"
-            />
-
-            <input
-              type="number"
-              value={editingLand.size}
-              onChange={(e) =>
-                setEditingLand({ ...editingLand, size: e.target.value })
-              }
-              className="bg-slate-50 border rounded-2xl px-5 py-4"
-            />
-
-            <SelectInput
-              value={editingLand.status}
-              onChange={(value) =>
-                setEditingLand({ ...editingLand, status: value })
-              }
-              options={["Available", "Reserved", "Sold"]}
-            />
-
-            <SelectInput
-              value={String(editingLand.sellerVerified)}
-              onChange={(value) =>
-                setEditingLand({
-                  ...editingLand,
-                  sellerVerified: value === "true",
-                })
-              }
-              options={["true", "false"]}
-            />
-
-            <SelectInput
-              value={String(editingLand.featured)}
-              onChange={(value) =>
-                setEditingLand({
-                  ...editingLand,
-                  featured: value === "true",
-                })
-              }
-              options={["true", "false"]}
-            />
+            <SelectInput value={editingLand.status} onChange={(value) => setEditingLand({ ...editingLand, status: value })} options={["Available", "Reserved", "Sold"]} />
+            <SelectInput value={String(editingLand.sellerVerified)} onChange={(value) => setEditingLand({ ...editingLand, sellerVerified: value === "true" })} options={["true", "false"]} />
+            <SelectInput value={String(editingLand.featured)} onChange={(value) => setEditingLand({ ...editingLand, featured: value === "true" })} options={["true", "false"]} />
           </div>
 
-          <button
-            onClick={saveEdit}
-            className="mt-6 bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold"
-          >
+          <button onClick={saveEdit} className="mt-6 bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold">
             Save Changes
           </button>
         </Modal>
@@ -903,7 +737,7 @@ function SelectInput({ value, onChange, options }) {
     >
       {options.map((option) => (
         <option key={option} value={option}>
-          {option}
+          {option === "true" ? "Yes" : option === "false" ? "No" : option}
         </option>
       ))}
     </select>
@@ -933,7 +767,6 @@ function Modal({ children, onClose }) {
         >
           ✖
         </button>
-
         {children}
       </div>
     </div>
