@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Layout from "./layout/Layout";
 
@@ -15,30 +15,20 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-
         <Route path="/" element={<Layout />}>
-
           <Route index element={<Dashboard />} />
 
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="home" element={<Home />} />
-
           <Route path="projects" element={<Projects />} />
-
           <Route path="materials" element={<Materials />} />
-
           <Route path="escrow" element={<Escrow />} />
-
-          <Route
-            path="estimator"
-            element={<CostEstimator />}
-          />
-
+          <Route path="estimator" element={<CostEstimator />} />
           <Route path="reports" element={<Reports />} />
-
           <Route path="settings" element={<Settings />} />
 
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Route>
-
       </Routes>
     </BrowserRouter>
   );
