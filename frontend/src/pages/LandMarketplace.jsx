@@ -82,7 +82,7 @@ function LandMarketplace() {
 
   return (
     <div className="p-8">
-      <h1 className="text-4xl font-bold text-blue-900 mb-8">
+      <h1 className="text-5xl font-bold text-blue-900 mb-10">
         Isoko ry'Ibibanza 🏡
       </h1>
 
@@ -92,7 +92,7 @@ function LandMarketplace() {
         onSubmit={addLand}
         className="bg-white p-6 rounded-2xl shadow-lg mb-10"
       >
-        <h2 className="text-2xl font-bold mb-6">
+        <h2 className="text-3xl font-bold mb-6">
           Ongeramo Ikibanza
         </h2>
 
@@ -156,7 +156,7 @@ function LandMarketplace() {
         </button>
       </form>
 
-      {/* CARDS */}
+      {/* LAND CARDS */}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {lands.map((land) => (
@@ -167,7 +167,7 @@ function LandMarketplace() {
             <img
               src={land.image}
               alt={land.title}
-              className="h-56 w-full object-cover"
+              className="w-full h-56 object-cover"
             />
 
             <div className="p-5">
@@ -179,7 +179,7 @@ function LandMarketplace() {
                 📍 {land.location}
               </p>
 
-              <p className="text-gray-500">
+              <p className="text-gray-500 mt-2">
                 📐 {land.size}
               </p>
 
