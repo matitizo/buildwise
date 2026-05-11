@@ -1,157 +1,59 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-
 export default function Reports() {
-  const [projects, setProjects] = useState([]);
-  const [lands, setLands] = useState([]);
-  const [materials, setMaterials] = useState([]);
-
-  useEffect(() => {
-    fetchReports();
-  }, []);
-
-  const fetchReports = async () => {
-    const [p, l, m] = await Promise.all([
-      axios.get("http://localhost:5000/api/projects"),
-      axios.get("http://localhost:5000/api/lands"),
-      axios.get("http://localhost:5000/api/materials"),
-    ]);
-
-    setProjects(p.data);
-    setLands(l.data);
-    setMaterials(m.data);
-  };
-
-  const projectBudget = projects.reduce((sum, item) => sum + Number(item.budget || 0), 0);
-  const landValue = lands.reduce((sum, item) => sum + Number(item.price || 0), 0);
-  const materialValue = materials.reduce(
-    (sum, item) => sum + Number(item.price || 0) * Number(item.stock || 0),
-    0
-  );
+  const reports = [
+    { title: "Monthly Revenue", value: "18.4M RWF", change: "+12%" },
+    { title: "Active Projects", value: "12", change: "+4" },
+    { title: "Materials Sold", value: "340", change: "+22%" },
+    { title: "Escrow Released", value: "31M RWF", change: "+8%" },
+  ];
 
   return (
-    <div>
-      <div style={top}>
-        <div>
-          <h1 style={title}>Raporo</h1>
-          <p style={subtitle}>Incamake y’imishinga, ibibanza n’ibikoresho.</p>
+    <div className="space-y-8">
+      <div className="bg-white rounded-3xl shadow-sm p-8">
+        <h1 className="text-4xl font-bold text-slate-800">
+          Reports 📊
+        </h1>
+        <p className="text-gray-500 mt-2 text-lg">
+          Reba raporo z’imishinga, ibikoresho, amafaranga n’inyungu.
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-4 gap-6">
+        {reports.map((item, index) => (
+          <div key={index} className="bg-white rounded-3xl p-6 shadow-sm">
+            <p className="text-gray-500">{item.title}</p>
+            <h2 className="text-3xl font-bold mt-3 text-slate-800">
+              {item.value}
+            </h2>
+            <span className="inline-block mt-4 bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+              {item.change}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-white rounded-3xl shadow-sm p-8">
+        <h2 className="text-2xl font-bold text-slate-800 mb-6">
+          Project Performance
+        </h2>
+
+        <div className="space-y-5">
+          {["Ibibanza", "Materials", "Projects", "Escrow"].map((name, index) => (
+            <div key={index}>
+              <div className="flex justify-between mb-2">
+                <span className="font-semibold text-slate-700">{name}</span>
+                <span className="text-gray-500">{(index + 2) * 20}%</span>
+              </div>
+
+              <div className="w-full bg-gray-200 rounded-full h-3">
+                <div
+                  className="bg-blue-600 h-3 rounded-full"
+                  style={{ width: `${(index + 2) * 20}%` }}
+                ></div>
+              </div>
+            </div>
+          ))}
         </div>
-
-        <button style={exportBtn}>⬇️ Export PDF</button>
       </div>
-
-      <div style={statsGrid}>
-        <Card label="Projects" value={projects.length} icon="🏗️" />
-        <Card label="Ibibanza" value={lands.length} icon="📍" />
-        <Card label="Ibikoresho" value={materials.length} icon="🧱" />
-        <Card label="Total Value" value={`${(projectBudget + landValue + materialValue).toLocaleString()} RWF`} icon="💰" />
-      </div>
-
-      <section style={card}>
-        <h2 style={sectionTitle}>Financial Summary</h2>
-
-        <Summary label="Project Budget" value={`${projectBudget.toLocaleString()} RWF`} />
-        <Summary label="Land Value" value={`${landValue.toLocaleString()} RWF`} />
-        <Summary label="Material Stock Value" value={`${materialValue.toLocaleString()} RWF`} />
-      </section>
     </div>
   );
 }
-
-function Card({ label, value, icon }) {
-  return (
-    <div style={statCard}>
-      <div style={iconBox}>{icon}</div>
-      <p style={statLabel}>{label}</p>
-      <h2 style={statValue}>{value}</h2>
-    </div>
-  );
-}
-
-function Summary({ label, value }) {
-  return (
-    <div style={summaryRow}>
-      <span>{label}</span>
-      <strong>{value}</strong>
-    </div>
-  );
-}
-
-const top = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: "24px",
-};
-
-const title = {
-  margin: 0,
-  fontSize: "42px",
-  fontWeight: "900",
-  color: "#071739",
-};
-
-const subtitle = {
-  color: "#64748b",
-  fontSize: "18px",
-};
-
-const exportBtn = {
-  background: "#0f52ff",
-  color: "white",
-  border: "none",
-  padding: "14px 22px",
-  borderRadius: "14px",
-  fontWeight: "900",
-};
-
-const statsGrid = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-  gap: "18px",
-  marginBottom: "24px",
-};
-
-const statCard = {
-  background: "white",
-  padding: "24px",
-  borderRadius: "24px",
-  boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-};
-
-const iconBox = {
-  fontSize: "38px",
-  marginBottom: "12px",
-};
-
-const statLabel = {
-  color: "#64748b",
-  fontWeight: "800",
-};
-
-const statValue = {
-  color: "#071739",
-  fontSize: "28px",
-  margin: 0,
-};
-
-const card = {
-  background: "white",
-  padding: "24px",
-  borderRadius: "24px",
-};
-
-const sectionTitle = {
-  color: "#071739",
-  marginTop: 0,
-};
-
-const summaryRow = {
-  display: "flex",
-  justifyContent: "space-between",
-  background: "#f8fafc",
-  padding: "16px",
-  borderRadius: "16px",
-  marginBottom: "14px",
-  color: "#071739",
-};
