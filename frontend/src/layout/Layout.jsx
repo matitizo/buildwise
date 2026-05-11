@@ -2,73 +2,70 @@ import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
 const navItems = [
-  { to: "/", label: "Dashboard" },
-  { to: "/projects", label: "Projects" },
-  { to: "/lands", label: "Ibibanza" },
-  { to: "/houses-for-sale", label: "Amazu Agurishwa" },
-  { to: "/rentals", label: "Rentals & Lodging" },
-  { to: "/materials", label: "Materials" },
-  { to: "/escrow", label: "Escrow" },
-  { to: "/estimator", label: "Estimator" },
-  { to: "/reports", label: "Reports" },
-  { to: "/settings", label: "Settings" },
+  { to: "/", label: "Dashboard", icon: "🏠" },
+  { to: "/lands", label: "Land Marketplace", icon: "📍" },
+  { to: "/houses-for-sale", label: "House Marketplace", icon: "🏘️" },
+  { to: "/rentals", label: "Rental & Lodging", icon: "🏨" },
+  { to: "/projects", label: "Projects", icon: "🏗️" },
+  { to: "/materials", label: "Materials", icon: "🧱" },
+  { to: "/escrow", label: "Escrow", icon: "🔐" },
+  { to: "/estimator", label: "Estimator", icon: "🧮" },
+  { to: "/reports", label: "Reports", icon: "📊" },
+  { to: "/settings", label: "Settings", icon: "⚙️" },
 ];
 
 export default function Layout() {
   return (
     <div className="min-h-screen bg-slate-50 flex">
-      <aside className="sidebar hidden lg:block">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white">BuildWise</h1>
-          <p className="text-sm text-slate-400 mt-1">
-            Real Estate & Construction
-          </p>
-        </div>
+      <aside className="w-72 bg-slate-950 text-white min-h-screen p-6 hidden lg:block">
+        <h1 className="text-5xl font-bold mb-16">BuildWise</h1>
 
-        <nav>
+        <nav className="space-y-3">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               end={item.to === "/"}
               className={({ isActive }) =>
-                isActive ? "sidebar-link active" : "sidebar-link"
+                `flex items-center gap-4 px-6 py-4 rounded-2xl font-bold text-lg transition ${
+                  isActive
+                    ? "bg-blue-600 text-white"
+                    : "text-white hover:bg-slate-800"
+                }`
               }
             >
-              {item.label}
+              <span className="text-2xl">{item.icon}</span>
+              <span>{item.label}</span>
             </NavLink>
           ))}
         </nav>
       </aside>
 
       <div className="flex-1 min-w-0">
-        <header className="navbar">
-          <div>
-            <h2 className="navbar-logo">BuildWise</h2>
-            <p className="text-sm text-slate-500">
-              Smart marketplace for land, houses, rentals and construction
-            </p>
-          </div>
+        <header className="bg-white border-b px-6 py-4 lg:hidden">
+          <h1 className="text-2xl font-bold text-blue-700">BuildWise</h1>
         </header>
 
-        <div className="lg:hidden bg-slate-900 p-3 overflow-x-auto whitespace-nowrap">
+        <div className="lg:hidden bg-slate-950 p-3 overflow-x-auto whitespace-nowrap">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               end={item.to === "/"}
               className={({ isActive }) =>
-                isActive
-                  ? "inline-block bg-blue-700 text-white px-4 py-2 rounded-xl mr-2 text-sm"
-                  : "inline-block bg-slate-800 text-slate-200 px-4 py-2 rounded-xl mr-2 text-sm"
+                `inline-block px-4 py-2 rounded-xl mr-2 text-sm font-semibold ${
+                  isActive
+                    ? "bg-blue-600 text-white"
+                    : "bg-slate-800 text-slate-200"
+                }`
               }
             >
-              {item.label}
+              {item.icon} {item.label}
             </NavLink>
           ))}
         </div>
 
-        <main className="p-4 md:p-6">
+        <main className="p-6">
           <Outlet />
         </main>
       </div>
