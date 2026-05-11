@@ -1,156 +1,153 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-
-const API = "https://buildwise-mxvk.onrender.com/api";
-
 export default function Dashboard() {
-  const [lands, setLands] = useState([]);
-  const [materials, setMaterials] = useState([]);
-  const [projects, setProjects] = useState([]);
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = async () => {
-    try {
-      const [landsRes, materialsRes, projectsRes] =
-        await Promise.all([
-          axios.get(`${API}/lands`),
-          axios.get(`${API}/materials`),
-          axios.get(`${API}/projects`),
-        ]);
-
-      setLands(landsRes.data);
-      setMaterials(materialsRes.data);
-      setProjects(projectsRes.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const totalLandValue = lands.reduce(
-    (sum, item) => sum + Number(item.price || 0),
-    0
-  );
-
-  const totalProjectBudget = projects.reduce(
-    (sum, item) => sum + Number(item.budget || 0),
-    0
-  );
+  const stats = [
+    {
+      title: "Ibibanza",
+      value: "3",
+      icon: "📍",
+      color: "bg-blue-500",
+    },
+    {
+      title: "Materials",
+      value: "12",
+      icon: "🧱",
+      color: "bg-orange-500",
+    },
+    {
+      title: "Projects",
+      value: "5",
+      icon: "🏗️",
+      color: "bg-green-500",
+    },
+    {
+      title: "Land Value",
+      value: "180M RWF",
+      icon: "💰",
+      color: "bg-purple-500",
+    },
+  ];
 
   return (
-    <div className="p-8">
-      <h1 className="text-5xl font-black text-blue-900 mb-10">
-        Dashboard 🚀
-      </h1>
+    <div className="space-y-8">
 
-      {/* STATS */}
+      {/* Header */}
+      <div className="bg-white rounded-3xl shadow-sm p-8 flex justify-between items-center">
+        <div>
+          <h1 className="text-4xl font-bold text-slate-800">
+            Dashboard 🚀
+          </h1>
 
-      <div className="grid md:grid-cols-4 gap-6 mb-10">
-        <Card
-          title="Ibibanza"
-          value={lands.length}
-          color="bg-blue-700"
-        />
+          <p className="text-gray-500 mt-2 text-lg">
+            Smart Construction Management System
+          </p>
+        </div>
 
-        <Card
-          title="Materials"
-          value={materials.length}
-          color="bg-green-700"
-        />
+        <div className="hidden md:flex gap-4">
+          <button className="bg-gray-100 px-5 py-3 rounded-xl">
+            🔔
+          </button>
 
-        <Card
-          title="Projects"
-          value={projects.length}
-          color="bg-orange-600"
-        />
+          <button className="bg-gray-100 px-5 py-3 rounded-xl">
+            🌙
+          </button>
 
-        <Card
-          title="Land Value"
-          value={`${totalLandValue.toLocaleString()} RWF`}
-          color="bg-purple-700"
-        />
+          <button className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold">
+            Admin
+          </button>
+        </div>
       </div>
 
-      {/* RECENT PROJECTS */}
-
-      <div className="bg-white rounded-3xl shadow-lg p-8">
-        <h2 className="text-3xl font-bold text-blue-900 mb-6">
-          Recent Projects
-        </h2>
-
-        <div className="space-y-4">
-          {projects.map((project) => (
-            <div
-              key={project._id}
-              className="flex justify-between items-center border-b pb-4"
-            >
+      {/* Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        {stats.map((item, index) => (
+          <div
+            key={index}
+            className="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl transition duration-300"
+          >
+            <div className="flex justify-between items-center">
               <div>
-                <h3 className="text-xl font-bold">
-                  {project.title}
-                </h3>
-
-                <p className="text-gray-500">
-                  📍 {project.location}
+                <p className="text-gray-500 text-sm">
+                  {item.title}
                 </p>
+
+                <h2 className="text-3xl font-bold mt-3 text-slate-800">
+                  {item.value}
+                </h2>
               </div>
 
-              <div className="text-green-700 font-bold text-xl">
-                {project.budget} RWF
+              <div
+                className={`${item.color} w-16 h-16 rounded-2xl flex items-center justify-center text-3xl text-white`}
+              >
+                {item.icon}
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
-      {/* PROJECT SUMMARY */}
+      {/* Recent Projects */}
+      <div className="bg-white rounded-3xl shadow-sm p-8">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-slate-800">
+            Recent Projects
+          </h2>
 
-      <div className="bg-white rounded-3xl shadow-lg p-8 mt-10">
-        <h2 className="text-3xl font-bold text-blue-900 mb-6">
-          Financial Summary
-        </h2>
+          <button className="bg-blue-600 text-white px-5 py-2 rounded-xl">
+            View All
+          </button>
+        </div>
 
         <div className="space-y-4">
-          <SummaryRow
-            title="Agaciro k'ibibanza"
-            value={`${totalLandValue.toLocaleString()} RWF`}
-          />
 
-          <SummaryRow
-            title="Project Budget"
-            value={`${totalProjectBudget.toLocaleString()} RWF`}
-          />
+          <div className="flex justify-between items-center bg-gray-50 p-5 rounded-2xl">
+            <div>
+              <h3 className="font-bold text-lg">
+                Modern House Kigali
+              </h3>
+
+              <p className="text-gray-500">
+                Kicukiro District
+              </p>
+            </div>
+
+            <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm">
+              Completed
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center bg-gray-50 p-5 rounded-2xl">
+            <div>
+              <h3 className="font-bold text-lg">
+                Apartment Remera
+              </h3>
+
+              <p className="text-gray-500">
+                Gasabo District
+              </p>
+            </div>
+
+            <span className="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full text-sm">
+              In Progress
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center bg-gray-50 p-5 rounded-2xl">
+            <div>
+              <h3 className="font-bold text-lg">
+                Luxury Villa Nyarutarama
+              </h3>
+
+              <p className="text-gray-500">
+                Kigali City
+              </p>
+            </div>
+
+            <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm">
+              Pending
+            </span>
+          </div>
+
         </div>
       </div>
-    </div>
-  );
-}
-
-function Card({ title, value, color }) {
-  return (
-    <div
-      className={`${color} text-white rounded-3xl p-6 shadow-lg`}
-    >
-      <h2 className="text-xl font-bold">
-        {title}
-      </h2>
-
-      <p className="text-4xl font-black mt-4">
-        {value}
-      </p>
-    </div>
-  );
-}
-
-function SummaryRow({ title, value }) {
-  return (
-    <div className="flex justify-between border-b pb-4">
-      <span className="font-semibold">
-        {title}
-      </span>
-
-      <strong>{value}</strong>
     </div>
   );
 }

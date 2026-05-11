@@ -1,274 +1,73 @@
-import { Link, useLocation } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
-export default function Layout({ children }) {
-  const location = useLocation();
-
-  const menus = [
-    {
-      name: "Dashboard",
-      path: "/dashboard",
-      icon: "🏠",
-    },
-    {
-      name: "Ibibanza",
-      path: "/lands",
-      icon: "📍",
-    },
-    {
-      name: "Materials",
-      path: "/materials",
-      icon: "🧱",
-    },
-    {
-      name: "Projects",
-      path: "/projects",
-      icon: "🏗️",
-    },
-    {
-      name: "Estimator",
-      path: "/estimator",
-      icon: "🧮",
-    },
-    {
-      name: "Escrow",
-      path: "/escrow",
-      icon: "🔒",
-    },
-    {
-      name: "Reports",
-      path: "/reports",
-      icon: "📊",
-    },
-    {
-      name: "Settings",
-      path: "/settings",
-      icon: "⚙️",
-    },
-  ];
-
+export default function Layout() {
   return (
-    <div style={container}>
-      {/* SIDEBAR */}
+    <div className="flex min-h-screen bg-gray-100">
+      
+      {/* Sidebar */}
+      <div className="w-64 bg-slate-900 text-white p-5">
+        <h1 className="text-2xl font-bold mb-10 text-center">
+          BuildWise
+        </h1>
 
-      <aside style={sidebar}>
-        <div>
-          <div style={logoBox}>
-            <div style={logoIcon}>
-              🏗️
-            </div>
+        <nav className="flex flex-col gap-4">
 
-            <div>
-              <h1 style={logo}>
-                BuildWise
-              </h1>
+          <NavLink
+            to="/"
+            className="hover:bg-slate-700 p-3 rounded-lg transition"
+          >
+            Dashboard
+          </NavLink>
 
-              <p style={logoSub}>
-                Construction OS
-              </p>
-            </div>
-          </div>
+          <NavLink
+            to="/projects"
+            className="hover:bg-slate-700 p-3 rounded-lg transition"
+          >
+            Projects
+          </NavLink>
 
-          <nav style={nav}>
-            {menus.map((menu) => {
-              const active =
-                location.pathname === menu.path;
+          <NavLink
+            to="/materials"
+            className="hover:bg-slate-700 p-3 rounded-lg transition"
+          >
+            Materials
+          </NavLink>
 
-              return (
-                <Link
-                  key={menu.path}
-                  to={menu.path}
-                  style={{
-                    ...link,
-                    ...(active
-                      ? activeLink
-                      : {}),
-                  }}
-                >
-                  <span style={icon}>
-                    {menu.icon}
-                  </span>
+          <NavLink
+            to="/escrow"
+            className="hover:bg-slate-700 p-3 rounded-lg transition"
+          >
+            Escrow
+          </NavLink>
 
-                  {menu.name}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
+          <NavLink
+            to="/estimator"
+            className="hover:bg-slate-700 p-3 rounded-lg transition"
+          >
+            Estimator
+          </NavLink>
 
-        <button style={logoutBtn}>
-          🚪 Logout
-        </button>
-      </aside>
+          <NavLink
+            to="/reports"
+            className="hover:bg-slate-700 p-3 rounded-lg transition"
+          >
+            Reports
+          </NavLink>
 
-      {/* MAIN */}
+          <NavLink
+            to="/settings"
+            className="hover:bg-slate-700 p-3 rounded-lg transition"
+          >
+            Settings
+          </NavLink>
 
-      <main style={main}>
-        {/* TOPBAR */}
+        </nav>
+      </div>
 
-        <div style={topbar}>
-          <div>
-            <h2 style={topTitle}>
-              BuildWise Platform 🚀
-            </h2>
-
-            <p style={subtitle}>
-              Smart Construction Management System
-            </p>
-          </div>
-
-          <div style={rightBox}>
-            <button style={circleBtn}>
-              🔔
-            </button>
-
-            <button style={circleBtn}>
-              🌙
-            </button>
-
-            <div style={userBox}>
-              👤 Admin
-            </div>
-          </div>
-        </div>
-
-        {/* PAGE CONTENT */}
-
-        <div>{children}</div>
-      </main>
+      {/* Main Content */}
+      <div className="flex-1 p-6">
+        <Outlet />
+      </div>
     </div>
   );
 }
-
-/* =========================
-   STYLES
-========================= */
-
-const container = {
-  display: "flex",
-  minHeight: "100vh",
-  background: "#f1f5f9",
-};
-
-const sidebar = {
-  width: "280px",
-  background: "#071739",
-  color: "white",
-  padding: "24px",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-};
-
-const logoBox = {
-  display: "flex",
-  alignItems: "center",
-  gap: "14px",
-  marginBottom: "40px",
-};
-
-const logoIcon = {
-  width: "60px",
-  height: "60px",
-  borderRadius: "18px",
-  background: "#0f52ff",
-  display: "grid",
-  placeItems: "center",
-  fontSize: "28px",
-};
-
-const logo = {
-  margin: 0,
-  fontSize: "30px",
-  fontWeight: "900",
-};
-
-const logoSub = {
-  margin: "4px 0 0",
-  color: "#94a3b8",
-};
-
-const nav = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "12px",
-};
-
-const link = {
-  textDecoration: "none",
-  color: "white",
-  background: "#0f172a",
-  padding: "16px",
-  borderRadius: "16px",
-  fontWeight: "700",
-  display: "flex",
-  alignItems: "center",
-  gap: "14px",
-  transition: "0.3s",
-};
-
-const activeLink = {
-  background: "#0f52ff",
-};
-
-const icon = {
-  fontSize: "22px",
-};
-
-const logoutBtn = {
-  background: "#ef4444",
-  color: "white",
-  border: "none",
-  padding: "16px",
-  borderRadius: "16px",
-  fontWeight: "900",
-  cursor: "pointer",
-};
-
-const main = {
-  flex: 1,
-  padding: "24px",
-};
-
-const topbar = {
-  background: "white",
-  borderRadius: "24px",
-  padding: "24px",
-  marginBottom: "24px",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
-};
-
-const topTitle = {
-  margin: 0,
-  color: "#071739",
-};
-
-const subtitle = {
-  color: "#64748b",
-  marginTop: "6px",
-};
-
-const rightBox = {
-  display: "flex",
-  alignItems: "center",
-  gap: "14px",
-};
-
-const circleBtn = {
-  width: "50px",
-  height: "50px",
-  borderRadius: "50%",
-  border: "none",
-  background: "#e2e8f0",
-  cursor: "pointer",
-  fontSize: "20px",
-};
-
-const userBox = {
-  background: "#e2e8f0",
-  padding: "12px 20px",
-  borderRadius: "999px",
-  fontWeight: "800",
-};

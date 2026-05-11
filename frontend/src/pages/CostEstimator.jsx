@@ -1,213 +1,130 @@
 import { useState } from "react";
-import axios from "axios";
 
 export default function CostEstimator() {
-  const [projectName, setProjectName] = useState("");
-  const [location, setLocation] = useState("");
-  const [size, setSize] = useState("");
-  const [type, setType] = useState("Inzu");
+  const [area, setArea] = useState("");
+  const [costPerSqm, setCostPerSqm] = useState("");
 
-  const [result, setResult] = useState(null);
-
-  const calculateCost = () => {
-    if (!projectName || !location || !size) {
-      alert("Uzuza ibisabwa byose");
-      return;
-    }
-
-    let costPerSquareMeter = 250000;
-
-    if (type === "Villa") {
-      costPerSquareMeter = 450000;
-    }
-
-    if (type === "Commercial") {
-      costPerSquareMeter = 600000;
-    }
-
-    const total = Number(size) * costPerSquareMeter;
-
-    setResult(total);
-  };
-
-  const saveProject = async () => {
-    try {
-      await axios.post("http://localhost:5000/api/projects", {
-        title: projectName,
-        location,
-        budget: result,
-      });
-
-      alert("Project yabitswe neza ✅");
-
-      setProjectName("");
-      setLocation("");
-      setSize("");
-      setResult(null);
-    } catch (error) {
-      console.log(error);
-      alert("Hari ikibazo cyo kubika project");
-    }
-  };
+  const total =
+    Number(area || 0) * Number(costPerSqm || 0);
 
   return (
-    <div style={page}>
-      <div style={top}>
-        <h1 style={title}>Cost Estimator</h1>
+    <div className="space-y-8">
 
-        <p style={subtitle}>
-          Bara amafaranga y’umushinga wawe mbere yo kubaka.
+      {/* Header */}
+      <div className="bg-white rounded-3xl shadow-sm p-8">
+        <h1 className="text-4xl font-bold text-slate-800">
+          Cost Estimator 🧮
+        </h1>
+
+        <p className="text-gray-500 mt-3 text-lg">
+          Baza ikiguzi cy’ubwubatsi ukoresheje
+          metero kare.
         </p>
       </div>
 
-      <div style={card}>
-        <div style={grid}>
-          <input
-            type="text"
-            placeholder="Izina rya Project"
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-            style={input}
-          />
+      {/* Form */}
+      <div className="bg-white rounded-3xl shadow-sm p-8 max-w-4xl">
 
-          <input
-            type="text"
-            placeholder="Location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            style={input}
-          />
+        <div className="grid md:grid-cols-2 gap-6">
 
-          <input
-            type="number"
-            placeholder="Ubunini m²"
-            value={size}
-            onChange={(e) => setSize(e.target.value)}
-            style={input}
-          />
+          {/* Area */}
+          <div>
+            <label className="block text-slate-700 font-semibold mb-3">
+              Ubuso bw’inzu (m²)
+            </label>
 
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            style={input}
-          >
-            <option>Inzu</option>
-            <option>Villa</option>
-            <option>Commercial</option>
-          </select>
+            <input
+              type="number"
+              value={area}
+              onChange={(e) =>
+                setArea(e.target.value)
+              }
+              placeholder="Urugero: 120"
+              className="w-full border border-gray-300 rounded-2xl px-5 py-4 outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          {/* Cost */}
+          <div>
+            <label className="block text-slate-700 font-semibold mb-3">
+              Igiciro kuri m² (RWF)
+            </label>
+
+            <input
+              type="number"
+              value={costPerSqm}
+              onChange={(e) =>
+                setCostPerSqm(e.target.value)
+              }
+              placeholder="Urugero: 350000"
+              className="w-full border border-gray-300 rounded-2xl px-5 py-4 outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
         </div>
 
-        <button onClick={calculateCost} style={button}>
-          Bara Igiciro
-        </button>
-      </div>
+        {/* Result */}
+        <div className="mt-10 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-3xl p-8">
 
-      {result && (
-        <div style={resultCard}>
-          <h2 style={resultTitle}>Estimated Cost</h2>
-
-          <h1 style={price}>
-            {Number(result).toLocaleString()} RWF
-          </h1>
-
-          <p style={details}>
-            Project Type: <strong>{type}</strong>
+          <p className="text-lg opacity-90">
+            Estimated Construction Cost
           </p>
 
-          <button onClick={saveProject} style={saveBtn}>
-            + Gushyira muri Projects
-          </button>
+          <h2 className="text-5xl font-bold mt-4">
+            {total.toLocaleString()} RWF
+          </h2>
+
         </div>
-      )}
+
+      </div>
+
+      {/* Example Cards */}
+      <div className="grid md:grid-cols-3 gap-6">
+
+        <div className="bg-white rounded-3xl shadow-sm p-6">
+          <h3 className="text-xl font-bold">
+            Small House
+          </h3>
+
+          <p className="text-gray-500 mt-2">
+            80m² modern home
+          </p>
+
+          <h2 className="text-2xl font-bold mt-5 text-blue-600">
+            28M RWF
+          </h2>
+        </div>
+
+        <div className="bg-white rounded-3xl shadow-sm p-6">
+          <h3 className="text-xl font-bold">
+            Family House
+          </h3>
+
+          <p className="text-gray-500 mt-2">
+            150m² family home
+          </p>
+
+          <h2 className="text-2xl font-bold mt-5 text-green-600">
+            52M RWF
+          </h2>
+        </div>
+
+        <div className="bg-white rounded-3xl shadow-sm p-6">
+          <h3 className="text-xl font-bold">
+            Luxury Villa
+          </h3>
+
+          <p className="text-gray-500 mt-2">
+            300m² luxury villa
+          </p>
+
+          <h2 className="text-2xl font-bold mt-5 text-purple-600">
+            120M RWF
+          </h2>
+        </div>
+
+      </div>
+
     </div>
   );
 }
-
-const page = {
-  minHeight: "100vh",
-};
-
-const top = {
-  marginBottom: "30px",
-};
-
-const title = {
-  fontSize: "42px",
-  fontWeight: "900",
-  color: "#071739",
-  marginBottom: "10px",
-};
-
-const subtitle = {
-  color: "#64748b",
-  fontSize: "18px",
-};
-
-const card = {
-  background: "white",
-  padding: "30px",
-  borderRadius: "24px",
-  marginBottom: "30px",
-  boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
-};
-
-const grid = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
-  gap: "18px",
-  marginBottom: "20px",
-};
-
-const input = {
-  padding: "16px",
-  borderRadius: "14px",
-  border: "1px solid #cbd5e1",
-  fontSize: "16px",
-  outline: "none",
-};
-
-const button = {
-  background: "#0f52ff",
-  color: "white",
-  border: "none",
-  padding: "15px 28px",
-  borderRadius: "14px",
-  fontWeight: "bold",
-  cursor: "pointer",
-  fontSize: "16px",
-};
-
-const resultCard = {
-  background: "white",
-  padding: "35px",
-  borderRadius: "24px",
-  boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
-};
-
-const resultTitle = {
-  color: "#64748b",
-  marginBottom: "15px",
-};
-
-const price = {
-  color: "#0f52ff",
-  fontSize: "48px",
-  marginBottom: "20px",
-};
-
-const details = {
-  color: "#071739",
-  fontSize: "18px",
-};
-
-const saveBtn = {
-  marginTop: "25px",
-  background: "#16a34a",
-  color: "white",
-  border: "none",
-  padding: "15px 28px",
-  borderRadius: "14px",
-  fontWeight: "bold",
-  cursor: "pointer",
-  fontSize: "16px",
-};

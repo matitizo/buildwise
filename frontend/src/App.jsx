@@ -1,96 +1,47 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Layout from "./layout/Layout";
 
 import Dashboard from "./pages/Dashboard";
-import LandMarketplace from "./pages/LandMarketplace";
-import Materials from "./pages/Materials";
+import Home from "./pages/Home";
 import Projects from "./pages/Projects";
+import Materials from "./pages/Materials";
+import Escrow from "./pages/Escrow";
+import CostEstimator from "./pages/CostEstimator";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
-import CostEstimator from "./pages/CostEstimator";
-import Escrow from "./pages/Escrow";
 
-export default function App() {
+function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" />} />
 
-        <Route
-          path="/dashboard"
-          element={
-            <Layout>
-              <Dashboard />
-            </Layout>
-          }
-        />
+        <Route path="/" element={<Layout />}>
 
-        <Route
-          path="/lands"
-          element={
-            <Layout>
-              <LandMarketplace />
-            </Layout>
-          }
-        />
+          <Route index element={<Dashboard />} />
 
-        <Route
-          path="/materials"
-          element={
-            <Layout>
-              <Materials />
-            </Layout>
-          }
-        />
+          <Route path="home" element={<Home />} />
 
-        <Route
-          path="/projects"
-          element={
-            <Layout>
-              <Projects />
-            </Layout>
-          }
-        />
+          <Route path="projects" element={<Projects />} />
 
-        <Route
-          path="/reports"
-          element={
-            <Layout>
-              <Reports />
-            </Layout>
-          }
-        />
+          <Route path="materials" element={<Materials />} />
 
-        <Route
-          path="/settings"
-          element={
-            <Layout>
-              <Settings />
-            </Layout>
-          }
-        />
+          <Route path="escrow" element={<Escrow />} />
 
-        <Route
-          path="/estimator"
-          element={
-            <Layout>
-              <CostEstimator />
-            </Layout>
-          }
-        />
+          <Route
+            path="estimator"
+            element={<CostEstimator />}
+          />
 
-        <Route
-          path="/escrow"
-          element={
-            <Layout>
-              <Escrow />
-            </Layout>
-          }
-        />
+          <Route path="reports" element={<Reports />} />
 
-        <Route path="*" element={<h1>Page Not Found</h1>} />
+          <Route path="settings" element={<Settings />} />
+
+        </Route>
+
       </Routes>
     </BrowserRouter>
   );
 }
+
+export default App;
