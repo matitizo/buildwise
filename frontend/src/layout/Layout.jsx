@@ -3,6 +3,7 @@ import { NavLink, Outlet } from "react-router-dom";
 export default function Layout() {
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: "🏠" },
+    { name: "Ibibanza", path: "/lands", icon: "📍" },
     { name: "Projects", path: "/projects", icon: "🏗️" },
     { name: "Materials", path: "/materials", icon: "🧱" },
     { name: "Escrow", path: "/escrow", icon: "🔒" },
