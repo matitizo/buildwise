@@ -21,47 +21,91 @@ const landSchema = new mongoose.Schema(
     size: String,
     price: Number,
     image: String,
-    status: {
-      type: String,
-      default: "Kiragurishwa",
-    },
+    status: { type: String, default: "Kiragurishwa" },
+  },
+  { timestamps: true }
+);
+
+const materialSchema = new mongoose.Schema(
+  {
+    name: String,
+    price: Number,
+    stock: Number,
+    category: String,
+    image: String,
+  },
+  { timestamps: true }
+);
+
+const projectSchema = new mongoose.Schema(
+  {
+    title: String,
+    name: String,
+    location: String,
+    budget: Number,
+    status: { type: String, default: "Pending" },
+    progress: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
 
 const Land = mongoose.model("Land", landSchema);
+const Material = mongoose.model("Material", materialSchema);
+const Project = mongoose.model("Project", projectSchema);
 
 app.get("/api", (req, res) => {
   res.json({ message: "BuildWise Backend API irakora neza 🚀" });
 });
 
+/* LANDS */
 app.get("/api/lands", async (req, res) => {
-  try {
-    const lands = await Land.find().sort({ createdAt: -1 });
-    res.json(lands);
-  } catch (error) {
-    res.status(500).json({ message: "Failed to fetch lands" });
-  }
+  const lands = await Land.find().sort({ createdAt: -1 });
+  res.json(lands);
 });
 
 app.post("/api/lands", async (req, res) => {
-  try {
-    const land = await Land.create(req.body);
-    res.status(201).json(land);
-  } catch (error) {
-    res.status(500).json({ message: "Failed to create land" });
-  }
+  const land = await Land.create(req.body);
+  res.status(201).json(land);
 });
 
 app.delete("/api/lands/:id", async (req, res) => {
-  try {
-    await Land.findByIdAndDelete(req.params.id);
-    res.json({ message: "Land deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: "Failed to delete land" });
-  }
+  await Land.findByIdAndDelete(req.params.id);
+  res.json({ message: "Land deleted" });
 });
 
+/* MATERIALS */
+app.get("/api/materials", async (req, res) => {
+  const materials = await Material.find().sort({ createdAt: -1 });
+  res.json(materials);
+});
+
+app.post("/api/materials", async (req, res) => {
+  const material = await Material.create(req.body);
+  res.status(201).json(material);
+});
+
+app.delete("/api/materials/:id", async (req, res) => {
+  await Material.findByIdAndDelete(req.params.id);
+  res.json({ message: "Material deleted" });
+});
+
+/* PROJECTS */
+app.get("/api/projects", async (req, res) => {
+  const projects = await Project.find().sort({ createdAt: -1 });
+  res.json(projects);
+});
+
+app.post("/api/projects", async (req, res) => {
+  const project = await Project.create(req.body);
+  res.status(201).json(project);
+});
+
+app.delete("/api/projects/:id", async (req, res) => {
+  await Project.findByIdAndDelete(req.params.id);
+  res.json({ message: "Project deleted" });
+});
+
+/* FRONTEND */
 const frontendPath = path.join(__dirname, "../frontend/dist");
 
 app.use(express.static(frontendPath));
