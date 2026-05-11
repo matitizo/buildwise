@@ -1,48 +1,113 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Layout({ children }) {
+  const location = useLocation();
+
+  const menus = [
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+      icon: "🏠",
+    },
+    {
+      name: "Ibibanza",
+      path: "/lands",
+      icon: "📍",
+    },
+    {
+      name: "Materials",
+      path: "/materials",
+      icon: "🧱",
+    },
+    {
+      name: "Projects",
+      path: "/projects",
+      icon: "🏗️",
+    },
+    {
+      name: "Estimator",
+      path: "/estimator",
+      icon: "🧮",
+    },
+    {
+      name: "Escrow",
+      path: "/escrow",
+      icon: "🔒",
+    },
+    {
+      name: "Reports",
+      path: "/reports",
+      icon: "📊",
+    },
+    {
+      name: "Settings",
+      path: "/settings",
+      icon: "⚙️",
+    },
+  ];
+
   return (
     <div style={container}>
       {/* SIDEBAR */}
 
-      <div style={sidebar}>
-        <h1 style={logo}>BuildWise</h1>
+      <aside style={sidebar}>
+        <div>
+          <div style={logoBox}>
+            <div style={logoIcon}>
+              🏗️
+            </div>
 
-        <nav style={nav}>
-          <Link to="/dashboard" style={link}>
-            Dashboard
-          </Link>
+            <div>
+              <h1 style={logo}>
+                BuildWise
+              </h1>
 
-          <Link to="/lands" style={link}>
-            Ibibanza
-          </Link>
+              <p style={logoSub}>
+                Construction OS
+              </p>
+            </div>
+          </div>
 
-          <Link to="/materials" style={link}>
-            Materials
-          </Link>
+          <nav style={nav}>
+            {menus.map((menu) => {
+              const active =
+                location.pathname === menu.path;
 
-          <Link to="/projects" style={link}>
-            Projects
-          </Link>
+              return (
+                <Link
+                  key={menu.path}
+                  to={menu.path}
+                  style={{
+                    ...link,
+                    ...(active
+                      ? activeLink
+                      : {}),
+                  }}
+                >
+                  <span style={icon}>
+                    {menu.icon}
+                  </span>
 
-          <Link to="/reports" style={link}>
-            Reports
-          </Link>
+                  {menu.name}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
 
-          <Link to="/settings" style={link}>
-            Settings
-          </Link>
-        </nav>
-      </div>
+        <button style={logoutBtn}>
+          🚪 Logout
+        </button>
+      </aside>
 
       {/* MAIN */}
 
-      <div style={main}>
+      <main style={main}>
         {/* TOPBAR */}
 
         <div style={topbar}>
           <div>
-            <h2 style={{ margin: 0 }}>
+            <h2 style={topTitle}>
               BuildWise Platform 🚀
             </h2>
 
@@ -51,16 +116,25 @@ export default function Layout({ children }) {
             </p>
           </div>
 
-          <div style={userBox}>
-            <span>👤</span>
-            <span>Admin</span>
+          <div style={rightBox}>
+            <button style={circleBtn}>
+              🔔
+            </button>
+
+            <button style={circleBtn}>
+              🌙
+            </button>
+
+            <div style={userBox}>
+              👤 Admin
+            </div>
           </div>
         </div>
 
-        {/* PAGE */}
+        {/* PAGE CONTENT */}
 
         <div>{children}</div>
-      </div>
+      </main>
     </div>
   );
 }
@@ -72,34 +146,82 @@ export default function Layout({ children }) {
 const container = {
   display: "flex",
   minHeight: "100vh",
-  background: "#e2e8f0",
+  background: "#f1f5f9",
 };
 
 const sidebar = {
-  width: "260px",
+  width: "280px",
   background: "#071739",
   color: "white",
-  padding: "30px 20px",
+  padding: "24px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+};
+
+const logoBox = {
+  display: "flex",
+  alignItems: "center",
+  gap: "14px",
+  marginBottom: "40px",
+};
+
+const logoIcon = {
+  width: "60px",
+  height: "60px",
+  borderRadius: "18px",
+  background: "#0f52ff",
+  display: "grid",
+  placeItems: "center",
+  fontSize: "28px",
 };
 
 const logo = {
-  marginBottom: "40px",
-  fontSize: "34px",
+  margin: 0,
+  fontSize: "30px",
+  fontWeight: "900",
+};
+
+const logoSub = {
+  margin: "4px 0 0",
+  color: "#94a3b8",
 };
 
 const nav = {
   display: "flex",
   flexDirection: "column",
-  gap: "18px",
+  gap: "12px",
 };
 
 const link = {
-  color: "white",
   textDecoration: "none",
+  color: "white",
   background: "#0f172a",
-  padding: "14px",
-  borderRadius: "12px",
+  padding: "16px",
+  borderRadius: "16px",
   fontWeight: "700",
+  display: "flex",
+  alignItems: "center",
+  gap: "14px",
+  transition: "0.3s",
+};
+
+const activeLink = {
+  background: "#0f52ff",
+};
+
+const icon = {
+  fontSize: "22px",
+};
+
+const logoutBtn = {
+  background: "#ef4444",
+  color: "white",
+  border: "none",
+  padding: "16px",
+  borderRadius: "16px",
+  fontWeight: "900",
+  cursor: "pointer",
 };
 
 const main = {
@@ -109,24 +231,44 @@ const main = {
 
 const topbar = {
   background: "white",
-  borderRadius: "22px",
+  borderRadius: "24px",
   padding: "24px",
   marginBottom: "24px",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+};
+
+const topTitle = {
+  margin: 0,
+  color: "#071739",
 };
 
 const subtitle = {
   color: "#64748b",
+  marginTop: "6px",
+};
+
+const rightBox = {
+  display: "flex",
+  alignItems: "center",
+  gap: "14px",
+};
+
+const circleBtn = {
+  width: "50px",
+  height: "50px",
+  borderRadius: "50%",
+  border: "none",
+  background: "#e2e8f0",
+  cursor: "pointer",
+  fontSize: "20px",
 };
 
 const userBox = {
   background: "#e2e8f0",
   padding: "12px 20px",
   borderRadius: "999px",
-  display: "flex",
-  alignItems: "center",
-  gap: "10px",
   fontWeight: "800",
 };
