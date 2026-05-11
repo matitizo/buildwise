@@ -1,14 +1,15 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Layout from "./layout/Layout";
+
 import Dashboard from "./pages/Dashboard";
 import LandMarketplace from "./pages/LandMarketplace";
 import Materials from "./pages/Materials";
 import Projects from "./pages/Projects";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
-import Escrow from "./pages/Escrow";
 import CostEstimator from "./pages/CostEstimator";
+import Escrow from "./pages/Escrow";
 
 export default function App() {
   return (
@@ -53,24 +54,6 @@ export default function App() {
         />
 
         <Route
-          path="/estimator"
-          element={
-            <Layout>
-              <CostEstimator />
-            </Layout>
-          }
-        />
-
-        <Route
-          path="/escrow"
-          element={
-            <Layout>
-              <Escrow />
-            </Layout>
-          }
-        />
-
-        <Route
           path="/reports"
           element={
             <Layout>
@@ -84,6 +67,24 @@ export default function App() {
           element={
             <Layout>
               <Settings />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/estimator"
+          element={
+            <Layout>
+              <CostEstimator />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/escrow"
+          element={
+            <Layout>
+              <Escrow />
             </Layout>
           }
         />
