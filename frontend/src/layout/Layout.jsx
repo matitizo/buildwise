@@ -33,6 +33,12 @@ const navItems = [
   },
 
   {
+    to: "/building-permit",
+    label: "Get Building Permit",
+    icon: "🏗️",
+  },
+
+  {
     to: "/projects",
     label: "Projects",
     icon: "🏗️",

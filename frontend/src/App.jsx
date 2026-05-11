@@ -18,6 +18,9 @@ import HousesForSale from "./pages/HousesForSale";
 import Rentals from "./pages/Rentals";
 import Lodging from "./pages/Lodging";
 
+// Building Permit
+import BuildingPermit from "./pages/BuildingPermit";
+
 export default function App() {
   return (
     <Routes>
@@ -37,6 +40,12 @@ export default function App() {
 
         <Route path="lodging" element={<Lodging />} />
 
+        {/* Building Permit */}
+        <Route
+          path="building-permit"
+          element={<BuildingPermit />}
+        />
+
         {/* Construction Modules */}
         <Route path="projects" element={<Projects />} />
 
@@ -53,7 +62,7 @@ export default function App() {
 
         <Route path="settings" element={<Settings />} />
 
-        {/* Redirect */}
+        {/* Redirect Unknown Routes */}
         <Route
           path="*"
           element={<Navigate to="/" replace />}
