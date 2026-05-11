@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* =========================
-   GLOBAL STYLES
+   GLOBAL
 ========================= */
 
 html,
@@ -12,8 +12,8 @@ body,
   margin: 0;
   padding: 0;
   min-height: 100%;
+  background-color: #f8fafc;
   font-family: Inter, sans-serif;
-  background: #f8fafc;
   color: #0f172a;
   scroll-behavior: smooth;
 }
@@ -128,7 +128,7 @@ body,
 }
 
 /* =========================
-   MODALS
+   MODAL
 ========================= */
 
 .modal-overlay {
@@ -136,7 +136,7 @@ body,
 }
 
 .modal-content {
-  @apply bg-white rounded-2xl p-6 max-h-[90vh] overflow-y-auto shadow-2xl;
+  @apply bg-white rounded-2xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto;
 }
 
 /* =========================
@@ -240,7 +240,7 @@ body,
 }
 
 /* =========================
-   IMAGE STYLES
+   IMAGES
 ========================= */
 
 .image-cover {
@@ -269,6 +269,7 @@ body,
   }
 
   .sidebar {
-    @apply w-full min-h-auto;
+    width: 100%;
+    min-height: auto;
   }
 }
