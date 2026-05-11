@@ -1,81 +1,38 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Layout from "./layout/Layout";
 
 import Dashboard from "./pages/Dashboard";
-import Lands from "./pages/Lands";
 import Projects from "./pages/Projects";
 import Materials from "./pages/Materials";
 import Escrow from "./pages/Escrow";
 import CostEstimator from "./pages/CostEstimator";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
+import Lands from "./pages/Lands";
+import HousesForSale from "./pages/HousesForSale";
+import Rentals from "./pages/Rentals";
 
-function App() {
+export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Dashboard />} />
 
-        <Route path="/" element={<Layout />}>
+        <Route path="projects" element={<Projects />} />
+        <Route path="materials" element={<Materials />} />
+        <Route path="escrow" element={<Escrow />} />
+        <Route path="estimator" element={<CostEstimator />} />
+        <Route path="reports" element={<Reports />} />
+        <Route path="settings" element={<Settings />} />
 
-          {/* Default Route */}
-          <Route
-            index
-            element={<Navigate to="/dashboard" replace />}
-          />
+        <Route path="lands" element={<Lands />} />
+        <Route path="houses-for-sale" element={<HousesForSale />} />
+        <Route path="rentals" element={<Rentals />} />
 
-          {/* Main Pages */}
-          <Route
-            path="dashboard"
-            element={<Dashboard />}
-          />
-
-          <Route
-            path="lands"
-            element={<Lands />}
-          />
-
-          <Route
-            path="projects"
-            element={<Projects />}
-          />
-
-          <Route
-            path="materials"
-            element={<Materials />}
-          />
-
-          <Route
-            path="escrow"
-            element={<Escrow />}
-          />
-
-          <Route
-            path="estimator"
-            element={<CostEstimator />}
-          />
-
-          <Route
-            path="reports"
-            element={<Reports />}
-          />
-
-          <Route
-            path="settings"
-            element={<Settings />}
-          />
-
-          {/* Wrong Routes Redirect */}
-          <Route
-            path="*"
-            element={<Navigate to="/dashboard" replace />}
-          />
-
-        </Route>
-
-      </Routes>
-    </BrowserRouter>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
+    </Routes>
   );
 }
-
-export default App;
