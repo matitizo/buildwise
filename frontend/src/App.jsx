@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import Layout from "./layout/Layout";
 
+// Main Pages
 import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/Projects";
 import Materials from "./pages/Materials";
@@ -11,6 +12,7 @@ import CostEstimator from "./pages/CostEstimator";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 
+// Marketplace Pages
 import Lands from "./pages/Lands";
 import HousesForSale from "./pages/HousesForSale";
 import Rentals from "./pages/Rentals";
@@ -18,13 +20,20 @@ import Rentals from "./pages/Rentals";
 export default function App() {
   return (
     <Routes>
+      {/* Layout Wrapper */}
       <Route path="/" element={<Layout />}>
+        {/* Dashboard */}
         <Route index element={<Dashboard />} />
 
+        {/* Marketplaces */}
         <Route path="lands" element={<Lands />} />
-        <Route path="houses-for-sale" element={<HousesForSale />} />
+        <Route
+          path="houses-for-sale"
+          element={<HousesForSale />}
+        />
         <Route path="rentals" element={<Rentals />} />
 
+        {/* Construction Modules */}
         <Route path="projects" element={<Projects />} />
         <Route path="materials" element={<Materials />} />
         <Route path="escrow" element={<Escrow />} />
@@ -32,6 +41,7 @@ export default function App() {
         <Route path="reports" element={<Reports />} />
         <Route path="settings" element={<Settings />} />
 
+        {/* Redirect Unknown Routes */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
