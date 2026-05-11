@@ -1,110 +1,116 @@
 export default function Escrow() {
-  const projects = [
+  const escrowProjects = [
     {
-      id: 1,
       client: "Jean Claude",
-      project: "Inzu ya Kicukiro",
+      project: "Modern House Kigali",
       amount: "12,500,000 RWF",
-      status: "Payment Released",
+      progress: "75%",
+      status: "In Progress",
     },
     {
-      id: 2,
       client: "Uwase Diane",
       project: "Apartment Remera",
       amount: "25,000,000 RWF",
-      status: "Pending",
+      progress: "40%",
+      status: "Pending Release",
     },
     {
-      id: 3,
       client: "Mugisha Eric",
-      project: "Modern House Kigali",
+      project: "Villa Nyarutarama",
       amount: "18,000,000 RWF",
-      status: "In Progress",
+      progress: "100%",
+      status: "Released",
     },
   ];
 
   return (
-    <div>
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-800">
-          Escrow Management
+    <div className="space-y-8">
+      <div className="bg-white rounded-3xl shadow-sm p-8">
+        <h1 className="text-4xl font-bold text-slate-800">
+          Escrow Management 🔒
         </h1>
-
-        <p className="text-gray-500 mt-2">
-          Monitor secure construction payments
+        <p className="text-gray-500 mt-2 text-lg">
+          Genzura amafaranga y’ubwubatsi ari mu bwishingizi.
         </p>
       </div>
 
-      {/* Stats */}
-      <div className="grid md:grid-cols-3 gap-6 mb-10">
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h2 className="text-gray-500">Total Funds</h2>
-          <p className="text-3xl font-bold mt-2">
-            55M RWF
-          </p>
-        </div>
-
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h2 className="text-gray-500">Active Projects</h2>
-          <p className="text-3xl font-bold mt-2">
-            12
-          </p>
-        </div>
-
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h2 className="text-gray-500">Pending Releases</h2>
-          <p className="text-3xl font-bold mt-2">
-            7
-          </p>
-        </div>
-      </div>
-
-      {/* Table */}
-      <div className="bg-white rounded-2xl shadow overflow-hidden">
-        <div className="p-5 border-b">
-          <h2 className="text-xl font-semibold">
-            Escrow Projects
+      <div className="grid md:grid-cols-3 gap-6">
+        <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <p className="text-gray-500">Total Escrow Funds</p>
+          <h2 className="text-3xl font-bold mt-3 text-slate-800">
+            55.5M RWF
           </h2>
         </div>
 
-        <table className="w-full">
-          <thead className="bg-slate-100">
-            <tr>
-              <th className="text-left p-4">Client</th>
-              <th className="text-left p-4">Project</th>
-              <th className="text-left p-4">Amount</th>
-              <th className="text-left p-4">Status</th>
-            </tr>
-          </thead>
+        <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <p className="text-gray-500">Active Contracts</p>
+          <h2 className="text-3xl font-bold mt-3 text-slate-800">
+            12
+          </h2>
+        </div>
 
-          <tbody>
-            {projects.map((item) => (
-              <tr
-                key={item.id}
-                className="border-b hover:bg-gray-50 transition"
+        <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <p className="text-gray-500">Pending Releases</p>
+          <h2 className="text-3xl font-bold mt-3 text-slate-800">
+            4
+          </h2>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-3xl shadow-sm p-8">
+        <h2 className="text-2xl font-bold text-slate-800 mb-6">
+          Escrow Projects
+        </h2>
+
+        <div className="space-y-5">
+          {escrowProjects.map((item, index) => (
+            <div
+              key={index}
+              className="bg-slate-50 rounded-2xl p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-5"
+            >
+              <div>
+                <h3 className="text-xl font-bold text-slate-800">
+                  {item.project}
+                </h3>
+                <p className="text-gray-500 mt-1">
+                  Client: {item.client}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-gray-500 text-sm">Amount</p>
+                <h4 className="font-bold text-slate-800">
+                  {item.amount}
+                </h4>
+              </div>
+
+              <div className="w-full md:w-48">
+                <div className="flex justify-between text-sm mb-2">
+                  <span>Progress</span>
+                  <span>{item.progress}</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div
+                    className="bg-blue-600 h-3 rounded-full"
+                    style={{ width: item.progress }}
+                  ></div>
+                </div>
+              </div>
+
+              <span
+                className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                  item.status === "Released"
+                    ? "bg-green-100 text-green-700"
+                    : item.status === "Pending Release"
+                    ? "bg-yellow-100 text-yellow-700"
+                    : "bg-blue-100 text-blue-700"
+                }`}
               >
-                <td className="p-4">{item.client}</td>
-                <td className="p-4">{item.project}</td>
-                <td className="p-4">{item.amount}</td>
-
-                <td className="p-4">
-                  <span
-                    className={`px-3 py-1 rounded-full text-sm ${
-                      item.status === "Payment Released"
-                        ? "bg-green-100 text-green-700"
-                        : item.status === "Pending"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : "bg-blue-100 text-blue-700"
-                    }`}
-                  >
-                    {item.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                {item.status}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
