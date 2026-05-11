@@ -3,11 +3,33 @@ import { useState } from "react";
 export default function Lands() {
   const [search, setSearch] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showSellerForm, setShowSellerForm] = useState(false);
   const [selectedLand, setSelectedLand] = useState(null);
   const [bookingLand, setBookingLand] = useState(null);
   const [reserveLand, setReserveLand] = useState(null);
   const [editingLand, setEditingLand] = useState(null);
   const [favorites, setFavorites] = useState([]);
+
+  const [sellers, setSellers] = useState([
+    {
+      id: 1,
+      names: "Jean Broker",
+      phone: "+250 788 000 111",
+      email: "jean@buildwise.rw",
+      role: "Broker/Agent",
+      verified: true,
+    },
+  ]);
+
+  const [newSeller, setNewSeller] = useState({
+    names: "",
+    phone: "",
+    email: "",
+    role: "Land Owner",
+    idDocument: "",
+    landDocument: "",
+    verified: true,
+  });
 
   const [lands, setLands] = useState([
     {
@@ -22,8 +44,7 @@ export default function Lands() {
       size: 500,
       price: 25000000,
       type: "Residential",
-      image:
-        "https://images.unsplash.com/photo-1500382017468-9049fed747ef",
+      image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef",
       road: true,
       electricity: true,
       water: true,
@@ -47,8 +68,7 @@ export default function Lands() {
       size: 700,
       price: 18000000,
       type: "Residential",
-      image:
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
       road: true,
       electricity: true,
       water: false,
@@ -100,6 +120,30 @@ export default function Lands() {
       String(land.size).includes(keyword)
     );
   });
+
+  const addSeller = (e) => {
+    e.preventDefault();
+
+    setSellers([
+      {
+        ...newSeller,
+        id: Date.now(),
+      },
+      ...sellers,
+    ]);
+
+    setNewSeller({
+      names: "",
+      phone: "",
+      email: "",
+      role: "Land Owner",
+      idDocument: "",
+      landDocument: "",
+      verified: true,
+    });
+
+    setShowSellerForm(false);
+  };
 
   const addLand = (e) => {
     e.preventDefault();
@@ -156,21 +200,29 @@ export default function Lands() {
           </h1>
 
           <p className="text-gray-500 mt-2 text-lg">
-            Module y’ibibanza: Land Owners, Brokers, Real Estate Agents na
-            Buyers.
+            Module y’ibibanza: Land Owners, Brokers, Real Estate Agents na Buyers.
           </p>
         </div>
 
-        <button
-          onClick={() => setShowAddForm(!showAddForm)}
-          className="bg-blue-600 text-white px-6 py-4 rounded-2xl font-semibold hover:bg-blue-700"
-        >
-          {showAddForm ? "Close Form" : "➕ Add New Land Listing"}
-        </button>
+        <div className="flex flex-col md:flex-row gap-3">
+          <button
+            onClick={() => setShowSellerForm(!showSellerForm)}
+            className="bg-slate-900 text-white px-6 py-4 rounded-2xl font-semibold hover:bg-slate-800"
+          >
+            ✅ Register Seller
+          </button>
+
+          <button
+            onClick={() => setShowAddForm(!showAddForm)}
+            className="bg-blue-600 text-white px-6 py-4 rounded-2xl font-semibold hover:bg-blue-700"
+          >
+            {showAddForm ? "Close Form" : "➕ Add New Land Listing"}
+          </button>
+        </div>
       </div>
 
       <div className="grid md:grid-cols-4 gap-6">
-        <StatCard title="Verified Sellers" value="18" />
+        <StatCard title="Verified Sellers" value={sellers.filter((s) => s.verified).length} />
         <StatCard title="Land Listings" value={lands.length} />
         <StatCard
           title="Available Lands"
@@ -178,6 +230,132 @@ export default function Lands() {
         />
         <StatCard title="Saved Lands" value={favorites.length} />
       </div>
+
+      <div className="bg-white rounded-3xl shadow-sm p-8">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div>
+            <h2 className="text-3xl font-bold text-slate-800">
+              Seller Verification Center ✅
+            </h2>
+
+            <p className="text-gray-500 mt-2 text-lg">
+              Land Owner, Broker/Agent cyangwa Real Estate Agent abanza kwiyandikisha
+              no kohereza ibyangombwa kugira ngo abe Verified Seller.
+            </p>
+          </div>
+
+          <span className="bg-green-100 text-green-700 px-5 py-3 rounded-2xl font-semibold">
+            Fraud Protection Enabled
+          </span>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6 mt-8">
+          <RoleCard
+            title="1. Land Owner"
+            desc="Nyir’ikibanza yuzuza amazina, telefone, email, ID na title deed."
+          />
+
+          <RoleCard
+            title="2. Broker / Agent"
+            desc="Umuhuza ashyiraho amakuru ye, ID verification n’ibyangombwa by’ubutaka."
+          />
+
+          <RoleCard
+            title="3. Buyer / Client"
+            desc="Umukiriya ashaka ikibanza, akabika gusura cyangwa akishyura reservation."
+          />
+        </div>
+
+        <div className="mt-8 bg-slate-50 rounded-3xl p-6">
+          <h3 className="text-xl font-bold text-slate-800 mb-4">
+            Verified Sellers
+          </h3>
+
+          <div className="space-y-3">
+            {sellers.map((seller) => (
+              <div
+                key={seller.id}
+                className="bg-white rounded-2xl p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-3"
+              >
+                <div>
+                  <h4 className="font-bold text-slate-800">{seller.names}</h4>
+                  <p className="text-gray-500">
+                    {seller.role} • {seller.phone} • {seller.email}
+                  </p>
+                </div>
+
+                <span
+                  className={`px-4 py-2 rounded-full font-semibold ${
+                    seller.verified
+                      ? "bg-green-100 text-green-700"
+                      : "bg-yellow-100 text-yellow-700"
+                  }`}
+                >
+                  {seller.verified ? "Verified Seller" : "Pending"}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {showSellerForm && (
+        <form
+          onSubmit={addSeller}
+          className="bg-white rounded-3xl shadow-sm p-8 space-y-6"
+        >
+          <h2 className="text-2xl font-bold text-slate-800">
+            Register Seller / Verification
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-5">
+            <TextInput
+              label="Amazina"
+              value={newSeller.names}
+              onChange={(value) => setNewSeller({ ...newSeller, names: value })}
+            />
+
+            <TextInput
+              label="Telefone"
+              value={newSeller.phone}
+              onChange={(value) => setNewSeller({ ...newSeller, phone: value })}
+            />
+
+            <TextInput
+              label="Email"
+              type="email"
+              value={newSeller.email}
+              onChange={(value) => setNewSeller({ ...newSeller, email: value })}
+            />
+
+            <SelectInput
+              value={newSeller.role}
+              onChange={(value) => setNewSeller({ ...newSeller, role: value })}
+              options={["Land Owner", "Broker/Agent", "Real Estate Agent"]}
+            />
+
+            <TextInput
+              label="ID verification file / URL"
+              value={newSeller.idDocument}
+              onChange={(value) =>
+                setNewSeller({ ...newSeller, idDocument: value })
+              }
+            />
+
+            <TextInput
+              label="Land documents file / URL"
+              value={newSeller.landDocument}
+              onChange={(value) =>
+                setNewSeller({ ...newSeller, landDocument: value })
+              }
+            />
+          </div>
+
+          <button className="bg-slate-900 text-white px-8 py-4 rounded-2xl font-semibold hover:bg-slate-800">
+            Submit Verification
+          </button>
+        </form>
+      )}
 
       <div className="bg-white rounded-3xl shadow-sm p-6">
         <h2 className="text-2xl font-bold text-slate-800 mb-4">
@@ -211,17 +389,13 @@ export default function Lands() {
             <TextInput
               label="Province"
               value={newLand.province}
-              onChange={(value) =>
-                setNewLand({ ...newLand, province: value })
-              }
+              onChange={(value) => setNewLand({ ...newLand, province: value })}
             />
 
             <TextInput
               label="District"
               value={newLand.district}
-              onChange={(value) =>
-                setNewLand({ ...newLand, district: value })
-              }
+              onChange={(value) => setNewLand({ ...newLand, district: value })}
             />
 
             <TextInput
@@ -239,9 +413,7 @@ export default function Lands() {
             <TextInput
               label="Village"
               value={newLand.village}
-              onChange={(value) =>
-                setNewLand({ ...newLand, village: value })
-              }
+              onChange={(value) => setNewLand({ ...newLand, village: value })}
             />
 
             <TextInput
@@ -280,9 +452,7 @@ export default function Lands() {
             <TextInput
               label="Comments"
               value={newLand.comments}
-              onChange={(value) =>
-                setNewLand({ ...newLand, comments: value })
-              }
+              onChange={(value) => setNewLand({ ...newLand, comments: value })}
             />
 
             <SelectInput
@@ -328,9 +498,7 @@ export default function Lands() {
             <CheckBox
               label="Access road"
               checked={newLand.road}
-              onChange={(checked) =>
-                setNewLand({ ...newLand, road: checked })
-              }
+              onChange={(checked) => setNewLand({ ...newLand, road: checked })}
             />
 
             <CheckBox
@@ -344,9 +512,7 @@ export default function Lands() {
             <CheckBox
               label="Water nearby"
               checked={newLand.water}
-              onChange={(checked) =>
-                setNewLand({ ...newLand, water: checked })
-              }
+              onChange={(checked) => setNewLand({ ...newLand, water: checked })}
             />
           </div>
 
@@ -508,10 +674,7 @@ export default function Lands() {
             <div className="grid md:grid-cols-4 gap-5">
               <FeatureCard title="Land Size" value={`${selectedLand.size} sqm`} />
               <FeatureCard title="Type" value={selectedLand.type} />
-              <FeatureCard
-                title="Title Status"
-                value={selectedLand.titleStatus}
-              />
+              <FeatureCard title="Title Status" value={selectedLand.titleStatus} />
               <FeatureCard title="GPS" value={selectedLand.gps} />
             </div>
 
@@ -520,16 +683,14 @@ export default function Lands() {
 
               <div className="grid md:grid-cols-3 gap-5">
                 <Utility available={selectedLand.road} label="Road Access" />
-                <Utility
-                  available={selectedLand.electricity}
-                  label="Electricity"
-                />
+                <Utility available={selectedLand.electricity} label="Electricity" />
                 <Utility available={selectedLand.water} label="Water Nearby" />
               </div>
             </div>
 
             <div className="bg-white border rounded-3xl p-8">
               <h3 className="text-2xl font-bold mb-5">Seller Profile</h3>
+
               <p className="font-bold text-xl">{selectedLand.seller}</p>
               <p className="text-gray-500">{selectedLand.sellerType}</p>
 
@@ -584,16 +745,8 @@ export default function Lands() {
           <p className="text-gray-500 mt-2">{bookingLand.title}</p>
 
           <div className="grid md:grid-cols-2 gap-4 mt-6">
-            <input
-              type="date"
-              className="bg-slate-50 border rounded-2xl px-5 py-4"
-            />
-
-            <input
-              type="time"
-              className="bg-slate-50 border rounded-2xl px-5 py-4"
-            />
-
+            <input type="date" className="bg-slate-50 border rounded-2xl px-5 py-4" />
+            <input type="time" className="bg-slate-50 border rounded-2xl px-5 py-4" />
             <input
               placeholder="Phone number"
               className="md:col-span-2 bg-slate-50 border rounded-2xl px-5 py-4"
@@ -715,6 +868,15 @@ function StatCard({ title, value }) {
     <div className="bg-white rounded-3xl p-6 shadow-sm">
       <p className="text-gray-500">{title}</p>
       <h2 className="text-3xl font-bold mt-3 text-slate-800">{value}</h2>
+    </div>
+  );
+}
+
+function RoleCard({ title, desc }) {
+  return (
+    <div className="bg-slate-50 rounded-3xl p-6">
+      <h3 className="text-xl font-bold text-slate-800">{title}</h3>
+      <p className="text-gray-500 mt-2">{desc}</p>
     </div>
   );
 }
