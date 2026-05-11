@@ -78,9 +78,11 @@ export default function Lands() {
 
   const filteredLands = lands.filter((land) => {
     const keyword = search.toLowerCase();
+
     return (
       land.title.toLowerCase().includes(keyword) ||
       land.district.toLowerCase().includes(keyword) ||
+      land.sector.toLowerCase().includes(keyword) ||
       land.type.toLowerCase().includes(keyword) ||
       String(land.price).includes(keyword) ||
       String(land.size).includes(keyword)
@@ -103,16 +105,40 @@ export default function Lands() {
       ...lands,
     ]);
 
+    setNewLand({
+      title: "",
+      province: "",
+      district: "",
+      sector: "",
+      cell: "",
+      village: "",
+      gps: "",
+      size: "",
+      price: "",
+      type: "Residential",
+      image: "",
+      road: false,
+      electricity: false,
+      water: false,
+      titleStatus: "Pending Verification",
+      seller: "",
+      sellerType: "Land Owner",
+      sellerVerified: true,
+      comments: "",
+    });
+
     setShowAddForm(false);
   };
 
   return (
     <div className="space-y-8">
+      {/* Header */}
       <div className="bg-white rounded-3xl shadow-sm p-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
         <div>
           <h1 className="text-4xl font-bold text-slate-800">
             Land Marketplace 📍
           </h1>
+
           <p className="text-gray-500 mt-2 text-lg">
             Module y’ibibanza: Land Owners, Brokers, Agents na Buyers.
           </p>
@@ -122,26 +148,22 @@ export default function Lands() {
           onClick={() => setShowAddForm(!showAddForm)}
           className="bg-blue-600 text-white px-6 py-4 rounded-2xl font-semibold hover:bg-blue-700"
         >
-          ➕ Add New Land Listing
+          {showAddForm ? "Close Form" : "➕ Add New Land Listing"}
         </button>
       </div>
 
+      {/* Stats */}
       <div className="grid md:grid-cols-4 gap-6">
-        {[
-          ["Verified Sellers", "18"],
-          ["Land Listings", lands.length],
-          ["Available Lands", lands.length],
-          ["Booking Requests", "7"],
-        ].map(([label, value]) => (
-          <div key={label} className="bg-white rounded-3xl p-6 shadow-sm">
-            <p className="text-gray-500">{label}</p>
-            <h2 className="text-3xl font-bold mt-3 text-slate-800">
-              {value}
-            </h2>
-          </div>
-        ))}
+        <StatCard title="Verified Sellers" value="18" />
+        <StatCard title="Land Listings" value={lands.length} />
+        <StatCard
+          title="Available Lands"
+          value={lands.filter((land) => land.sellerVerified).length}
+        />
+        <StatCard title="Booking Requests" value="7" />
       </div>
 
+      {/* Search */}
       <div className="bg-white rounded-3xl shadow-sm p-6">
         <h2 className="text-2xl font-bold text-slate-800 mb-4">
           🔍 Smart Land Search Engine
@@ -155,6 +177,7 @@ export default function Lands() {
         />
       </div>
 
+      {/* Add Form */}
       {showAddForm && (
         <form
           onSubmit={addLand}
@@ -165,31 +188,80 @@ export default function Lands() {
           </h2>
 
           <div className="grid md:grid-cols-3 gap-5">
-            {[
-              ["title", "Izina ry’ikibanza"],
-              ["province", "Province"],
-              ["district", "District"],
-              ["sector", "Sector"],
-              ["cell", "Cell"],
-              ["village", "Village"],
-              ["gps", "GPS location"],
-              ["size", "Size sqm"],
-              ["price", "Price RWF"],
-              ["image", "Image URL"],
-              ["seller", "Seller name"],
-              ["comments", "Comments"],
-            ].map(([field, label]) => (
-              <input
-                key={field}
-                required={field !== "image"}
-                placeholder={label}
-                value={newLand[field]}
-                onChange={(e) =>
-                  setNewLand({ ...newLand, [field]: e.target.value })
-                }
-                className="bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            ))}
+            <TextInput
+              label="Izina ry’ikibanza"
+              value={newLand.title}
+              onChange={(value) => setNewLand({ ...newLand, title: value })}
+            />
+
+            <TextInput
+              label="Province"
+              value={newLand.province}
+              onChange={(value) => setNewLand({ ...newLand, province: value })}
+            />
+
+            <TextInput
+              label="District"
+              value={newLand.district}
+              onChange={(value) => setNewLand({ ...newLand, district: value })}
+            />
+
+            <TextInput
+              label="Sector"
+              value={newLand.sector}
+              onChange={(value) => setNewLand({ ...newLand, sector: value })}
+            />
+
+            <TextInput
+              label="Cell"
+              value={newLand.cell}
+              onChange={(value) => setNewLand({ ...newLand, cell: value })}
+            />
+
+            <TextInput
+              label="Village"
+              value={newLand.village}
+              onChange={(value) => setNewLand({ ...newLand, village: value })}
+            />
+
+            <TextInput
+              label="GPS location"
+              value={newLand.gps}
+              onChange={(value) => setNewLand({ ...newLand, gps: value })}
+            />
+
+            <TextInput
+              label="Size sqm"
+              type="number"
+              value={newLand.size}
+              onChange={(value) => setNewLand({ ...newLand, size: value })}
+            />
+
+            <TextInput
+              label="Price RWF"
+              type="number"
+              value={newLand.price}
+              onChange={(value) => setNewLand({ ...newLand, price: value })}
+            />
+
+            <TextInput
+              label="Image URL"
+              required={false}
+              value={newLand.image}
+              onChange={(value) => setNewLand({ ...newLand, image: value })}
+            />
+
+            <TextInput
+              label="Seller name"
+              value={newLand.seller}
+              onChange={(value) => setNewLand({ ...newLand, seller: value })}
+            />
+
+            <TextInput
+              label="Comments"
+              value={newLand.comments}
+              onChange={(value) => setNewLand({ ...newLand, comments: value })}
+            />
 
             <select
               value={newLand.type}
@@ -213,38 +285,37 @@ export default function Lands() {
               <option>Real Estate Agent</option>
             </select>
 
-            <label className="flex items-center gap-3 bg-slate-50 rounded-2xl px-5 py-4">
-              <input
-                type="checkbox"
-                checked={newLand.road}
-                onChange={(e) =>
-                  setNewLand({ ...newLand, road: e.target.checked })
-                }
-              />
-              Access road
-            </label>
+            <select
+              value={newLand.titleStatus}
+              onChange={(e) =>
+                setNewLand({ ...newLand, titleStatus: e.target.value })
+              }
+              className="bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4"
+            >
+              <option>Pending Verification</option>
+              <option>Verified Title Deed</option>
+              <option>Rejected Documents</option>
+            </select>
 
-            <label className="flex items-center gap-3 bg-slate-50 rounded-2xl px-5 py-4">
-              <input
-                type="checkbox"
-                checked={newLand.electricity}
-                onChange={(e) =>
-                  setNewLand({ ...newLand, electricity: e.target.checked })
-                }
-              />
-              Electricity
-            </label>
+            <CheckBox
+              label="Access road"
+              checked={newLand.road}
+              onChange={(checked) => setNewLand({ ...newLand, road: checked })}
+            />
 
-            <label className="flex items-center gap-3 bg-slate-50 rounded-2xl px-5 py-4">
-              <input
-                type="checkbox"
-                checked={newLand.water}
-                onChange={(e) =>
-                  setNewLand({ ...newLand, water: e.target.checked })
-                }
-              />
-              Water nearby
-            </label>
+            <CheckBox
+              label="Electricity"
+              checked={newLand.electricity}
+              onChange={(checked) =>
+                setNewLand({ ...newLand, electricity: checked })
+              }
+            />
+
+            <CheckBox
+              label="Water nearby"
+              checked={newLand.water}
+              onChange={(checked) => setNewLand({ ...newLand, water: checked })}
+            />
           </div>
 
           <button className="bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold hover:bg-blue-700">
@@ -253,6 +324,7 @@ export default function Lands() {
         </form>
       )}
 
+      {/* Cards */}
       <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
         {filteredLands.map((land) => (
           <div
@@ -271,9 +343,8 @@ export default function Lands() {
                   <h3 className="text-2xl font-bold text-slate-800">
                     {land.title}
                   </h3>
-                  <p className="text-gray-500 mt-1">
-                    {land.size} sqm
-                  </p>
+
+                  <p className="text-gray-500 mt-1">{land.size} sqm</p>
                 </div>
 
                 <span
@@ -324,45 +395,168 @@ export default function Lands() {
         ))}
       </div>
 
+      {/* Details Modal */}
       {selectedLand && (
         <Modal onClose={() => setSelectedLand(null)}>
-          <h2 className="text-3xl font-bold">{selectedLand.title}</h2>
-          <img
-            src={selectedLand.image}
-            className="w-full h-72 object-cover rounded-3xl mt-5"
-          />
-          <div className="grid md:grid-cols-2 gap-4 mt-6">
-            <Info label="Location" value={`${selectedLand.province}, ${selectedLand.district}, ${selectedLand.sector}`} />
-            <Info label="GPS Route" value={selectedLand.gps} />
-            <Info label="Title Status" value={selectedLand.titleStatus} />
-            <Info label="Seller" value={`${selectedLand.seller} - ${selectedLand.sellerType}`} />
-            <Info label="Nearby" value="Schools, road, shops, water point" />
-            <Info label="Comments" value={selectedLand.comments} />
-          </div>
+          <div className="space-y-8">
+            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-6">
+              <div>
+                <h2 className="text-4xl font-bold text-slate-800">
+                  {selectedLand.title}
+                </h2>
 
-          <div className="grid md:grid-cols-2 gap-4 mt-6">
-            <button
-              onClick={() => setBookingLand(selectedLand)}
-              className="bg-blue-600 text-white py-4 rounded-2xl font-semibold"
-            >
-              📅 Book Site Visit
-            </button>
-            <button className="bg-slate-900 text-white py-4 rounded-2xl font-semibold">
-              💬 Chat Seller
-            </button>
+                <p className="text-gray-500 mt-3 text-lg">
+                  {selectedLand.province}, {selectedLand.district},{" "}
+                  {selectedLand.sector}
+                </p>
+              </div>
+
+              <div className="bg-blue-600 text-white px-6 py-4 rounded-2xl">
+                <p className="text-sm opacity-80">Land Price</p>
+
+                <h3 className="text-3xl font-bold mt-2">
+                  {selectedLand.price.toLocaleString()} Frw
+                </h3>
+              </div>
+            </div>
+
+            <img
+              src={selectedLand.image}
+              className="w-full h-[400px] object-cover rounded-3xl"
+            />
+
+            <div className="grid md:grid-cols-4 gap-4">
+              {[1, 2, 3, 4].map((item) => (
+                <img
+                  key={item}
+                  src={selectedLand.image}
+                  className="h-32 w-full object-cover rounded-2xl"
+                />
+              ))}
+            </div>
+
+            <div className="grid md:grid-cols-4 gap-5">
+              <FeatureCard title="Land Size" value={`${selectedLand.size} sqm`} />
+              <FeatureCard title="Type" value={selectedLand.type} />
+              <FeatureCard title="Title Status" value={selectedLand.titleStatus} />
+              <FeatureCard title="GPS" value={selectedLand.gps} />
+            </div>
+
+            <div className="bg-slate-50 rounded-3xl p-8">
+              <h3 className="text-2xl font-bold text-slate-800 mb-6">
+                Land Features
+              </h3>
+
+              <div className="grid md:grid-cols-3 gap-5">
+                <Utility available={selectedLand.road} label="Road Access" />
+                <Utility
+                  available={selectedLand.electricity}
+                  label="Electricity"
+                />
+                <Utility available={selectedLand.water} label="Water Nearby" />
+              </div>
+            </div>
+
+            <div className="bg-white border rounded-3xl p-8">
+              <div className="flex items-center gap-5">
+                <div className="w-20 h-20 rounded-full bg-blue-600 text-white flex items-center justify-center text-3xl font-bold">
+                  {selectedLand.seller.charAt(0)}
+                </div>
+
+                <div>
+                  <h3 className="text-2xl font-bold text-slate-800">
+                    {selectedLand.seller}
+                  </h3>
+
+                  <p className="text-gray-500 mt-1">
+                    {selectedLand.sellerType}
+                  </p>
+
+                  <span
+                    className={`inline-block mt-3 px-4 py-2 rounded-full text-sm font-semibold ${
+                      selectedLand.sellerVerified
+                        ? "bg-green-100 text-green-700"
+                        : "bg-yellow-100 text-yellow-700"
+                    }`}
+                  >
+                    {selectedLand.sellerVerified
+                      ? "✔ Verified Seller"
+                      : "Pending Verification"}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-2xl font-bold text-slate-800 mb-5">
+                📍 Location Map
+              </h3>
+
+              <iframe
+                title="map"
+                src="https://maps.google.com/maps?q=kigali&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                className="w-full h-[350px] rounded-3xl border-0"
+                loading="lazy"
+              ></iframe>
+            </div>
+
+            <div className="bg-slate-50 rounded-3xl p-8">
+              <h3 className="text-2xl font-bold text-slate-800 mb-6">
+                Nearby Places
+              </h3>
+
+              <div className="grid md:grid-cols-3 gap-5">
+                <NearbyCard icon="🏫" title="Schools" desc="5 mins away" />
+                <NearbyCard icon="🛣️" title="Main Road" desc="2 mins away" />
+                <NearbyCard icon="🛒" title="Shops" desc="3 mins away" />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-5">
+              <button
+                onClick={() => setBookingLand(selectedLand)}
+                className="bg-blue-600 text-white py-5 rounded-2xl text-lg font-semibold hover:bg-blue-700"
+              >
+                📅 Book Site Visit
+              </button>
+
+              <button className="bg-green-600 text-white py-5 rounded-2xl text-lg font-semibold hover:bg-green-700">
+                💬 WhatsApp Seller
+              </button>
+
+              <button
+                onClick={() => setReserveLand(selectedLand)}
+                className="bg-slate-900 text-white py-5 rounded-2xl text-lg font-semibold hover:bg-slate-800"
+              >
+                🔒 Reserve This Land
+              </button>
+            </div>
           </div>
         </Modal>
       )}
 
+      {/* Booking Modal */}
       {bookingLand && (
         <Modal onClose={() => setBookingLand(null)}>
           <h2 className="text-3xl font-bold">Book Site Visit</h2>
+
           <p className="text-gray-500 mt-2">{bookingLand.title}</p>
 
           <div className="grid md:grid-cols-2 gap-4 mt-6">
-            <input type="date" className="bg-slate-50 border rounded-2xl px-5 py-4" />
-            <input type="time" className="bg-slate-50 border rounded-2xl px-5 py-4" />
-            <input placeholder="Phone number" className="md:col-span-2 bg-slate-50 border rounded-2xl px-5 py-4" />
+            <input
+              type="date"
+              className="bg-slate-50 border rounded-2xl px-5 py-4"
+            />
+
+            <input
+              type="time"
+              className="bg-slate-50 border rounded-2xl px-5 py-4"
+            />
+
+            <input
+              placeholder="Phone number"
+              className="md:col-span-2 bg-slate-50 border rounded-2xl px-5 py-4"
+            />
           </div>
 
           <button
@@ -374,18 +568,23 @@ export default function Lands() {
         </Modal>
       )}
 
+      {/* Reserve Modal */}
       {reserveLand && (
         <Modal onClose={() => setReserveLand(null)}>
           <h2 className="text-3xl font-bold">Reserve This Land</h2>
+
           <p className="text-gray-500 mt-2">{reserveLand.title}</p>
 
           <div className="bg-green-50 rounded-3xl p-6 mt-6">
             <p className="text-gray-600">Reservation Deposit</p>
+
             <h3 className="text-3xl font-bold text-green-700 mt-2">
               500,000 Frw
             </h3>
+
             <p className="text-sm text-gray-500 mt-3">
               Amafaranga azabikwa na platform kugeza transaction irangiye.
+              Platform ikuramo commission transaction irangiye.
             </p>
           </div>
 
@@ -401,27 +600,95 @@ export default function Lands() {
   );
 }
 
+function StatCard({ title, value }) {
+  return (
+    <div className="bg-white rounded-3xl p-6 shadow-sm">
+      <p className="text-gray-500">{title}</p>
+
+      <h2 className="text-3xl font-bold mt-3 text-slate-800">
+        {value}
+      </h2>
+    </div>
+  );
+}
+
+function TextInput({ label, value, onChange, type = "text", required = true }) {
+  return (
+    <input
+      required={required}
+      type={type}
+      placeholder={label}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  );
+}
+
+function CheckBox({ label, checked, onChange }) {
+  return (
+    <label className="flex items-center gap-3 bg-slate-50 rounded-2xl px-5 py-4">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+      />
+      {label}
+    </label>
+  );
+}
+
 function Modal({ children, onClose }) {
   return (
     <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-6">
-      <div className="bg-white rounded-3xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-3xl p-8 max-w-5xl w-full max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
           className="float-right bg-slate-100 px-4 py-2 rounded-xl font-semibold"
         >
           ✖
         </button>
+
         {children}
       </div>
     </div>
   );
 }
 
-function Info({ label, value }) {
+function FeatureCard({ title, value }) {
   return (
-    <div className="bg-slate-50 rounded-2xl p-5">
-      <p className="text-gray-500 text-sm">{label}</p>
-      <h4 className="font-bold text-slate-800 mt-1">{value}</h4>
+    <div className="bg-white border rounded-3xl p-6">
+      <p className="text-gray-500 text-sm">{title}</p>
+
+      <h3 className="text-xl font-bold text-slate-800 mt-2">
+        {value}
+      </h3>
+    </div>
+  );
+}
+
+function Utility({ available, label }) {
+  return (
+    <div
+      className={`rounded-2xl p-5 font-semibold ${
+        available
+          ? "bg-green-100 text-green-700"
+          : "bg-red-100 text-red-700"
+      }`}
+    >
+      {available ? "✔" : "✖"} {label}
+    </div>
+  );
+}
+
+function NearbyCard({ icon, title, desc }) {
+  return (
+    <div className="bg-white rounded-2xl p-6">
+      <div className="text-4xl">{icon}</div>
+
+      <h4 className="text-xl font-bold mt-4">{title}</h4>
+
+      <p className="text-gray-500 mt-2">{desc}</p>
     </div>
   );
 }
