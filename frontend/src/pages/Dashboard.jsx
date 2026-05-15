@@ -1,153 +1,211 @@
-export default function Dashboard() {
-  const stats = [
-    {
-      title: "Ibibanza",
-      value: "3",
-      icon: "📍",
-      color: "bg-blue-500",
-    },
-    {
-      title: "Materials",
-      value: "12",
-      icon: "🧱",
-      color: "bg-orange-500",
-    },
-    {
-      title: "Projects",
-      value: "5",
-      icon: "🏗️",
-      color: "bg-green-500",
-    },
-    {
-      title: "Land Value",
-      value: "180M RWF",
-      icon: "💰",
-      color: "bg-purple-500",
-    },
-  ];
+import React from "react";
+import { Link } from "react-router-dom";
 
+const stats = [
+  { label: "Active Listings", value: "128", icon: "🏘️" },
+  { label: "Projects", value: "36", icon: "🏗️" },
+  { label: "Permit Requests", value: "14", icon: "🏢" },
+  { label: "Escrow Deals", value: "22", icon: "🔐" },
+];
+
+const marketplaceCards = [
+  {
+    title: "Land Marketplace",
+    desc: "Gura cyangwa ugurishe ibibanza bifite verified sellers.",
+    path: "/lands",
+    icon: "📍",
+    image:
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef",
+  },
+  {
+    title: "House Marketplace",
+    desc: "Amazu yo guturamo n’ay’ubucuruzi agurishwa.",
+    path: "/houses-for-sale",
+    icon: "🏘️",
+    image:
+      "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
+  },
+  {
+    title: "Rentals",
+    desc: "Residential renting na commercial renting.",
+    path: "/rentals",
+    icon: "🏢",
+    image:
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688",
+  },
+  {
+    title: "Lodging",
+    desc: "Maison de Passage na Lodge booking.",
+    path: "/lodging",
+    icon: "🛏️",
+    image:
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945",
+  },
+];
+
+const constructionCards = [
+  {
+    title: "Projects",
+    desc: "Kurikirana imishinga y’ubwubatsi.",
+    path: "/projects",
+    icon: "🏗️",
+  },
+  {
+    title: "Cost Estimator",
+    desc: "Bara budget y’ubwubatsi mbere yo gutangira.",
+    path: "/estimator",
+    icon: "🧮",
+  },
+  {
+    title: "Get Building Permit",
+    desc: "Saba ibyangombwa byo kubaka no kugenzura documents.",
+    path: "/building-permit",
+    icon: "🏢",
+  },
+  {
+    title: "Escrow",
+    desc: "Amafaranga abikwa neza kugeza transaction irangiye.",
+    path: "/escrow",
+    icon: "🔐",
+  },
+  {
+    title: "Materials Market",
+    desc: "Gura ibikoresho by’ubwubatsi ku bacuruzi verified.",
+    path: "/materials",
+    icon: "🧱",
+  },
+  {
+    title: "Reports",
+    desc: "Reba reports z’imishinga, payments, n’ubucuruzi.",
+    path: "/reports",
+    icon: "📊",
+  },
+];
+
+export default function Dashboard() {
   return (
     <div className="space-y-8">
+      <section className="relative overflow-hidden rounded-[2rem] bg-slate-950 text-white p-6 md:p-10">
+        <div className="relative z-10 max-w-3xl">
+          <p className="text-rose-300 font-bold mb-3">
+            BuildWise African Construction Ecosystem
+          </p>
 
-      {/* Header */}
-      <div className="bg-white rounded-3xl shadow-sm p-8 flex justify-between items-center">
-        <div>
-          <h1 className="text-4xl font-bold text-slate-800">
-            Dashboard 🚀
+          <h1 className="text-3xl md:text-5xl font-black leading-tight">
+            Gura, gurisha, ukodeshe, wubake kandi wishyure mu buryo bwizewe.
           </h1>
 
-          <p className="text-gray-500 mt-2 text-lg">
-            Smart Construction Management System
+          <p className="text-slate-300 mt-4 text-lg">
+            Platform imwe ihuza land marketplace, house marketplace,
+            rentals, lodging, construction system, materials market na escrow.
+          </p>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link to="/lands" className="bg-rose-500 hover:bg-rose-600 text-white px-6 py-3 rounded-full font-bold">
+              Explore Marketplace
+            </Link>
+
+            <Link to="/building-permit" className="bg-white text-slate-950 px-6 py-3 rounded-full font-bold">
+              Get Building Permit
+            </Link>
+          </div>
+        </div>
+
+        <div className="absolute right-0 top-0 bottom-0 w-1/2 opacity-25 hidden md:block">
+          <img
+            src="https://images.unsplash.com/photo-1503387762-592deb58ef4e"
+            alt="construction"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </section>
+
+      <section className="grid md:grid-cols-4 gap-4">
+        {stats.map((item) => (
+          <div key={item.label} className="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm">
+            <div className="text-3xl mb-3">{item.icon}</div>
+            <p className="text-3xl font-black text-slate-950">{item.value}</p>
+            <p className="text-slate-500 font-semibold">{item.label}</p>
+          </div>
+        ))}
+      </section>
+
+      <section>
+        <div className="flex items-end justify-between mb-5">
+          <div>
+            <h2 className="text-2xl font-black text-slate-950">
+              Marketplaces
+            </h2>
+            <p className="text-slate-500">
+              Airbnb-style cards za property marketplace.
+            </p>
+          </div>
+
+          <Link to="/lands" className="text-rose-500 font-bold">
+            View all
+          </Link>
+        </div>
+
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+          {marketplaceCards.map((card) => (
+            <Link
+              key={card.title}
+              to={card.path}
+              className="group bg-white rounded-[2rem] overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition"
+            >
+              <div className="relative h-56 overflow-hidden">
+                <img
+                  src={card.image}
+                  alt={card.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                />
+
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-2 rounded-full font-bold">
+                  {card.icon} {card.title}
+                </div>
+              </div>
+
+              <div className="p-5">
+                <h3 className="text-lg font-black text-slate-950">
+                  {card.title}
+                </h3>
+                <p className="text-slate-500 mt-1">{card.desc}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <div className="mb-5">
+          <h2 className="text-2xl font-black text-slate-950">
+            Construction System
+          </h2>
+          <p className="text-slate-500">
+            Projects, permit, estimator, escrow, materials na reports.
           </p>
         </div>
 
-        <div className="hidden md:flex gap-4">
-          <button className="bg-gray-100 px-5 py-3 rounded-xl">
-            🔔
-          </button>
-
-          <button className="bg-gray-100 px-5 py-3 rounded-xl">
-            🌙
-          </button>
-
-          <button className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold">
-            Admin
-          </button>
-        </div>
-      </div>
-
-      {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        {stats.map((item, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl transition duration-300"
-          >
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-gray-500 text-sm">
-                  {item.title}
-                </p>
-
-                <h2 className="text-3xl font-bold mt-3 text-slate-800">
-                  {item.value}
-                </h2>
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+          {constructionCards.map((card) => (
+            <Link
+              key={card.title}
+              to={card.path}
+              className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-xl transition group"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-3xl mb-5 group-hover:bg-rose-100">
+                {card.icon}
               </div>
 
-              <div
-                className={`${item.color} w-16 h-16 rounded-2xl flex items-center justify-center text-3xl text-white`}
-              >
-                {item.icon}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+              <h3 className="text-xl font-black text-slate-950">
+                {card.title}
+              </h3>
 
-      {/* Recent Projects */}
-      <div className="bg-white rounded-3xl shadow-sm p-8">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-slate-800">
-            Recent Projects
-          </h2>
-
-          <button className="bg-blue-600 text-white px-5 py-2 rounded-xl">
-            View All
-          </button>
+              <p className="text-slate-500 mt-2">{card.desc}</p>
+            </Link>
+          ))}
         </div>
-
-        <div className="space-y-4">
-
-          <div className="flex justify-between items-center bg-gray-50 p-5 rounded-2xl">
-            <div>
-              <h3 className="font-bold text-lg">
-                Modern House Kigali
-              </h3>
-
-              <p className="text-gray-500">
-                Kicukiro District
-              </p>
-            </div>
-
-            <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm">
-              Completed
-            </span>
-          </div>
-
-          <div className="flex justify-between items-center bg-gray-50 p-5 rounded-2xl">
-            <div>
-              <h3 className="font-bold text-lg">
-                Apartment Remera
-              </h3>
-
-              <p className="text-gray-500">
-                Gasabo District
-              </p>
-            </div>
-
-            <span className="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full text-sm">
-              In Progress
-            </span>
-          </div>
-
-          <div className="flex justify-between items-center bg-gray-50 p-5 rounded-2xl">
-            <div>
-              <h3 className="font-bold text-lg">
-                Luxury Villa Nyarutarama
-              </h3>
-
-              <p className="text-gray-500">
-                Kigali City
-              </p>
-            </div>
-
-            <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm">
-              Pending
-            </span>
-          </div>
-
-        </div>
-      </div>
+      </section>
     </div>
   );
 }
