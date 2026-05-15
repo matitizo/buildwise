@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 export default function Layout() {
   return (
     <div className="min-h-screen bg-slate-50">
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+      <header className="sticky top-0 z-50 bg-white border-b border-slate-200">
         <div className="px-4 md:px-8 py-4 flex items-center gap-4">
           <div className="flex-1 max-w-4xl">
             <div className="w-full flex items-center border border-slate-300 rounded-full overflow-hidden shadow-sm bg-white">
