@@ -1,208 +1,243 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const stats = [
-  { label: "Active Listings", value: "128", icon: "🏘️" },
-  { label: "Projects", value: "36", icon: "🏗️" },
-  { label: "Permit Requests", value: "14", icon: "🏢" },
-  { label: "Escrow Deals", value: "22", icon: "🔐" },
-];
-
-const marketplaceCards = [
+const marketplaceItems = [
   {
     title: "Land Marketplace",
-    desc: "Gura cyangwa ugurishe ibibanza bifite verified sellers.",
-    path: "/lands",
+    description: "Gura cyangwa ugurishe ibibanza.",
     icon: "📍",
-    image:
-      "https://images.unsplash.com/photo-1500382017468-9049fed747ef",
+    link: "/lands",
+    color: "from-blue-500 to-indigo-600",
   },
   {
     title: "House Marketplace",
-    desc: "Amazu yo guturamo n’ay’ubucuruzi agurishwa.",
-    path: "/houses-for-sale",
-    icon: "🏘️",
-    image:
-      "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
+    description: "Gura cyangwa ugurishe amazu.",
+    icon: "🏡",
+    link: "/houses-for-sale",
+    color: "from-orange-500 to-red-500",
   },
   {
     title: "Rentals",
-    desc: "Residential renting na commercial renting.",
-    path: "/rentals",
-    icon: "🏢",
-    image:
-      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688",
-  },
-  {
-    title: "Lodging",
-    desc: "Maison de Passage na Lodge booking.",
-    path: "/lodging",
-    icon: "🛏️",
-    image:
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945",
+    description:
+      "Residential rentals, commercial rentals, apartments, lodge na maison de passage.",
+    icon: "🏨",
+    link: "/rentals",
+    color: "from-pink-500 to-rose-500",
   },
 ];
 
-const constructionCards = [
+const constructionItems = [
   {
     title: "Projects",
-    desc: "Kurikirana imishinga y’ubwubatsi.",
-    path: "/projects",
+    description: "Track construction projects.",
     icon: "🏗️",
+    link: "/projects",
   },
   {
-    title: "Cost Estimator",
-    desc: "Bara budget y’ubwubatsi mbere yo gutangira.",
-    path: "/estimator",
+    title: "Budget Estimator",
+    description: "Bara budget y’ubwubatsi.",
     icon: "🧮",
+    link: "/estimator",
   },
   {
-    title: "Get Building Permit",
-    desc: "Saba ibyangombwa byo kubaka no kugenzura documents.",
-    path: "/building-permit",
-    icon: "🏢",
+    title: "Building Permit",
+    description: "Sabira ibyangombwa byo kubaka online.",
+    icon: "📄",
+    link: "/building-permit",
   },
   {
     title: "Escrow",
-    desc: "Amafaranga abikwa neza kugeza transaction irangiye.",
-    path: "/escrow",
-    icon: "🔐",
-  },
-  {
-    title: "Materials Market",
-    desc: "Gura ibikoresho by’ubwubatsi ku bacuruzi verified.",
-    path: "/materials",
-    icon: "🧱",
-  },
-  {
-    title: "Reports",
-    desc: "Reba reports z’imishinga, payments, n’ubucuruzi.",
-    path: "/reports",
-    icon: "📊",
+    description: "Secure payment system.",
+    icon: "🔒",
+    link: "/escrow",
   },
 ];
 
 export default function Dashboard() {
   return (
-    <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-[2rem] bg-slate-950 text-white p-6 md:p-10">
-        <div className="relative z-10 max-w-3xl">
-          <p className="text-rose-300 font-bold mb-3">
-            BuildWise African Construction Ecosystem
-          </p>
+    <div className="space-y-10">
+      {/* HERO */}
+      <section className="relative overflow-hidden rounded-[2rem] bg-slate-950 text-white">
+        <div className="grid lg:grid-cols-2 items-center">
+          <div className="p-8 md:p-14 z-10">
+            <p className="text-rose-400 font-bold mb-4 text-sm md:text-base">
+              BuildWise African Construction Ecosystem
+            </p>
 
-          <h1 className="text-3xl md:text-5xl font-black leading-tight">
-            Gura, gurisha, ukodeshe, wubake kandi wishyure mu buryo bwizewe.
-          </h1>
+            <h1 className="text-4xl md:text-6xl font-black leading-tight">
+              Gura, ugurishe, ukodeshe kandi wubake mu buryo bwizewe.
+            </h1>
 
-          <p className="text-slate-300 mt-4 text-lg">
-            Platform imwe ihuza land marketplace, house marketplace,
-            rentals, lodging, construction system, materials market na escrow.
-          </p>
+            <p className="text-slate-300 text-lg mt-6 leading-relaxed">
+              Platform ihuza land marketplace, house marketplace,
+              rentals, construction system, materials market na escrow.
+            </p>
 
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link to="/lands" className="bg-rose-500 hover:bg-rose-600 text-white px-6 py-3 rounded-full font-bold">
-              Explore Marketplace
-            </Link>
+            <div className="flex flex-wrap gap-4 mt-8">
+              <Link
+                to="/lands"
+                className="bg-rose-500 hover:bg-rose-600 text-white px-7 py-4 rounded-full font-bold transition"
+              >
+                Explore Marketplace
+              </Link>
 
-            <Link to="/building-permit" className="bg-white text-slate-950 px-6 py-3 rounded-full font-bold">
-              Get Building Permit
-            </Link>
+              <Link
+                to="/building-permit"
+                className="bg-white hover:bg-slate-200 text-slate-950 px-7 py-4 rounded-full font-bold transition"
+              >
+                Get Building Permit
+              </Link>
+            </div>
           </div>
-        </div>
 
-        <div className="absolute right-0 top-0 bottom-0 w-1/2 opacity-25 hidden md:block">
-          <img
-            src="https://images.unsplash.com/photo-1503387762-592deb58ef4e"
-            alt="construction"
-            className="w-full h-full object-cover"
-          />
+          <div className="hidden lg:block h-full min-h-[500px]">
+            <img
+              src="https://images.unsplash.com/photo-1504307651254-35680f356dfd"
+              alt="construction"
+              className="w-full h-full object-cover opacity-60"
+            />
+          </div>
         </div>
       </section>
 
-      <section className="grid md:grid-cols-4 gap-4">
-        {stats.map((item) => (
-          <div key={item.label} className="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm">
-            <div className="text-3xl mb-3">{item.icon}</div>
-            <p className="text-3xl font-black text-slate-950">{item.value}</p>
-            <p className="text-slate-500 font-semibold">{item.label}</p>
-          </div>
-        ))}
-      </section>
-
+      {/* MARKETPLACES */}
       <section>
-        <div className="flex items-end justify-between mb-5">
+        <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-black text-slate-950">
+            <p className="text-rose-500 font-bold">
+              Marketplace Ecosystem
+            </p>
+
+            <h2 className="text-3xl font-black text-slate-950">
               Marketplaces
             </h2>
-            <p className="text-slate-500">
-              Airbnb-style cards za property marketplace.
-            </p>
           </div>
-
-          <Link to="/lands" className="text-rose-500 font-bold">
-            View all
-          </Link>
         </div>
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
-          {marketplaceCards.map((card) => (
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {marketplaceItems.map((item, index) => (
             <Link
-              key={card.title}
-              to={card.path}
-              className="group bg-white rounded-[2rem] overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl transition"
+              key={index}
+              to={item.link}
+              className="group bg-white rounded-[2rem] p-6 border border-slate-200 shadow-sm hover:shadow-2xl transition overflow-hidden relative"
             >
-              <div className="relative h-56 overflow-hidden">
-                <img
-                  src={card.image}
-                  alt={card.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                />
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-10 transition`}
+              />
 
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-2 rounded-full font-bold">
-                  {card.icon} {card.title}
-                </div>
-              </div>
+              <div className="relative z-10">
+                <div className="text-5xl mb-5">{item.icon}</div>
 
-              <div className="p-5">
-                <h3 className="text-lg font-black text-slate-950">
-                  {card.title}
+                <h3 className="text-2xl font-black text-slate-950">
+                  {item.title}
                 </h3>
-                <p className="text-slate-500 mt-1">{card.desc}</p>
+
+                <p className="text-slate-500 mt-3 leading-relaxed">
+                  {item.description}
+                </p>
+
+                <div className="mt-6">
+                  <span className="inline-flex items-center text-rose-500 font-bold">
+                    Open Marketplace →
+                  </span>
+                </div>
               </div>
             </Link>
           ))}
         </div>
       </section>
 
+      {/* CONSTRUCTION SYSTEM */}
       <section>
-        <div className="mb-5">
-          <h2 className="text-2xl font-black text-slate-950">
+        <div className="mb-6">
+          <p className="text-blue-500 font-bold">
+            Construction Workflow
+          </p>
+
+          <h2 className="text-3xl font-black text-slate-950">
             Construction System
           </h2>
-          <p className="text-slate-500">
-            Projects, permit, estimator, escrow, materials na reports.
-          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-          {constructionCards.map((card) => (
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+          {constructionItems.map((item, index) => (
             <Link
-              key={card.title}
-              to={card.path}
-              className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-xl transition group"
+              key={index}
+              to={item.link}
+              className="bg-white rounded-[2rem] p-6 border border-slate-200 shadow-sm hover:shadow-xl transition"
             >
-              <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-3xl mb-5 group-hover:bg-rose-100">
-                {card.icon}
-              </div>
+              <div className="text-5xl mb-5">{item.icon}</div>
 
               <h3 className="text-xl font-black text-slate-950">
-                {card.title}
+                {item.title}
               </h3>
 
-              <p className="text-slate-500 mt-2">{card.desc}</p>
+              <p className="text-slate-500 mt-3">
+                {item.description}
+              </p>
             </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* MATERIALS MARKET */}
+      <section className="bg-white rounded-[2rem] p-8 border border-slate-200 shadow-sm">
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
+          <div>
+            <p className="text-orange-500 font-bold mb-3">
+              Construction Materials
+            </p>
+
+            <h2 className="text-4xl font-black text-slate-950 leading-tight">
+              Materials Market
+            </h2>
+
+            <p className="text-slate-500 mt-5 text-lg leading-relaxed">
+              Shaka ibikoresho by’ubwubatsi, suppliers,
+              delivery tracking na online ordering system.
+            </p>
+
+            <Link
+              to="/materials"
+              className="inline-block mt-6 bg-slate-950 hover:bg-slate-800 text-white px-7 py-4 rounded-full font-bold transition"
+            >
+              Explore Materials
+            </Link>
+          </div>
+
+          <div>
+            <img
+              src="https://images.unsplash.com/photo-1599707254554-027aeb4deacd"
+              alt="materials"
+              className="rounded-[2rem] w-full h-[320px] object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ADMIN CENTER */}
+      <section className="bg-slate-950 rounded-[2rem] p-8 text-white">
+        <p className="text-rose-400 font-bold mb-3">
+          BuildWise Management
+        </p>
+
+        <h2 className="text-4xl font-black">
+          Admin Control Center
+        </h2>
+
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5 mt-8">
+          {[
+            "User Management",
+            "Listing Approval",
+            "Payment Tracking",
+            "Fraud Detection",
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="bg-white/10 backdrop-blur rounded-2xl p-5 border border-white/10"
+            >
+              <h3 className="font-bold text-lg">{item}</h3>
+            </div>
           ))}
         </div>
       </section>
