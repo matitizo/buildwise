@@ -1,242 +1,121 @@
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
+
+const marketplaces = [
+  {
+    title: "Land Marketplace",
+    text: "Gura cyangwa ugurishe ibibanza bifite verified sellers.",
+    icon: "📍",
+    link: "/lands",
+  },
+  {
+    title: "House Marketplace",
+    text: "Residential houses na commercial houses.",
+    icon: "🏘️",
+    link: "/houses",
+  },
+  {
+    title: "Rentals",
+    text: "Residential, commercial, apartments, maison de passage na lodge.",
+    icon: "🏢",
+    link: "/rentals",
+  },
+];
+
+const construction = [
+  "Projects",
+  "Budget Estimator",
+  "Building Permit",
+  "Escrow",
+];
 
 export default function Home() {
-  const navigate = useNavigate();
-
   return (
-    <div style={page}>
-      <nav style={nav}>
-        <div style={brand}>
-          <div style={logo}>🏗️</div>
-          <h2 style={brandText}>BuildWise</h2>
-        </div>
-
-        <div style={links}>
-          <button onClick={() => navigate("/login")} style={ghostBtn}>
-            Login
-          </button>
-          <button onClick={() => navigate("/register")} style={primarySmall}>
-            Register
-          </button>
-        </div>
-      </nav>
-
-      <section style={hero}>
-        <div>
-          <span style={badge}>Smart Construction Platform</span>
-
-          <h1 style={title}>
-            Uburyo bworoshye bwo kubaka no gucunga imishinga y’ubwubatsi
-          </h1>
-
-          <p style={subtitle}>
-            BuildWise igufasha gucunga projects, kugura ibikoresho,
-            gushaka ibibanza, kubara igiciro no gukurikirana ubwishyu bwa escrow.
+    <div className="space-y-10">
+      <section className="rounded-[2rem] overflow-hidden bg-slate-950 text-white grid lg:grid-cols-2">
+        <div className="p-8 md:p-14">
+          <p className="text-rose-400 font-bold mb-4">
+            BuildWise African Construction Ecosystem
           </p>
 
-          <div style={buttons}>
-            <button onClick={() => navigate("/register")} style={primaryBtn}>
-              Tangira Umushinga
-            </button>
+          <h1 className="text-4xl md:text-6xl font-black leading-tight">
+            Gura, ugurishe, ukodeshe kandi wubake mu buryo bwizewe.
+          </h1>
 
-            <button onClick={() => navigate("/login")} style={secondaryBtn}>
-              Injira muri System
-            </button>
+          <p className="text-slate-300 text-lg mt-6">
+            Platform ihuza land marketplace, house marketplace, rentals,
+            construction system, materials market na admin control center.
+          </p>
+
+          <div className="flex flex-wrap gap-4 mt-8">
+            <Link to="/lands" className="btn-primary">
+              Explore Marketplace
+            </Link>
+
+            <Link to="/construction" className="btn-secondary text-slate-950">
+              Get Building Permit
+            </Link>
           </div>
         </div>
 
-        <div style={heroCard}>
-          <div style={bigIcon}>🏢</div>
-          <h3>BuildWise Construction OS</h3>
-          <p>Projects • Materials • Land • Escrow • Reports</p>
+        <img
+          src="https://images.unsplash.com/photo-1504307651254-35680f356dfd"
+          alt="construction"
+          className="w-full h-full min-h-[420px] object-cover opacity-80"
+        />
+      </section>
+
+      <section>
+        <h2 className="text-3xl font-black text-slate-950 mb-6">
+          Marketplaces
+        </h2>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {marketplaces.map((item) => (
+            <Link key={item.title} to={item.link} className="card p-6 hover:shadow-xl transition">
+              <div className="text-5xl mb-5">{item.icon}</div>
+              <h3 className="text-2xl font-black">{item.title}</h3>
+              <p className="text-slate-500 mt-3">{item.text}</p>
+              <p className="text-rose-500 font-bold mt-5">Open →</p>
+            </Link>
+          ))}
         </div>
       </section>
 
-      <section style={features}>
-        <Feature icon="🏗️" title="Gucunga Project" text="Kora no gukurikirana ibikorwa byose by’ubwubatsi." />
-        <Feature icon="🧮" title="Kubara Igiciro" text="Bara budget y’umushinga mbere yo gutangira." />
-        <Feature icon="📍" title="Isoko ry’Ibibanza" text="Shaka cyangwa utangaze ikibanza kiri ku isoko." />
-        <Feature icon="🛒" title="Ibikoresho" text="Gura cyangwa ucunge ibikoresho by’ubwubatsi." />
+      <section className="card p-8">
+        <p className="text-blue-500 font-bold mb-2">Construction Workflow</p>
+        <h2 className="text-3xl font-black mb-6">Construction System</h2>
+
+        <div className="grid md:grid-cols-4 gap-4">
+          {construction.map((item) => (
+            <Link
+              key={item}
+              to="/construction"
+              className="bg-slate-50 rounded-2xl p-5 font-bold hover:bg-rose-50 hover:text-rose-500 transition"
+            >
+              🏗️ {item}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="grid lg:grid-cols-2 gap-6">
+        <Link to="/materials" className="card p-8 hover:shadow-xl transition">
+          <p className="text-orange-500 font-bold mb-2">Materials Market</p>
+          <h2 className="text-3xl font-black">Ibikoresho by’ubwubatsi</h2>
+          <p className="text-slate-500 mt-3">
+            Supplier signup, upload products, search materials, order and delivery tracking.
+          </p>
+        </Link>
+
+        <Link to="/admin" className="card p-8 bg-slate-950 text-white hover:shadow-xl transition">
+          <p className="text-rose-400 font-bold mb-2">Admin Control Center</p>
+          <h2 className="text-3xl font-black">Manage BuildWise</h2>
+          <p className="text-slate-300 mt-3">
+            User management, listing approval, payment tracking, fraud detection and analytics.
+          </p>
+        </Link>
       </section>
     </div>
   );
 }
-
-function Feature({ icon, title, text }) {
-  return (
-    <div style={featureCard}>
-      <div style={featureIcon}>{icon}</div>
-      <h3 style={featureTitle}>{title}</h3>
-      <p style={featureText}>{text}</p>
-    </div>
-  );
-}
-
-const page = {
-  minHeight: "100vh",
-  background: "#eef4f8",
-  padding: "28px",
-  fontFamily: "Inter, Arial, sans-serif",
-};
-
-const nav = {
-  background: "white",
-  borderRadius: "24px",
-  padding: "18px 24px",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: "28px",
-  boxShadow: "0 10px 30px rgba(15,23,42,0.06)",
-};
-
-const brand = {
-  display: "flex",
-  alignItems: "center",
-  gap: "12px",
-};
-
-const logo = {
-  width: "54px",
-  height: "54px",
-  borderRadius: "16px",
-  background: "#0057ff",
-  display: "grid",
-  placeItems: "center",
-  fontSize: "28px",
-};
-
-const brandText = {
-  margin: 0,
-  color: "#0f172a",
-  fontSize: "28px",
-  fontWeight: "900",
-};
-
-const links = {
-  display: "flex",
-  gap: "12px",
-};
-
-const ghostBtn = {
-  border: "1px solid #cbd5e1",
-  background: "white",
-  padding: "12px 18px",
-  borderRadius: "12px",
-  fontWeight: "900",
-  cursor: "pointer",
-};
-
-const primarySmall = {
-  border: "none",
-  background: "#0057ff",
-  color: "white",
-  padding: "12px 18px",
-  borderRadius: "12px",
-  fontWeight: "900",
-  cursor: "pointer",
-};
-
-const hero = {
-  background: "white",
-  borderRadius: "32px",
-  padding: "60px",
-  display: "grid",
-  gridTemplateColumns: "1.2fr 0.8fr",
-  gap: "40px",
-  alignItems: "center",
-  boxShadow: "0 15px 40px rgba(15,23,42,0.08)",
-};
-
-const badge = {
-  background: "#dbeafe",
-  color: "#0057ff",
-  padding: "10px 14px",
-  borderRadius: "999px",
-  fontWeight: "900",
-};
-
-const title = {
-  fontSize: "56px",
-  lineHeight: "1.05",
-  color: "#0f172a",
-  margin: "24px 0",
-  fontWeight: "900",
-};
-
-const subtitle = {
-  fontSize: "19px",
-  color: "#64748b",
-  lineHeight: "1.7",
-  maxWidth: "720px",
-};
-
-const buttons = {
-  display: "flex",
-  gap: "14px",
-  marginTop: "30px",
-};
-
-const primaryBtn = {
-  background: "#0057ff",
-  color: "white",
-  border: "none",
-  padding: "16px 24px",
-  borderRadius: "14px",
-  fontWeight: "900",
-  cursor: "pointer",
-};
-
-const secondaryBtn = {
-  background: "#f8fafc",
-  color: "#0f172a",
-  border: "1px solid #cbd5e1",
-  padding: "16px 24px",
-  borderRadius: "14px",
-  fontWeight: "900",
-  cursor: "pointer",
-};
-
-const heroCard = {
-  background: "linear-gradient(135deg,#0057ff,#00a6ff)",
-  color: "white",
-  borderRadius: "28px",
-  minHeight: "390px",
-  display: "grid",
-  placeItems: "center",
-  textAlign: "center",
-  padding: "30px",
-};
-
-const bigIcon = {
-  fontSize: "120px",
-};
-
-const features = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
-  gap: "20px",
-  marginTop: "28px",
-};
-
-const featureCard = {
-  background: "white",
-  padding: "26px",
-  borderRadius: "24px",
-  boxShadow: "0 10px 30px rgba(15,23,42,0.06)",
-};
-
-const featureIcon = {
-  fontSize: "42px",
-};
-
-const featureTitle = {
-  color: "#0f172a",
-  fontSize: "22px",
-  marginBottom: "8px",
-};
-
-const featureText = {
-  color: "#64748b",
-  lineHeight: "1.6",
-};
