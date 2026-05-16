@@ -1,5 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
+const heroSlides = [
+  {
+    title: "Uburyo bworoshye bwo kubaka no gucunga imishinga.",
+    text: "Tangiza umushinga, bara budget, saba permit, wishyure na escrow.",
+    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd",
+    primary: "Tangira Umushinga",
+    secondary: "Shaka Ikibanza",
+    primaryLink: "/construction",
+    secondaryLink: "/lands",
+  },
+  {
+    title: "Shaka ikibanza, inzu cyangwa rental mu buryo bwizewe.",
+    text: "Land marketplace, house marketplace, rentals na verified sellers.",
+    image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
+    primary: "Explore Marketplace",
+    secondary: "Reba Rentals",
+    primaryLink: "/lands",
+    secondaryLink: "/rentals",
+  },
+  {
+    title: "Gura ibikoresho by’ubwubatsi ku bacuruzi bizewe.",
+    text: "Cement, ibyuma, amatafari, umucanga, PVC, paint n’ibindi.",
+    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122",
+    primary: "Open Materials",
+    secondary: "Construction",
+    primaryLink: "/materials",
+    secondaryLink: "/construction",
+  },
+];
 
 const categories = [
   { title: "Land Marketplace", icon: "📍", link: "/lands" },
@@ -40,79 +70,77 @@ const featured = [
   },
 ];
 
-const modules = [
-  {
-    number: "1",
-    title: "i-Mjengo",
-    text: "Tangira umushinga, bara budget, shaka ibibanza, gura ibikoresho kandi wishyure mu buryo bwizewe.",
-    link: "/construction",
-    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd",
-  },
-  {
-    number: "2",
-    title: "Isoko ry’Ibibanza",
-    text: "Shaka ibibanza ukoresheje location, ingano, igiciro na status.",
-    link: "/lands",
-    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef",
-  },
-  {
-    number: "3",
-    title: "Kubara Igiciro",
-    text: "Bara igiciro cy’inzu, ibikoresho, imirimo n’izindi ndyoheshabikorwa.",
-    link: "/construction",
-    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e",
-  },
-];
-
 export default function Home() {
+  const [slide, setSlide] = useState(0);
+  const current = heroSlides[slide];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="space-y-14">
-      {/* HERO */}
-      <section className="relative overflow-hidden rounded-[2rem] bg-slate-950 text-white">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1504307651254-35680f356dfd"
-            alt="BuildWise hero"
-            className="w-full h-full object-cover opacity-35"
-          />
-        </div>
+      {/* HERO SLIDER */}
+      <section className="relative overflow-hidden rounded-[2rem] bg-slate-950 text-white min-h-[560px]">
+        <img
+          src={current.image}
+          alt={current.title}
+          className="absolute inset-0 w-full h-full object-cover opacity-35 transition-all duration-700"
+        />
 
-        <div className="relative z-10 p-8 md:p-16 max-w-4xl">
+        <div className="absolute inset-0 gradient-dark opacity-80" />
+
+        <div className="relative z-10 p-8 md:p-16 max-w-5xl">
           <p className="text-blue-300 font-black mb-4">
             BuildWise African Construction Ecosystem
           </p>
 
           <h1 className="text-4xl md:text-7xl font-black leading-tight">
-            Uburyo bworoshye bwo kubaka, kugura no gucunga imishinga.
+            {current.title}
           </h1>
 
-          <p className="text-slate-200 text-lg md:text-xl mt-6 leading-relaxed">
-            Shaka ikibanza, gura inzu, kodesha, bara budget, saba building
-            permit, gura ibikoresho kandi wishyure mu buryo bwizewe.
+          <p className="text-slate-200 text-lg md:text-xl mt-6 leading-relaxed max-w-3xl">
+            {current.text}
           </p>
 
           <div className="flex flex-wrap gap-4 mt-8">
-            <Link to="/construction" className="btn-primary">
-              Tangira Umushinga
+            <Link to={current.primaryLink} className="btn-primary">
+              {current.primary}
             </Link>
 
-            <Link to="/lands" className="btn-secondary text-slate-950">
-              Shaka Ikibanza
+            <Link to={current.secondaryLink} className="btn-secondary text-slate-950">
+              {current.secondary}
             </Link>
+          </div>
+
+          <div className="flex gap-3 mt-10">
+            {heroSlides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setSlide(index)}
+                className={`h-3 rounded-full transition-all ${
+                  slide === index ? "w-12 bg-rose-500" : "w-3 bg-white/50"
+                }`}
+              />
+            ))}
           </div>
         </div>
       </section>
 
       {/* MODERN CATEGORIES */}
       <section>
-        <h2 className="text-3xl font-black mb-6">Modern Categories</h2>
+        <h2 className="section-title mb-6">Modern Categories</h2>
 
         <div className="grid md:grid-cols-5 gap-4">
           {categories.map((item) => (
             <Link
               key={item.title}
               to={item.link}
-              className="card p-6 text-center hover:shadow-xl hover:-translate-y-1 transition"
+              className="card p-6 text-center hover-card"
             >
               <div className="text-5xl mb-4">{item.icon}</div>
               <h3 className="font-black">{item.title}</h3>
@@ -121,52 +149,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* MAIN MODULES */}
-      <section>
-        <h2 className="text-3xl font-black mb-6">BuildWise Modules</h2>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {modules.map((item) => (
-            <Link
-              key={item.number}
-              to={item.link}
-              className="card overflow-hidden hover:shadow-2xl transition group"
-            >
-              <div className="p-5 flex items-center gap-3">
-                <span className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black">
-                  {item.number}
-                </span>
-
-                <h3 className="text-xl font-black uppercase">
-                  {item.title}
-                </h3>
-              </div>
-
-              <div className="relative h-64 overflow-hidden">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-
-                <div className="absolute bottom-5 left-5 right-5 text-white">
-                  <h3 className="text-2xl font-black">{item.title}</h3>
-                </div>
-              </div>
-
-              <div className="p-5">
-                <p className="text-slate-600">{item.text}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
       {/* STATISTICS */}
       <section className="card p-8">
-        <h2 className="text-3xl font-black mb-6">Imibare ya BuildWise</h2>
+        <h2 className="section-title mb-6">Imibare ya BuildWise</h2>
 
         <div className="grid md:grid-cols-4 gap-4">
           {stats.map(([value, label]) => (
@@ -183,7 +168,7 @@ export default function Home() {
         <div className="flex justify-between items-end mb-6">
           <div>
             <p className="text-rose-500 font-bold">Featured Listings</p>
-            <h2 className="text-3xl font-black">Ibigezweho ku isoko</h2>
+            <h2 className="section-title">Ibigezweho ku isoko</h2>
           </div>
 
           <Link to="/lands" className="text-rose-500 font-bold">
@@ -193,10 +178,7 @@ export default function Home() {
 
         <div className="grid md:grid-cols-3 gap-6">
           {featured.map((item) => (
-            <div
-              key={item.title}
-              className="card overflow-hidden hover:shadow-2xl transition group"
-            >
+            <div key={item.title} className="card overflow-hidden hover-card group">
               <div className="relative h-72 overflow-hidden">
                 <img
                   src={item.image}
@@ -223,45 +205,6 @@ export default function Home() {
               </div>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* CONSTRUCTION + MATERIALS */}
-      <section className="grid lg:grid-cols-2 gap-6">
-        <div className="card p-8">
-          <p className="text-blue-500 font-bold mb-2">
-            Construction System
-          </p>
-
-          <h2 className="text-3xl font-black">
-            Projects, Estimator, Permit & Escrow
-          </h2>
-
-          <p className="text-slate-500 mt-4">
-            Tangiza project, bara budget, saba building permit, kandi ukoreshe
-            escrow kugira ngo wishyure mu mutekano.
-          </p>
-
-          <Link to="/construction" className="btn-primary inline-block mt-6">
-            Open Construction
-          </Link>
-        </div>
-
-        <div className="card p-8">
-          <p className="text-orange-500 font-bold mb-2">Materials Market</p>
-
-          <h2 className="text-3xl font-black">
-            Ibikoresho by’ubwubatsi
-          </h2>
-
-          <p className="text-slate-500 mt-4">
-            Cement, ibyuma, amatafari, umucanga, PVC, paint n’ibindi
-            bikoresho biva ku bacuruzi verified.
-          </p>
-
-          <Link to="/materials" className="btn-primary inline-block mt-6">
-            Open Materials
-          </Link>
         </div>
       </section>
 
