@@ -5,7 +5,6 @@ import {
   Building2,
   ShoppingCart,
   ShieldCheck,
-  Calculator,
   MoreHorizontal,
   Globe,
   Menu,
@@ -41,15 +40,9 @@ const navItems = [
 
   {
     label: "Services",
-    path: "/escrow",
+    path: "/services",
     icon: ShieldCheck,
     badge: "NEW",
-  },
-
-  {
-    label: "Estimator",
-    path: "/estimator",
-    icon: Calculator,
   },
 
   {
@@ -72,7 +65,7 @@ export default function Navbar() {
       <div className="h-28 px-6 flex items-center justify-between gap-6">
         {/* LOGO */}
         <Link to="/" className="flex items-center gap-3 min-w-[260px]">
-          <div className="w-12 h-12 rounded-2xl bg-pink-600 text-white flex items-center justify-center font-black text-2xl">
+          <div className="w-12 h-12 rounded-2xl bg-pink-600 text-white flex items-center justify-center font-black text-2xl shadow">
             B
           </div>
 
@@ -141,7 +134,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* MOBILE MENU */}
+        {/* MOBILE MENU BUTTON */}
         <button className="lg:hidden w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
           <Menu size={26} />
         </button>
