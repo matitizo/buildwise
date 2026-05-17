@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Home,
-  MapPin,
   Building2,
   ShoppingCart,
   ShieldCheck,
@@ -20,16 +19,10 @@ const navItems = [
   },
 
   {
-    label: "Lands",
-    path: "/lands",
-    icon: MapPin,
-    badge: "NEW",
-  },
-
-  {
-    label: "Rentals",
-    path: "/projects",
+    label: "Lands & House Marketplace",
+    path: "/marketplace",
     icon: Building2,
+    badge: "NEW",
   },
 
   {
@@ -101,7 +94,9 @@ export default function Navbar() {
 
                 <Icon size={24} />
 
-                <span>{item.label}</span>
+                <span className="text-center leading-5">
+                  {item.label}
+                </span>
               </NavLink>
             );
           })}
@@ -110,7 +105,7 @@ export default function Navbar() {
         {/* RIGHT SIDE */}
         <div className="hidden md:flex items-center gap-3">
           <Link
-            to="/lands"
+            to="/marketplace"
             className="font-black text-[#050816] hover:text-pink-600 transition"
           >
             Start
@@ -134,7 +129,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* MOBILE MENU BUTTON */}
+        {/* MOBILE BUTTON */}
         <button className="lg:hidden w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
           <Menu size={26} />
         </button>
