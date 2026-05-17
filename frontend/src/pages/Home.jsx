@@ -14,60 +14,90 @@ import {
   CalendarDays,
   Play,
   MoreHorizontal,
+  Users,
+  CheckCircle,
+  Hammer,
+  ArrowRight,
 } from "lucide-react";
 
 const navItems = [
-  { icon: HomeIcon, label: "Homes" },
-  { icon: MapPin, label: "Land", badge: "NEW" },
-  { icon: Building2, label: "Rentals" },
-  { icon: ShoppingCart, label: "Materials" },
-  { icon: ShieldCheck, label: "Services", badge: "NEW" },
-  { icon: Calculator, label: "Estimator" },
-  { icon: MoreHorizontal, label: "More" },
+  { icon: HomeIcon, label: "Ahabanza" },
+  { icon: MapPin, label: "Ibibanza", badge: "BISHYA" },
+  { icon: Building2, label: "Ubukode" },
+  { icon: ShoppingCart, label: "Ibikoresho" },
+  { icon: ShieldCheck, label: "Serivisi", badge: "BISHYA" },
+  { icon: Calculator, label: "Kubara Budget" },
+  { icon: MoreHorizontal, label: "Ibindi" },
 ];
 
 const services = [
-  { title: "Land Marketplace", text: "Find verified land", icon: MapPin },
-  { title: "Rentals", text: "Houses & apartments", icon: HomeIcon },
-  { title: "Materials Shop", text: "Construction materials", icon: ShoppingCart },
-  { title: "Cost Estimator", text: "Estimate your budget", icon: Calculator },
-  { title: "Escrow", text: "Secure payments", icon: ShieldCheck },
-  { title: "Permits", text: "Building permits", icon: FileText },
+  { title: "Isoko ry’Ibibanza", text: "Shaka ibibanza byemejwe", icon: MapPin },
+  { title: "Inzu z’Ubukode", text: "Inzu na apartments", icon: HomeIcon },
+  { title: "Ibikoresho", text: "Ibikoresho by’ubwubatsi", icon: ShoppingCart },
+  { title: "Kubara Budget", text: "Menya ikiguzi mbere", icon: Calculator },
+  { title: "Escrow", text: "Kwishyura mu mutekano", icon: ShieldCheck },
+  { title: "Ibyangombwa", text: "Ibyangombwa byo kubaka", icon: FileText },
 ];
 
 const properties = [
   {
-    title: "Land in Kanombe",
+    title: "Ikibanza i Kanombe",
     location: "Kigali, Kicukiro",
     price: "35,000,000 RWF",
-    type: "LAND",
+    type: "IKIBANZA",
     image:
       "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=1200&auto=format&fit=crop",
   },
   {
-    title: "Modern House in Gacuriro",
+    title: "Inzu igezweho i Gacuriro",
     location: "Kigali, Gasabo",
     price: "120,000,000 RWF",
-    type: "HOUSE",
+    type: "INZU",
     image:
       "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop",
   },
   {
-    title: "Apartment in Rebero",
+    title: "Apartment i Rebero",
     location: "Kigali, Kicukiro",
-    price: "450,000 RWF / month",
+    price: "450,000 RWF / ukwezi",
     type: "APARTMENT",
     image:
       "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=1200&auto=format&fit=crop",
   },
   {
-    title: "Land in Nyamata",
+    title: "Ikibanza i Nyamata",
     location: "Bugesera, Nyamata",
     price: "18,000,000 RWF",
-    type: "LAND",
+    type: "IKIBANZA",
     image:
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop",
   },
+];
+
+const steps = [
+  {
+    title: "Hitamo icyo ushaka",
+    text: "Ikibanza, inzu, ibikoresho, budget cyangwa escrow.",
+  },
+  {
+    title: "Shakisha mu buryo bworoshye",
+    text: "Koresha location, budget n’ubwoko bw’umutungo.",
+  },
+  {
+    title: "Vugana n’uwemejwe",
+    text: "Abagurisha, brokers na suppliers bemejwe.",
+  },
+  {
+    title: "Kora transaction mu mutekano",
+    text: "Koresha escrow kugira ngo amafaranga arindwe.",
+  },
+];
+
+const stats = [
+  { number: "1,200+", label: "Abakoresha" },
+  { number: "350+", label: "Ibibanza" },
+  { number: "90+", label: "Suppliers" },
+  { number: "45+", label: "Imishinga" },
 ];
 
 export default function Home() {
@@ -83,25 +113,25 @@ export default function Home() {
 
             <div>
               <h1 className="text-2xl font-black leading-none">BuildWise</h1>
-              <p className="text-xs text-slate-500">Construction Ecosystem</p>
+              <p className="text-xs text-slate-500">
+                Urubuga rw’Ubwubatsi n’Umutungo
+              </p>
             </div>
           </div>
 
-          <nav className="hidden lg:flex items-center gap-12">
+          <nav className="hidden lg:flex items-center gap-10">
             {navItems.map((item) => {
               const Icon = item.icon;
-
               return (
                 <button
                   key={item.label}
-                  className="relative flex flex-col items-center gap-1 text-sm font-semibold"
+                  className="relative flex flex-col items-center gap-1 text-sm font-semibold hover:text-pink-600 transition"
                 >
                   {item.badge && (
                     <span className="absolute -top-4 bg-green-500 text-white text-[10px] px-2 py-0.5 rounded-full">
                       {item.badge}
                     </span>
                   )}
-
                   <Icon size={22} />
                   <span>{item.label}</span>
                 </button>
@@ -111,7 +141,7 @@ export default function Home() {
 
           <div className="flex items-center gap-3">
             <button className="hidden md:block font-bold text-sm">
-              Become a seller
+              Tangira kugurisha
             </button>
 
             <button className="w-11 h-11 rounded-full bg-slate-100 flex items-center justify-center">
@@ -132,29 +162,29 @@ export default function Home() {
       <main className="max-w-[1500px] mx-auto px-6 pt-10">
         {/* HERO */}
         <section className="rounded-[32px] overflow-hidden shadow-sm">
-          <div className="grid lg:grid-cols-2 min-h-[460px]">
-            <div className="bg-[#050816] text-white p-10 md:p-14 flex flex-col justify-center">
-              <p className="text-pink-500 font-bold mb-5">
+          <div className="grid lg:grid-cols-2 min-h-[500px]">
+            <div className="bg-[#050816] text-white p-8 md:p-12 flex flex-col justify-center">
+              <p className="text-pink-500 font-bold mb-4">
                 BuildWise Construction System
               </p>
 
-              <h2 className="text-4xl md:text-5xl font-black leading-tight">
-                Build, manage and secure construction projects.
+              <h2 className="text-4xl md:text-[52px] font-black leading-[1.05]">
+                Kubaka, kugura no gucunga umushinga mu buryo bwizewe.
               </h2>
 
-              <p className="text-slate-300 mt-6 text-lg leading-8 max-w-xl">
-                The all-in-one platform to find land, materials, professionals
-                and manage your construction projects with confidence.
+              <p className="text-slate-300 mt-5 text-lg leading-8 max-w-xl">
+                BuildWise igufasha gushaka ibibanza, ibikoresho, abatekinisiye,
+                kubara budget no kwishyura mu mutekano ukoresheje escrow.
               </p>
 
-              <div className="flex flex-wrap gap-4 mt-8">
+              <div className="flex flex-wrap gap-4 mt-7">
                 <button className="px-7 py-4 rounded-2xl bg-pink-600 hover:bg-pink-700 font-bold">
-                  Start your project
+                  Tangira umushinga
                 </button>
 
                 <button className="px-7 py-4 rounded-2xl bg-white text-slate-950 font-bold flex items-center gap-2">
                   <Play size={18} />
-                  Watch how it works
+                  Reba uko bikora
                 </button>
               </div>
             </div>
@@ -166,7 +196,7 @@ export default function Home() {
                 className="absolute inset-0 w-full h-full object-cover"
               />
 
-              <div className="absolute bottom-10 right-10 bg-white rounded-2xl px-5 py-4 shadow-xl flex items-center gap-4">
+              <div className="absolute bottom-8 right-8 bg-white rounded-2xl px-5 py-4 shadow-xl flex items-center gap-4">
                 <div className="flex -space-x-3">
                   <div className="w-10 h-10 rounded-full bg-slate-300 border-2 border-white" />
                   <div className="w-10 h-10 rounded-full bg-slate-400 border-2 border-white" />
@@ -175,7 +205,7 @@ export default function Home() {
 
                 <div>
                   <p className="font-black text-emerald-600">1,200+</p>
-                  <p className="text-sm text-slate-500">Happy users</p>
+                  <p className="text-sm text-slate-500">Abakoresha</p>
                 </div>
               </div>
             </div>
@@ -186,26 +216,26 @@ export default function Home() {
         <div className="hidden lg:grid max-w-[1280px] mx-auto -mt-6 relative z-20 bg-white rounded-2xl shadow-xl border border-slate-200 p-3 grid-cols-[1fr_1fr_1.4fr_1fr_auto] gap-2">
           <SearchBox
             icon={<MapPin />}
-            title="Where"
-            placeholder="Search location"
+            title="Aho ushaka"
+            placeholder="Andika akarere cyangwa umujyi"
           />
 
           <SearchBox
             icon={<CalendarDays />}
-            title="When"
-            placeholder="Any time"
+            title="Igihe"
+            placeholder="Igihe icyo ari cyo cyose"
           />
 
           <SearchBox
             icon={<HomeIcon />}
-            title="What are you looking for?"
-            placeholder="Land, house, materials..."
+            title="Urashaka iki?"
+            placeholder="Ikibanza, inzu, ibikoresho..."
           />
 
           <SearchBox
             icon={<Calculator />}
             title="Budget"
-            placeholder="Any budget"
+            placeholder="Ingengo y’imari"
             noBorder
           />
 
@@ -215,10 +245,9 @@ export default function Home() {
         </div>
 
         {/* SERVICES */}
-        <section className="pt-14 pb-8 grid sm:grid-cols-2 lg:grid-cols-6 gap-5">
+        <section className="pt-16 pb-14 grid sm:grid-cols-2 lg:grid-cols-6 gap-5">
           {services.map((item) => {
             const Icon = item.icon;
-
             return (
               <div
                 key={item.title}
@@ -236,16 +265,16 @@ export default function Home() {
         </section>
 
         {/* FEATURED */}
-        <section className="py-10">
+        <section className="pt-6 pb-16">
           <div className="flex justify-between items-end mb-8">
             <div>
-              <h2 className="text-3xl font-black">Featured Properties</h2>
+              <h2 className="text-3xl font-black">Ibiri ku isoko</h2>
               <p className="text-slate-500 mt-1">
-                Handpicked land, houses and apartments.
+                Ibibanza, inzu na apartments byatoranyijwe.
               </p>
             </div>
 
-            <button className="text-pink-600 font-bold">View all →</button>
+            <button className="text-pink-600 font-bold">Reba byose →</button>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-7">
@@ -281,7 +310,145 @@ export default function Home() {
             ))}
           </div>
         </section>
+
+        {/* HOW IT WORKS */}
+        <section className="py-16">
+          <div className="mb-10">
+            <h2 className="text-3xl font-black">Uko BuildWise ikora</h2>
+            <p className="text-slate-500 mt-2">
+              Inzira yoroshye kuva ku gushaka ikibanza kugeza ku kwishyura mu
+              mutekano.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-6">
+            {steps.map((step, index) => (
+              <div
+                key={step.title}
+                className="bg-white rounded-3xl border border-slate-200 p-6 hover:shadow-xl transition"
+              >
+                <div className="w-12 h-12 rounded-full bg-pink-600 text-white flex items-center justify-center font-black mb-5">
+                  {index + 1}
+                </div>
+                <h3 className="font-black text-xl">{step.title}</h3>
+                <p className="text-slate-500 mt-3">{step.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* STATS */}
+        <section className="py-10">
+          <div className="bg-slate-950 text-white rounded-[32px] p-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            {stats.map((stat) => (
+              <div key={stat.label}>
+                <h3 className="text-4xl font-black text-pink-500">
+                  {stat.number}
+                </h3>
+                <p className="text-slate-300 mt-2">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* WHY CHOOSE */}
+        <section className="py-16 grid lg:grid-cols-2 gap-10 items-center">
+          <div className="bg-white rounded-[32px] border border-slate-200 p-8 md:p-10">
+            <p className="text-pink-600 font-bold mb-3">
+              Impamvu wahitamo BuildWise
+            </p>
+            <h2 className="text-3xl md:text-4xl font-black">
+              Twubaka system ifasha abakiriya n’abubatsi gukorana icyizere.
+            </h2>
+
+            <div className="mt-8 space-y-4">
+              {[
+                "Abagurisha n’aba brokers bemejwe",
+                "Kwishyura binyuze muri escrow",
+                "Kubara budget mbere yo kubaka",
+                "Guhuza abakiriya na suppliers bizewe",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="flex items-center gap-3 bg-slate-50 rounded-2xl p-4"
+                >
+                  <CheckCircle className="text-emerald-600" size={22} />
+                  <span className="font-bold">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-[32px] overflow-hidden h-[430px]">
+            <img
+              src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1400&auto=format&fit=crop"
+              alt="construction workers"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="py-16">
+          <div className="bg-gradient-to-r from-slate-950 to-pink-700 rounded-[32px] p-10 md:p-16 text-white text-center">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-white/10 flex items-center justify-center mb-6">
+              <Hammer size={30} />
+            </div>
+
+            <h2 className="text-3xl md:text-5xl font-black">
+              Tangira umushinga wawe uyu munsi
+            </h2>
+
+            <p className="text-slate-200 max-w-2xl mx-auto mt-4">
+              BuildWise igufasha kuva ku gushaka ikibanza, kugura ibikoresho,
+              kubara budget kugeza ku kwishyura mu buryo bwizewe.
+            </p>
+
+            <button className="mt-8 px-8 py-4 rounded-2xl bg-white text-slate-950 font-black inline-flex items-center gap-2">
+              Tangira nonaha <ArrowRight size={20} />
+            </button>
+          </div>
+        </section>
       </main>
+
+      {/* FOOTER */}
+      <footer className="bg-white border-t border-slate-200 mt-10">
+        <div className="max-w-[1500px] mx-auto px-6 py-12 grid md:grid-cols-4 gap-8">
+          <div>
+            <h3 className="text-2xl font-black">BuildWise</h3>
+            <p className="text-slate-500 mt-3">
+              Platform ifasha mu bwubatsi, kugura ibibanza, ibikoresho,
+              kwishyura no gucunga imishinga.
+            </p>
+          </div>
+
+          <div>
+            <h4 className="font-black mb-3">Serivisi</h4>
+            <p className="text-slate-500">Ibibanza</p>
+            <p className="text-slate-500">Ibikoresho</p>
+            <p className="text-slate-500">Escrow</p>
+            <p className="text-slate-500">Kubara Budget</p>
+          </div>
+
+          <div>
+            <h4 className="font-black mb-3">Company</h4>
+            <p className="text-slate-500">Ibitwerekeye</p>
+            <p className="text-slate-500">Twandikire</p>
+            <p className="text-slate-500">Ubufasha</p>
+          </div>
+
+          <div>
+            <h4 className="font-black mb-3">Twandikire</h4>
+            <p className="text-slate-500">Kigali, Rwanda</p>
+            <p className="text-slate-500">info@buildwise.rw</p>
+            <p className="text-slate-500">+250 7XX XXX XXX</p>
+          </div>
+        </div>
+
+        <div className="max-w-[1500px] mx-auto px-6 py-5 border-t border-slate-200 text-sm text-slate-500">
+          © 2026 BuildWise. Uburenganzira bwose burabitswe.
+        </div>
+      </footer>
     </div>
   );
 }
@@ -297,7 +464,6 @@ function SearchBox({ icon, title, placeholder, noBorder }) {
 
       <div>
         <p className="font-bold text-sm">{title}</p>
-
         <input
           className="outline-none text-slate-500 w-full"
           placeholder={placeholder}
