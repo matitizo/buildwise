@@ -71,38 +71,6 @@ const defaultProperties = [
     image:
       "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
   },
-
-  {
-    id: "4",
-    title: "Inyubako y’ubucuruzi",
-    location: "Kigali, Nyarugenge",
-    price: 280000000,
-    displayPrice: "280,000,000 RWF",
-    deal: "Kigurishwa",
-    type: "Inyubako y’ubucuruzi",
-    bedrooms: "N/A",
-    size: "900 sqm",
-    agent: "Business Properties Ltd",
-    verified: true,
-    image:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
-  },
-
-  {
-    id: "5",
-    title: "Umurima i Bugesera",
-    location: "Bugesera, Nyamata",
-    price: 18000000,
-    displayPrice: "18,000,000 RWF",
-    deal: "Kigurishwa",
-    type: "Umurima",
-    bedrooms: "N/A",
-    size: "2 hectares",
-    agent: "AgriLand Brokers",
-    verified: false,
-    image:
-      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80",
-  },
 ];
 
 const propertyTypes = [
@@ -113,17 +81,6 @@ const propertyTypes = [
   "Inyubako y’ubucuruzi",
   "Umurima",
   "Ubukode",
-];
-
-const sellerSteps = [
-  "Iyandikishe nka Seller cyangwa Broker",
-  "Shyiraho indangamuntu na documents",
-  "Admin verification",
-  "Habwa verified seller badge",
-  "Shyiraho property listing",
-  "Hitamo Kigurishwa cyangwa Ikodeshwa",
-  "Publish listing",
-  "Kwakira buyer inquiries",
 ];
 
 const emptyForm = {
@@ -276,10 +233,65 @@ export default function Marketplace() {
 
   return (
     <div className="min-h-screen bg-[#f7f8fb] text-[#050816]">
+
+      {/* TOP HEADER */}
+
+      <section className="px-6 pt-6">
+        <div className="bg-white border border-slate-200 rounded-[24px] px-8 py-5 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-sm">
+
+          {/* LOGO */}
+
+          <div>
+            <h1 className="text-4xl font-black">
+              <span className="text-[#2563eb]">
+                property
+              </span>
+
+              <span className="text-red-500">
+                24
+              </span>
+            </h1>
+          </div>
+
+          {/* MENU */}
+
+          <div className="flex flex-wrap items-center gap-8 font-black text-lg text-[#050816]">
+
+            <button className="hover:text-pink-600 transition">
+              Buy
+            </button>
+
+            <button className="hover:text-pink-600 transition">
+              Rent
+            </button>
+
+            <button className="hover:text-pink-600 transition">
+              Sell
+            </button>
+
+          </div>
+
+          {/* ACTIONS */}
+
+          <div className="flex items-center gap-4">
+
+            <button className="border border-slate-300 px-6 py-3 rounded-2xl font-black hover:bg-slate-100 transition">
+              Publish Property
+            </button>
+
+            <button className="border border-red-500 text-red-500 px-6 py-3 rounded-2xl font-black hover:bg-red-50 transition">
+              Sign In
+            </button>
+
+          </div>
+        </div>
+      </section>
+
       {/* SEARCH SECTION */}
 
-      <section className="px-6 pt-10 relative z-10">
+      <section className="px-6 pt-6 relative z-10">
         <div className="bg-white rounded-[32px] shadow-xl border border-slate-200 p-5">
+
           <div className="flex flex-wrap gap-3 mb-5">
             {["Byose", "Kigurishwa", "Ikodeshwa"].map(
               (item) => (
@@ -299,6 +311,7 @@ export default function Marketplace() {
           </div>
 
           <div className="grid md:grid-cols-5 gap-4">
+
             <div className="md:col-span-2 bg-slate-50 rounded-2xl px-4 py-4 flex items-center gap-3">
               <MapPin className="text-pink-600" />
 
@@ -314,7 +327,9 @@ export default function Marketplace() {
 
             <select
               value={type}
-              onChange={(e) => setType(e.target.value)}
+              onChange={(e) =>
+                setType(e.target.value)
+              }
               className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
             >
               {propertyTypes.map((item) => (
@@ -340,42 +355,17 @@ export default function Marketplace() {
               <Search size={22} />
               Shakisha
             </button>
+
           </div>
-        </div>
-      </section>
-
-      {/* FILTERS */}
-
-      <section className="px-6 py-10">
-        <div className="flex items-center gap-3 mb-5">
-          <SlidersHorizontal className="text-pink-600" />
-
-          <h2 className="text-2xl font-black">
-            Filter Results
-          </h2>
-        </div>
-
-        <div className="flex flex-wrap gap-3">
-          {propertyTypes.map((item) => (
-            <button
-              key={item}
-              onClick={() => setType(item)}
-              className={`px-5 py-3 rounded-2xl font-black transition ${
-                type === item
-                  ? "bg-[#050816] text-white"
-                  : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-100"
-              }`}
-            >
-              {item}
-            </button>
-          ))}
         </div>
       </section>
 
       {/* PROPERTY LISTINGS */}
 
-      <section className="px-6 pb-14">
+      <section className="px-6 py-10">
+
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+
           <div>
             <h2 className="text-4xl font-black">
               Properties ziri ku isoko
@@ -398,7 +388,7 @@ export default function Marketplace() {
           </button>
         </div>
 
-        {/* ADD PROPERTY FORM */}
+        {/* ADD FORM */}
 
         {showSellerForm && (
           <form
@@ -410,6 +400,7 @@ export default function Marketplace() {
             </h3>
 
             <div className="grid md:grid-cols-3 gap-4">
+
               <input
                 required
                 placeholder="Title"
@@ -528,6 +519,7 @@ export default function Marketplace() {
                 }
                 className="bg-slate-50 rounded-2xl px-4 py-4 outline-none"
               />
+
             </div>
 
             <button className="mt-6 bg-[#050816] text-white px-8 py-4 rounded-2xl font-black">
@@ -539,12 +531,15 @@ export default function Marketplace() {
         {/* PROPERTY CARDS */}
 
         <div className="grid lg:grid-cols-3 gap-8">
+
           {filteredProperties.map((property) => (
             <div
               key={property.id}
               className="bg-white rounded-[32px] border border-slate-200 overflow-hidden hover:shadow-2xl transition duration-300"
             >
+
               <div className="relative h-72 overflow-hidden">
+
                 <img
                   src={property.image}
                   alt={property.title}
@@ -565,9 +560,11 @@ export default function Marketplace() {
                     Verified
                   </div>
                 )}
+
               </div>
 
               <div className="p-6">
+
                 <h3 className="text-2xl font-black leading-tight mb-3">
                   {property.title}
                 </h3>
@@ -582,6 +579,7 @@ export default function Marketplace() {
                 </h4>
 
                 <div className="grid grid-cols-2 gap-3 mb-5">
+
                   <div className="bg-slate-50 rounded-2xl p-3 flex items-center gap-2">
                     <BedDouble
                       size={18}
@@ -603,9 +601,11 @@ export default function Marketplace() {
                       {property.size}
                     </span>
                   </div>
+
                 </div>
 
                 <div className="border-t border-slate-100 pt-5 flex items-center justify-between">
+
                   <div>
                     <p className="text-sm text-slate-500">
                       Seller / Agent
@@ -617,6 +617,7 @@ export default function Marketplace() {
                   </div>
 
                   <div className="flex gap-2">
+
                     <button className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
                       <Heart size={18} />
                     </button>
@@ -633,10 +634,12 @@ export default function Marketplace() {
                     >
                       <Trash2 size={18} />
                     </button>
+
                   </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 mt-5">
+
                   <Link
                     to={`/property/${property.id}`}
                     className="bg-[#050816] text-white rounded-2xl py-3 font-black text-center"
@@ -651,152 +654,15 @@ export default function Marketplace() {
                   <button className="bg-pink-600 text-white rounded-2xl py-3 flex items-center justify-center">
                     <MessageCircle size={18} />
                   </button>
+
                 </div>
+
               </div>
             </div>
           ))}
+
         </div>
       </section>
-
-      {/* BUYER FLOW */}
-
-      <section className="px-6 pb-14">
-        <div className="bg-white rounded-[36px] border border-slate-200 p-8 md:p-12">
-          <p className="text-pink-600 font-black mb-4">
-            BUYER FLOW
-          </p>
-
-          <h2 className="text-4xl font-black mb-8">
-            Uko BuildWise ikora
-          </h2>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              "Shakisha Property",
-              "Reba Details",
-              "Vugana na Seller",
-              "Book Visit",
-              "Negotiate Price",
-              "Reserve Property",
-              "Escrow Payment",
-              "Contract / Transfer",
-            ].map((step, index) => (
-              <div
-                key={index}
-                className="bg-[#f7f8fb] rounded-3xl p-5 border border-slate-200"
-              >
-                <div className="w-11 h-11 rounded-full bg-pink-600 text-white flex items-center justify-center font-black mb-4">
-                  {index + 1}
-                </div>
-
-                <p className="font-black">{step}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SELLER SYSTEM */}
-
-      <section className="px-6 pb-16">
-        <div className="grid lg:grid-cols-2 gap-8">
-          <div className="bg-[#050816] text-white rounded-[36px] p-8 md:p-12">
-            <p className="text-pink-500 font-black mb-4">
-              SELLER / BROKER SYSTEM
-            </p>
-
-            <h2 className="text-4xl font-black leading-tight mb-6">
-              Iyandikishe kandi ushyire
-              property ku isoko.
-            </h2>
-
-            <p className="text-slate-300 leading-8 mb-8">
-              Sellers na brokers bashyiraho
-              indangamuntu na documents
-              mbere yo guhabwa verified badge.
-            </p>
-
-            <button
-              onClick={() =>
-                setShowSellerForm(true)
-              }
-              className="bg-pink-600 hover:bg-pink-700 text-white px-7 py-4 rounded-2xl font-black inline-flex items-center gap-2"
-            >
-              <PlusCircle size={20} />
-              Register as Seller
-            </button>
-          </div>
-
-          <div className="bg-white rounded-[36px] border border-slate-200 p-8 md:p-12">
-            <h3 className="text-3xl font-black mb-6">
-              Seller Steps
-            </h3>
-
-            <div className="space-y-4">
-              {sellerSteps.map((step, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-4 bg-[#f7f8fb] rounded-2xl p-4"
-                >
-                  <CheckCircle className="text-emerald-600" />
-
-                  <span className="font-bold">
-                    {step}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* PROPERTY TYPES */}
-
-      <section className="px-6 pb-20">
-        <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-5">
-          <TypeCard
-            icon={MapPin}
-            title="Ibibanza"
-          />
-
-          <TypeCard
-            icon={Home}
-            title="Amazu"
-          />
-
-          <TypeCard
-            icon={Building2}
-            title="Apartments"
-          />
-
-          <TypeCard
-            icon={Store}
-            title="Ubucuruzi"
-          />
-
-          <TypeCard
-            icon={Tractor}
-            title="Imirima"
-          />
-
-          <TypeCard
-            icon={FileCheck}
-            title="Documents"
-          />
-        </div>
-      </section>
-    </div>
-  );
-}
-
-function TypeCard({ icon: Icon, title }) {
-  return (
-    <div className="bg-white border border-slate-200 rounded-3xl p-6 text-center hover:shadow-xl transition">
-      <div className="w-14 h-14 mx-auto rounded-2xl bg-pink-50 text-pink-600 flex items-center justify-center mb-4">
-        <Icon size={28} />
-      </div>
-
-      <h3 className="font-black">{title}</h3>
     </div>
   );
 }
