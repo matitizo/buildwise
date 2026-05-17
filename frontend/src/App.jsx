@@ -17,12 +17,17 @@ export default function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
 
+        {/* ibi bituma /construction igaragaza Home Page nshya */}
+        <Route path="construction" element={<Home />} />
+
         <Route path="lands" element={<Lands />} />
         <Route path="houses" element={<Houses />} />
         <Route path="rentals" element={<Rentals />} />
-        <Route path="construction" element={<Construction />} />
         <Route path="materials" element={<Materials />} />
         <Route path="admin" element={<Admin />} />
+
+        {/* Construction module tuyishyire kuri iyi route nshya */}
+        <Route path="construction-module" element={<Construction />} />
       </Route>
     </Routes>
   );
