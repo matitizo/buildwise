@@ -14,7 +14,6 @@ import {
   CalendarDays,
   Play,
   MoreHorizontal,
-  Users,
   CheckCircle,
   Hammer,
   ArrowRight,
@@ -38,6 +37,8 @@ const services = [
   { title: "Escrow", text: "Kwishyura mu mutekano", icon: ShieldCheck },
   { title: "Ibyangombwa", text: "Ibyangombwa byo kubaka", icon: FileText },
 ];
+
+const partners = ["BK", "I&M", "MTN MOMO", "AIRTEL", "SP", "RHA"];
 
 const properties = [
   {
@@ -74,6 +75,24 @@ const properties = [
   },
 ];
 
+const testimonials = [
+  {
+    name: "Jean Claude",
+    role: "Umwubatsi",
+    text: "BuildWise yamfashije kubona ibikoresho ku giciro cyiza kandi byihuse.",
+  },
+  {
+    name: "Aline Uwase",
+    role: "Umukiriya",
+    text: "Nabonye ikibanza cyiza i Kigali kandi escrow yandinze ikibazo cy’ubwambuzi.",
+  },
+  {
+    name: "Eric Habimana",
+    role: "Real Estate Broker",
+    text: "Iyi system yorohereje abakiriya banjye gushaka ibibanza no kubona amakuru yose.",
+  },
+];
+
 const steps = [
   {
     title: "Hitamo icyo ushaka",
@@ -103,14 +122,12 @@ const stats = [
 export default function Home() {
   return (
     <div className="min-h-screen bg-[#f7f7f7] text-slate-950">
-      {/* HEADER */}
       <header className="bg-white border-b border-slate-200">
         <div className="max-w-[1500px] mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-2xl bg-pink-600 text-white flex items-center justify-center font-black text-xl">
               B
             </div>
-
             <div>
               <h1 className="text-2xl font-black leading-none">BuildWise</h1>
               <p className="text-xs text-slate-500">
@@ -143,15 +160,12 @@ export default function Home() {
             <button className="hidden md:block font-bold text-sm">
               Tangira kugurisha
             </button>
-
             <button className="w-11 h-11 rounded-full bg-slate-100 flex items-center justify-center">
               <Globe size={18} />
             </button>
-
             <button className="w-11 h-11 rounded-full bg-slate-100 flex items-center justify-center">
               <Menu size={20} />
             </button>
-
             <button className="w-11 h-11 rounded-full bg-slate-950 text-white font-bold">
               B
             </button>
@@ -167,11 +181,9 @@ export default function Home() {
               <p className="text-pink-500 font-bold mb-4">
                 BuildWise Construction System
               </p>
-
               <h2 className="text-4xl md:text-[52px] font-black leading-[1.05]">
                 Kubaka, kugura no gucunga umushinga mu buryo bwizewe.
               </h2>
-
               <p className="text-slate-300 mt-5 text-lg leading-8 max-w-xl">
                 BuildWise igufasha gushaka ibibanza, ibikoresho, abatekinisiye,
                 kubara budget no kwishyura mu mutekano ukoresheje escrow.
@@ -181,7 +193,6 @@ export default function Home() {
                 <button className="px-7 py-4 rounded-2xl bg-pink-600 hover:bg-pink-700 font-bold">
                   Tangira umushinga
                 </button>
-
                 <button className="px-7 py-4 rounded-2xl bg-white text-slate-950 font-bold flex items-center gap-2">
                   <Play size={18} />
                   Reba uko bikora
@@ -195,14 +206,12 @@ export default function Home() {
                 alt="construction"
                 className="absolute inset-0 w-full h-full object-cover"
               />
-
               <div className="absolute bottom-8 right-8 bg-white rounded-2xl px-5 py-4 shadow-xl flex items-center gap-4">
                 <div className="flex -space-x-3">
                   <div className="w-10 h-10 rounded-full bg-slate-300 border-2 border-white" />
                   <div className="w-10 h-10 rounded-full bg-slate-400 border-2 border-white" />
                   <div className="w-10 h-10 rounded-full bg-slate-500 border-2 border-white" />
                 </div>
-
                 <div>
                   <p className="font-black text-emerald-600">1,200+</p>
                   <p className="text-sm text-slate-500">Abakoresha</p>
@@ -214,31 +223,10 @@ export default function Home() {
 
         {/* SEARCH */}
         <div className="hidden lg:grid max-w-[1280px] mx-auto -mt-6 relative z-20 bg-white rounded-2xl shadow-xl border border-slate-200 p-3 grid-cols-[1fr_1fr_1.4fr_1fr_auto] gap-2">
-          <SearchBox
-            icon={<MapPin />}
-            title="Aho ushaka"
-            placeholder="Andika akarere cyangwa umujyi"
-          />
-
-          <SearchBox
-            icon={<CalendarDays />}
-            title="Igihe"
-            placeholder="Igihe icyo ari cyo cyose"
-          />
-
-          <SearchBox
-            icon={<HomeIcon />}
-            title="Urashaka iki?"
-            placeholder="Ikibanza, inzu, ibikoresho..."
-          />
-
-          <SearchBox
-            icon={<Calculator />}
-            title="Budget"
-            placeholder="Ingengo y’imari"
-            noBorder
-          />
-
+          <SearchBox icon={<MapPin />} title="Aho ushaka" placeholder="Andika akarere cyangwa umujyi" />
+          <SearchBox icon={<CalendarDays />} title="Igihe" placeholder="Igihe icyo ari cyo cyose" />
+          <SearchBox icon={<HomeIcon />} title="Urashaka iki?" placeholder="Ikibanza, inzu, ibikoresho..." />
+          <SearchBox icon={<Calculator />} title="Budget" placeholder="Ingengo y’imari" noBorder />
           <button className="w-16 h-16 rounded-full bg-pink-600 hover:bg-pink-700 text-white flex items-center justify-center">
             <Search size={26} />
           </button>
@@ -251,12 +239,11 @@ export default function Home() {
             return (
               <div
                 key={item.title}
-                className="bg-white rounded-2xl border border-slate-200 p-4 min-h-[150px] hover:shadow-xl transition"
+                className="bg-white rounded-2xl border border-slate-200 p-4 min-h-[150px] hover:shadow-xl hover:-translate-y-1 transition duration-300"
               >
                 <div className="w-12 h-12 rounded-2xl bg-pink-50 text-pink-600 flex items-center justify-center mb-4">
                   <Icon size={24} />
                 </div>
-
                 <h3 className="font-black text-lg">{item.title}</h3>
                 <p className="text-sm text-slate-500 mt-1">{item.text}</p>
               </div>
@@ -264,8 +251,35 @@ export default function Home() {
           })}
         </section>
 
+        {/* TRUSTED PARTNERS */}
+        <section className="py-10">
+          <div className="text-center mb-10">
+            <p className="text-pink-600 font-bold uppercase tracking-widest">
+              Abafatanyabikorwa
+            </p>
+            <h2 className="text-3xl md:text-4xl font-black mt-3">
+              BuildWise yizewe n’ibigo bikomeye
+            </h2>
+            <p className="text-slate-500 mt-3 max-w-2xl mx-auto">
+              Dufatanya n’ibigo by’imari, suppliers, real estate companies
+              ndetse n’abubatsi batandukanye.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+            {partners.map((partner) => (
+              <div
+                key={partner}
+                className="bg-white border border-slate-200 rounded-2xl h-24 flex items-center justify-center font-black text-slate-700 text-lg hover:shadow-xl hover:-translate-y-1 transition duration-300"
+              >
+                {partner}
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* FEATURED */}
-        <section className="pt-6 pb-16">
+        <section className="pt-10 pb-16">
           <div className="flex justify-between items-end mb-8">
             <div>
               <h2 className="text-3xl font-black">Ibiri ku isoko</h2>
@@ -273,7 +287,6 @@ export default function Home() {
                 Ibibanza, inzu na apartments byatoranyijwe.
               </p>
             </div>
-
             <button className="text-pink-600 font-bold">Reba byose →</button>
           </div>
 
@@ -281,19 +294,17 @@ export default function Home() {
             {properties.map((item) => (
               <div
                 key={item.title}
-                className="bg-white rounded-2xl overflow-hidden border border-slate-200 hover:shadow-xl transition"
+                className="bg-white rounded-2xl overflow-hidden border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition duration-300"
               >
-                <div className="relative">
+                <div className="relative overflow-hidden">
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="h-52 w-full object-cover"
+                    className="h-52 w-full object-cover hover:scale-105 transition duration-500"
                   />
-
                   <span className="absolute top-4 left-4 bg-emerald-600 text-white text-xs font-black px-3 py-1 rounded-lg">
                     {item.type}
                   </span>
-
                   <button className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center shadow">
                     <Heart size={19} />
                   </button>
@@ -305,6 +316,41 @@ export default function Home() {
                   <p className="text-emerald-600 font-black text-xl mt-5">
                     {item.price}
                   </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* TESTIMONIALS */}
+        <section className="py-16">
+          <div className="text-center mb-12">
+            <p className="text-pink-600 font-bold uppercase tracking-widest">
+              Ubuhamya
+            </p>
+            <h2 className="text-3xl md:text-4xl font-black mt-3">
+              Ibyo abakoresha bavuga kuri BuildWise
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-7">
+            {testimonials.map((item) => (
+              <div
+                key={item.name}
+                className="bg-white rounded-[28px] border border-slate-200 p-8 hover:shadow-2xl hover:-translate-y-1 transition duration-300"
+              >
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 text-white flex items-center justify-center font-black text-xl">
+                    {item.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h3 className="font-black text-lg">{item.name}</h3>
+                    <p className="text-slate-500 text-sm">{item.role}</p>
+                  </div>
+                </div>
+                <p className="text-slate-600 leading-8">“{item.text}”</p>
+                <div className="flex gap-1 mt-6 text-yellow-500 text-xl">
+                  ★★★★★
                 </div>
               </div>
             ))}
@@ -325,7 +371,7 @@ export default function Home() {
             {steps.map((step, index) => (
               <div
                 key={step.title}
-                className="bg-white rounded-3xl border border-slate-200 p-6 hover:shadow-xl transition"
+                className="bg-white rounded-3xl border border-slate-200 p-6 hover:shadow-xl hover:-translate-y-1 transition duration-300"
               >
                 <div className="w-12 h-12 rounded-full bg-pink-600 text-white flex items-center justify-center font-black mb-5">
                   {index + 1}
@@ -394,16 +440,13 @@ export default function Home() {
             <div className="w-16 h-16 mx-auto rounded-2xl bg-white/10 flex items-center justify-center mb-6">
               <Hammer size={30} />
             </div>
-
             <h2 className="text-3xl md:text-5xl font-black">
               Tangira umushinga wawe uyu munsi
             </h2>
-
             <p className="text-slate-200 max-w-2xl mx-auto mt-4">
               BuildWise igufasha kuva ku gushaka ikibanza, kugura ibikoresho,
               kubara budget kugeza ku kwishyura mu buryo bwizewe.
             </p>
-
             <button className="mt-8 px-8 py-4 rounded-2xl bg-white text-slate-950 font-black inline-flex items-center gap-2">
               Tangira nonaha <ArrowRight size={20} />
             </button>
@@ -411,7 +454,6 @@ export default function Home() {
         </section>
       </main>
 
-      {/* FOOTER */}
       <footer className="bg-white border-t border-slate-200 mt-10">
         <div className="max-w-[1500px] mx-auto px-6 py-12 grid md:grid-cols-4 gap-8">
           <div>
@@ -461,7 +503,6 @@ function SearchBox({ icon, title, placeholder, noBorder }) {
       }`}
     >
       <div className="text-slate-800">{icon}</div>
-
       <div>
         <p className="font-bold text-sm">{title}</p>
         <input
