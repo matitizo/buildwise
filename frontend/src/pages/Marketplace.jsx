@@ -10,11 +10,13 @@ import {
   BedDouble,
   Ruler,
   Trash2,
+  PlusCircle,
+  Upload,
 } from "lucide-react";
 
 import { Link } from "react-router-dom";
 
-const defaultProperties = [
+const initialProperties = [
   {
     id: "1",
     title: "Ikibanza cyiza i Kanombe",
@@ -33,48 +35,9 @@ const defaultProperties = [
     image:
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80",
   },
-
-  {
-    id: "2",
-    title: "Inzu yo guturamo i Gacuriro",
-    province: "Kigali",
-    district: "Gasabo",
-    sector: "Kinyinya",
-    location: "Kigali, Gasabo, Kinyinya",
-    price: 120000000,
-    displayPrice: "120,000,000 RWF",
-    deal: "Kigurishwa",
-    type: "Inzu yo guturamo",
-    bedrooms: "5",
-    size: "420 sqm",
-    agent: "Elite Homes Rwanda",
-    verified: true,
-    image:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
-  },
-
-  {
-    id: "3",
-    title: "Apartment yo gukodesha i Rebero",
-    province: "Kigali",
-    district: "Kicukiro",
-    sector: "Rebero",
-    location: "Kigali, Kicukiro, Rebero",
-    price: 450000,
-    displayPrice: "450,000 RWF / ukwezi",
-    deal: "Ikodeshwa",
-    type: "Apartment",
-    bedrooms: "3",
-    size: "120 sqm",
-    agent: "Rebero Rentals",
-    verified: true,
-    image:
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80",
-  },
 ];
 
 const propertyTypes = [
-  "Byose",
   "Ikibanza",
   "Inzu yo guturamo",
   "Inzu y’ubucuruzi",
@@ -83,9 +46,13 @@ const propertyTypes = [
 ];
 
 export default function Marketplace() {
-  const [properties, setProperties] = useState(defaultProperties);
+  const [properties, setProperties] =
+    useState(initialProperties);
 
   const [mode, setMode] = useState("buy");
+
+  const [showPublish, setShowPublish] =
+    useState(false);
 
   const [province, setProvince] = useState("");
   const [district, setDistrict] = useState("");
@@ -96,15 +63,22 @@ export default function Marketplace() {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
+  const [form, setForm] = useState({
+    title: "",
+    province: "",
+    district: "",
+    sector: "",
+    type: "Ikibanza",
+    deal: "Kigurishwa",
+    price: "",
+    bedrooms: "",
+    size: "",
+    agent: "",
+    image: "",
+  });
+
   const filteredProperties = useMemo(() => {
     return properties.filter((property) => {
-      const dealMatch =
-        mode === "buy"
-          ? property.deal === "Kigurishwa"
-          : mode === "rent"
-          ? property.deal === "Ikodeshwa"
-          : true;
-
       const provinceMatch =
         province === "" ||
         property.province
@@ -124,7 +98,8 @@ export default function Marketplace() {
           .includes(sector.toLowerCase());
 
       const typeMatch =
-        type === "Byose" || property.type === type;
+        type === "Byose" ||
+        property.type === type;
 
       const minMatch =
         minPrice === "" ||
@@ -135,7 +110,6 @@ export default function Marketplace() {
         property.price <= Number(maxPrice);
 
       return (
-        dealMatch &&
         provinceMatch &&
         districtMatch &&
         sectorMatch &&
@@ -146,7 +120,6 @@ export default function Marketplace() {
     });
   }, [
     properties,
-    mode,
     province,
     district,
     sector,
@@ -155,65 +128,122 @@ export default function Marketplace() {
     maxPrice,
   ]);
 
+  function handlePublish(e) {
+    e.preventDefault();
+
+    const newProperty = {
+      id: Date.now().toString(),
+
+      title: form.title,
+
+      province: form.province,
+
+      district: form.district,
+
+      sector: form.sector,
+
+      location: `${form.province}, ${form.district}, ${form.sector}`,
+
+      price: Number(form.price),
+
+      displayPrice:
+        Number(form.price).toLocaleString() +
+        " RWF",
+
+      deal: form.deal,
+
+      type: form.type,
+
+      bedrooms:
+        form.bedrooms === ""
+          ? "N/A"
+          : form.bedrooms,
+
+      size:
+        form.size === ""
+          ? "N/A"
+          : form.size,
+
+      agent: form.agent,
+
+      verified: true,
+
+      image:
+        form.image === ""
+          ? "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"
+          : form.image,
+    };
+
+    setProperties([newProperty, ...properties]);
+
+    setShowPublish(false);
+
+    setForm({
+      title: "",
+      province: "",
+      district: "",
+      sector: "",
+      type: "Ikibanza",
+      deal: "Kigurishwa",
+      price: "",
+      bedrooms: "",
+      size: "",
+      agent: "",
+      image: "",
+    });
+  }
+
   function deleteProperty(id) {
     setProperties(
-      properties.filter((item) => item.id !== id)
+      properties.filter(
+        (property) => property.id !== id
+      )
     );
   }
 
   return (
     <div className="min-h-screen bg-[#f7f8fb] text-[#050816]">
 
-      {/* TOP MENU */}
+      {/* HEADER */}
 
       <section className="bg-white border-b border-slate-200 px-6 py-5">
 
         <div className="flex flex-wrap items-center justify-between gap-5">
 
-          {/* MENU */}
-
           <div className="flex flex-wrap items-center gap-8 font-black text-lg">
 
             <button
               onClick={() => setMode("buy")}
-              className={`transition ${
-                mode === "buy"
-                  ? "text-pink-600"
-                  : "text-[#050816]"
-              }`}
+              className="hover:text-pink-600"
             >
               Buy
             </button>
 
             <button
               onClick={() => setMode("rent")}
-              className={`transition ${
-                mode === "rent"
-                  ? "text-pink-600"
-                  : "text-[#050816]"
-              }`}
+              className="hover:text-pink-600"
             >
               Rent
             </button>
 
             <button
               onClick={() => setMode("sell")}
-              className={`transition ${
-                mode === "sell"
-                  ? "text-pink-600"
-                  : "text-[#050816]"
-              }`}
+              className="hover:text-pink-600"
             >
               Sell
             </button>
 
           </div>
 
-          {/* ACTIONS */}
-
           <div className="flex items-center gap-4">
 
-            <button className="border border-slate-300 px-6 py-3 rounded-xl font-black hover:bg-slate-50">
+            <button
+              onClick={() =>
+                setShowPublish(true)
+              }
+              className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-xl font-black flex items-center gap-2"
+            >
+              <PlusCircle size={20} />
               Publish Property
             </button>
 
@@ -226,61 +256,139 @@ export default function Marketplace() {
         </div>
       </section>
 
-      {/* BUY SEARCH */}
+      {/* SEARCH */}
 
-      {mode === "buy" && (
+      <section className="px-6 pt-8">
 
-        <section className="px-6 pt-8">
+        <div className="bg-white rounded-[32px] shadow-xl border border-slate-200 p-6">
 
-          <div className="bg-white rounded-[32px] shadow-xl border border-slate-200 p-6">
+          <h2 className="text-3xl font-black mb-6">
+            Shakisha Property
+          </h2>
 
-            <h2 className="text-3xl font-black mb-6">
-              Shakisha Property yo Kugura
-            </h2>
+          <div className="grid md:grid-cols-6 gap-4">
 
-            <div className="grid md:grid-cols-6 gap-4">
+            <input
+              placeholder="Province"
+              value={province}
+              onChange={(e) =>
+                setProvince(e.target.value)
+              }
+              className="bg-slate-50 rounded-2xl px-4 py-4 outline-none"
+            />
 
-              {/* PROVINCE */}
+            <input
+              placeholder="Akarere"
+              value={district}
+              onChange={(e) =>
+                setDistrict(e.target.value)
+              }
+              className="bg-slate-50 rounded-2xl px-4 py-4 outline-none"
+            />
 
-              <input
-                placeholder="Province"
-                value={province}
-                onChange={(e) =>
-                  setProvince(e.target.value)
-                }
-                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
+            <input
+              placeholder="Umurenge"
+              value={sector}
+              onChange={(e) =>
+                setSector(e.target.value)
+              }
+              className="bg-slate-50 rounded-2xl px-4 py-4 outline-none"
+            />
+
+            <select
+              value={type}
+              onChange={(e) =>
+                setType(e.target.value)
+              }
+              className="bg-slate-50 rounded-2xl px-4 py-4 outline-none"
+            >
+              <option>Byose</option>
+
+              {propertyTypes.map((item) => (
+                <option key={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+
+            <input
+              type="number"
+              placeholder="Minimum Price"
+              value={minPrice}
+              onChange={(e) =>
+                setMinPrice(e.target.value)
+              }
+              className="bg-slate-50 rounded-2xl px-4 py-4 outline-none"
+            />
+
+            <input
+              type="number"
+              placeholder="Maximum Price"
+              value={maxPrice}
+              onChange={(e) =>
+                setMaxPrice(e.target.value)
+              }
+              className="bg-slate-50 rounded-2xl px-4 py-4 outline-none"
+            />
+
+          </div>
+
+          <button className="mt-5 bg-[#050816] hover:bg-black text-white px-8 py-4 rounded-2xl font-black inline-flex items-center gap-2">
+            <Search size={22} />
+            Shakisha
+          </button>
+
+        </div>
+      </section>
+
+      {/* PUBLISH FORM */}
+
+      {showPublish && (
+
+        <section className="px-6 pt-10">
+
+          <div className="bg-white rounded-[32px] border border-slate-200 shadow-xl p-8">
+
+            <div className="flex items-center gap-3 mb-8">
+
+              <Upload
+                size={30}
+                className="text-pink-600"
               />
 
-              {/* DISTRICT */}
+              <h2 className="text-4xl font-black">
+                Publish Property
+              </h2>
+
+            </div>
+
+            <form
+              onSubmit={handlePublish}
+              className="grid md:grid-cols-2 gap-5"
+            >
 
               <input
-                placeholder="Akarere"
-                value={district}
+                required
+                placeholder="Property Title"
+                value={form.title}
                 onChange={(e) =>
-                  setDistrict(e.target.value)
+                  setForm({
+                    ...form,
+                    title: e.target.value,
+                  })
                 }
-                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
+                className="bg-slate-50 rounded-2xl px-5 py-4 outline-none"
               />
-
-              {/* SECTOR */}
-
-              <input
-                placeholder="Umurenge"
-                value={sector}
-                onChange={(e) =>
-                  setSector(e.target.value)
-                }
-                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
-              />
-
-              {/* TYPE */}
 
               <select
-                value={type}
+                value={form.type}
                 onChange={(e) =>
-                  setType(e.target.value)
+                  setForm({
+                    ...form,
+                    type: e.target.value,
+                  })
                 }
-                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
+                className="bg-slate-50 rounded-2xl px-5 py-4 outline-none"
               >
                 {propertyTypes.map((item) => (
                   <option key={item}>
@@ -289,109 +397,124 @@ export default function Marketplace() {
                 ))}
               </select>
 
-              {/* MIN */}
-
               <input
-                type="number"
-                placeholder="Minimum Price"
-                value={minPrice}
-                onChange={(e) =>
-                  setMinPrice(e.target.value)
-                }
-                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
-              />
-
-              {/* MAX */}
-
-              <input
-                type="number"
-                placeholder="Maximum Price"
-                value={maxPrice}
-                onChange={(e) =>
-                  setMaxPrice(e.target.value)
-                }
-                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
-              />
-
-            </div>
-
-            <button className="mt-5 bg-pink-600 hover:bg-pink-700 text-white px-8 py-4 rounded-2xl font-black inline-flex items-center gap-2">
-              <Search size={22} />
-              Shakisha
-            </button>
-
-          </div>
-        </section>
-      )}
-
-      {/* RENT SEARCH */}
-
-      {mode === "rent" && (
-
-        <section className="px-6 pt-8">
-
-          <div className="bg-white rounded-[32px] shadow-xl border border-slate-200 p-6">
-
-            <h2 className="text-3xl font-black mb-6">
-              Shakisha Property yo Gukodesha
-            </h2>
-
-            <div className="grid md:grid-cols-6 gap-4">
-
-              <input
+                required
                 placeholder="Province"
-                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
+                value={form.province}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    province: e.target.value,
+                  })
+                }
+                className="bg-slate-50 rounded-2xl px-5 py-4 outline-none"
               />
 
               <input
+                required
                 placeholder="Akarere"
-                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
+                value={form.district}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    district: e.target.value,
+                  })
+                }
+                className="bg-slate-50 rounded-2xl px-5 py-4 outline-none"
               />
 
               <input
+                required
                 placeholder="Umurenge"
-                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
-              />
-
-              <select className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold">
-                {propertyTypes.map((item) => (
-                  <option key={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-
-              <input
-                type="number"
-                placeholder="Minimum Rent"
-                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
+                value={form.sector}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    sector: e.target.value,
+                  })
+                }
+                className="bg-slate-50 rounded-2xl px-5 py-4 outline-none"
               />
 
               <input
+                required
                 type="number"
-                placeholder="Maximum Rent"
-                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
+                placeholder="Price"
+                value={form.price}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    price: e.target.value,
+                  })
+                }
+                className="bg-slate-50 rounded-2xl px-5 py-4 outline-none"
               />
 
-            </div>
+              <input
+                placeholder="Bedrooms"
+                value={form.bedrooms}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    bedrooms: e.target.value,
+                  })
+                }
+                className="bg-slate-50 rounded-2xl px-5 py-4 outline-none"
+              />
 
-            <button className="mt-5 bg-[#050816] hover:bg-black text-white px-8 py-4 rounded-2xl font-black inline-flex items-center gap-2">
-              <Search size={22} />
-              Shakisha
-            </button>
+              <input
+                placeholder="Size"
+                value={form.size}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    size: e.target.value,
+                  })
+                }
+                className="bg-slate-50 rounded-2xl px-5 py-4 outline-none"
+              />
 
+              <input
+                placeholder="Seller / Agent"
+                value={form.agent}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    agent: e.target.value,
+                  })
+                }
+                className="bg-slate-50 rounded-2xl px-5 py-4 outline-none"
+              />
+
+              <input
+                placeholder="Image URL"
+                value={form.image}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    image: e.target.value,
+                  })
+                }
+                className="bg-slate-50 rounded-2xl px-5 py-4 outline-none"
+              />
+
+              <button className="bg-pink-600 hover:bg-pink-700 text-white rounded-2xl py-5 font-black text-lg">
+                Publish Now
+              </button>
+
+            </form>
           </div>
         </section>
       )}
 
-      {/* PROPERTY LISTINGS */}
+      {/* LISTINGS */}
 
       <section className="px-6 py-10">
 
         <div className="mb-8">
 
           <h2 className="text-4xl font-black">
-            Properties ziri ku isoko
+            Property Listings
           </h2>
 
           <p className="text-slate-500 mt-2">
@@ -409,8 +532,6 @@ export default function Marketplace() {
               key={property.id}
               className="bg-white rounded-[32px] overflow-hidden border border-slate-200 hover:shadow-2xl hover:-translate-y-2 transition duration-500"
             >
-
-              {/* IMAGE */}
 
               <div className="relative h-72 overflow-hidden group">
 
@@ -438,8 +559,6 @@ export default function Marketplace() {
                 )}
 
               </div>
-
-              {/* CONTENT */}
 
               <div className="p-6">
 
