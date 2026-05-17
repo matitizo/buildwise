@@ -164,31 +164,13 @@ export default function Marketplace() {
   return (
     <div className="min-h-screen bg-[#f7f8fb] text-[#050816]">
 
-      {/* TEST */}
-
-      <h1 className="text-5xl font-black text-red-600 px-6 py-6">
-        TEST BUY SEARCH
-      </h1>
-
-      {/* HEADER */}
+      {/* TOP MENU */}
 
       <section className="bg-white border-b border-slate-200 px-6 py-5">
 
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+        <div className="flex flex-wrap items-center justify-between gap-5">
 
-          {/* LOGO */}
-
-          <h1 className="text-4xl font-black">
-            <span className="text-blue-600">
-              property
-            </span>
-
-            <span className="text-red-500">
-              24
-            </span>
-          </h1>
-
-          {/* MENUS */}
+          {/* MENU */}
 
           <div className="flex flex-wrap items-center gap-8 font-black text-lg">
 
@@ -235,11 +217,12 @@ export default function Marketplace() {
               Publish Property
             </button>
 
-            <button className="border border-red-500 text-red-500 px-6 py-3 rounded-xl font-black hover:bg-red-50">
+            <button className="border border-pink-600 text-pink-600 px-6 py-3 rounded-xl font-black hover:bg-pink-50">
               Sign In
             </button>
 
           </div>
+
         </div>
       </section>
 
@@ -290,7 +273,7 @@ export default function Marketplace() {
                 className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
               />
 
-              {/* PROPERTY TYPE */}
+              {/* TYPE */}
 
               <select
                 value={type}
@@ -306,7 +289,7 @@ export default function Marketplace() {
                 ))}
               </select>
 
-              {/* MIN PRICE */}
+              {/* MIN */}
 
               <input
                 type="number"
@@ -318,7 +301,7 @@ export default function Marketplace() {
                 className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
               />
 
-              {/* MAX PRICE */}
+              {/* MAX */}
 
               <input
                 type="number"
@@ -341,7 +324,7 @@ export default function Marketplace() {
         </section>
       )}
 
-      {/* RENT */}
+      {/* RENT SEARCH */}
 
       {mode === "rent" && (
 
@@ -349,13 +332,53 @@ export default function Marketplace() {
 
           <div className="bg-white rounded-[32px] shadow-xl border border-slate-200 p-6">
 
-            <h2 className="text-3xl font-black mb-4">
+            <h2 className="text-3xl font-black mb-6">
               Shakisha Property yo Gukodesha
             </h2>
 
-            <p className="text-slate-500">
-              Rent filters zizongerwamo nyuma.
-            </p>
+            <div className="grid md:grid-cols-6 gap-4">
+
+              <input
+                placeholder="Province"
+                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
+              />
+
+              <input
+                placeholder="Akarere"
+                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
+              />
+
+              <input
+                placeholder="Umurenge"
+                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
+              />
+
+              <select className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold">
+                {propertyTypes.map((item) => (
+                  <option key={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+
+              <input
+                type="number"
+                placeholder="Minimum Rent"
+                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
+              />
+
+              <input
+                type="number"
+                placeholder="Maximum Rent"
+                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none font-semibold"
+              />
+
+            </div>
+
+            <button className="mt-5 bg-[#050816] hover:bg-black text-white px-8 py-4 rounded-2xl font-black inline-flex items-center gap-2">
+              <Search size={22} />
+              Shakisha
+            </button>
 
           </div>
         </section>
@@ -495,6 +518,7 @@ export default function Marketplace() {
                     </button>
 
                   </div>
+
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 mt-5">
