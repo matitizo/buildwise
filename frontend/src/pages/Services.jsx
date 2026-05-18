@@ -4,11 +4,10 @@ import {
   FileCheck,
   ShieldCheck,
   Hammer,
-  Building2,
-  ClipboardCheck,
-  Ruler,
   HardHat,
   DraftingCompass,
+  ClipboardCheck,
+  Ruler,
   ArrowRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -16,142 +15,116 @@ import { Link } from "react-router-dom";
 const services = [
   {
     title: "Budget Estimator",
-    desc: "Calculate estimated construction cost before starting your project.",
+    desc: "Bara amafaranga ashobora gukenerwa mbere yo gutangira umushinga.",
     icon: Calculator,
     path: "/estimator",
   },
   {
     title: "Get Building Permit",
-    desc: "Get support to prepare and apply for building permits.",
+    desc: "Fashwa gutegura documents no gusaba ibyangombwa byo kubaka.",
     icon: FileCheck,
-    path: "/permits",
+    path: "/services",
   },
   {
     title: "Escrow Payment",
-    desc: "Pay safely while BuildWise protects your money until verification is complete.",
+    desc: "Kwishyura mu mutekano kugeza documents n’amasezerano byemejwe.",
     icon: ShieldCheck,
     path: "/escrow",
   },
   {
     title: "Construction Management",
-    desc: "Manage projects, workers, budget, progress and reports in one place.",
+    desc: "Kurikirana abakozi, budget, materials, progress na reports.",
     icon: Hammer,
     path: "/projects",
   },
   {
     title: "Find Engineers",
-    desc: "Connect with trusted civil engineers for your construction project.",
+    desc: "Shaka civil engineers bemewe bagufashe mu mushinga wawe.",
     icon: HardHat,
-    path: "/engineers",
+    path: "/services",
   },
   {
     title: "Find Architects",
-    desc: "Find professional architects to design your house or building.",
+    desc: "Shaka architects bagukorera drawings n’igishushanyo cy’inzu.",
     icon: DraftingCompass,
-    path: "/architects",
+    path: "/services",
   },
   {
     title: "Site Inspection",
-    desc: "Request inspection for land, construction site or building quality.",
+    desc: "Saba igenzura ry’ikibanza, inzu cyangwa construction site.",
     icon: ClipboardCheck,
-    path: "/inspection",
+    path: "/services",
   },
   {
     title: "Quantity Surveying",
-    desc: "Get BOQ, material quantities and professional cost estimation.",
+    desc: "Bona BOQ, quantities, cost breakdown n’igenamigambi ry’ibikoresho.",
     icon: Ruler,
-    path: "/quantity-surveying",
+    path: "/services",
   },
 ];
 
 export default function Services() {
   return (
-    <div className="min-h-screen bg-[#f7f8fb] text-[#050816] px-6 py-14">
-      <div className="max-w-7xl mx-auto">
-        {/* HERO */}
-        <section className="bg-[#050816] text-white rounded-[36px] p-10 md:p-16 mb-12 overflow-hidden relative">
-          <div className="relative z-10 max-w-4xl">
-            <p className="text-pink-500 font-black tracking-[3px] mb-5">
-              BUILDWISE SERVICES
-            </p>
+    <div className="min-h-screen bg-[#f7f8fb] text-[#050816] px-6 py-8">
+      <section className="bg-[#050816] text-white rounded-[30px] p-8 md:p-12 mb-8">
+        <p className="text-pink-500 font-black mb-3">BUILDWISE SERVICES</p>
 
-            <h1 className="text-4xl md:text-6xl font-black leading-tight mb-6">
-              Construction services in one smart platform.
-            </h1>
+        <h1 className="text-4xl md:text-5xl font-black mb-4">
+          Serivisi z’ubwubatsi hamwe.
+        </h1>
 
-            <p className="text-slate-300 text-lg leading-8">
-              Access Budget Estimator, Building Permit support, Escrow Payment,
-              Construction Management, Engineers, Architects, Site Inspection
-              and Quantity Surveying.
-            </p>
-          </div>
+        <p className="text-slate-300 max-w-3xl leading-8">
+          Hitamo serivisi ukeneye: kubara budget, kubona building permit,
+          escrow payment, construction management, engineers, architects,
+          site inspection na quantity surveying.
+        </p>
+      </section>
 
-          <div className="absolute -right-24 -bottom-24 w-72 h-72 bg-pink-600/30 rounded-full blur-3xl" />
-        </section>
+      <section className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {services.map((service) => {
+          const Icon = service.icon;
 
-        {/* SERVICES GRID */}
-        <section>
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-black">
-                Choose a service
-              </h2>
-              <p className="text-slate-500 mt-3">
-                Select the service you need and start your request.
-              </p>
-            </div>
-          </div>
+          return (
+            <Link
+              to={service.path}
+              key={service.title}
+              className="bg-white border border-slate-200 rounded-[26px] p-6 hover:shadow-2xl hover:-translate-y-1 transition"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-pink-50 text-pink-600 flex items-center justify-center mb-5">
+                <Icon size={28} />
+              </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
-            {services.map((service, index) => {
-              const Icon = service.icon;
+              <h3 className="text-xl font-black mb-3">{service.title}</h3>
 
-              return (
-                <Link
-                  to={service.path}
-                  key={index}
-                  className="bg-white rounded-3xl border border-slate-200 p-7 hover:shadow-2xl hover:-translate-y-1 transition block"
-                >
-                  <div className="w-16 h-16 rounded-2xl bg-pink-50 text-pink-600 flex items-center justify-center mb-6">
-                    <Icon size={32} />
-                  </div>
+              <p className="text-slate-500 leading-7 mb-5">{service.desc}</p>
 
-                  <h3 className="text-xl font-black mb-4">
-                    {service.title}
-                  </h3>
+              <span className="text-pink-600 font-black inline-flex items-center gap-2">
+                Open Service <ArrowRight size={18} />
+              </span>
+            </Link>
+          );
+        })}
+      </section>
 
-                  <p className="text-slate-500 leading-7 mb-6">
-                    {service.desc}
-                  </p>
+      <section className="mt-8 bg-white border border-slate-200 rounded-[30px] p-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+        <div>
+          <h2 className="text-3xl font-black mb-2">
+            Need help choosing a service?
+          </h2>
 
-                  <span className="text-pink-600 font-black inline-flex items-center gap-2">
-                    Open service <ArrowRight size={18} />
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
+          <p className="text-slate-500">
+            BuildWise ishobora kugufasha kuva ku kibanza kugeza ku mushinga
+            urangiye.
+          </p>
+        </div>
 
-        {/* CTA */}
-        <section className="mt-14 bg-white border border-slate-200 rounded-[32px] p-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-          <div>
-            <h2 className="text-3xl font-black mb-3">
-              Need help choosing a service?
-            </h2>
-            <p className="text-slate-500">
-              BuildWise can guide you from land search to project completion.
-            </p>
-          </div>
-
-          <Link
-            to="/lands"
-            className="bg-pink-600 hover:bg-pink-700 text-white px-8 py-4 rounded-2xl font-black inline-flex items-center gap-2 justify-center"
-          >
-            Start now <ArrowRight size={20} />
-          </Link>
-        </section>
-      </div>
+        <Link
+          to="/marketplace"
+          className="bg-pink-600 hover:bg-pink-700 text-white px-7 py-3 rounded-xl font-black inline-flex items-center justify-center gap-2"
+        >
+          Start Now <ArrowRight size={18} />
+        </Link>
+      </section>
     </div>
   );
 }
