@@ -15,6 +15,31 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
+const rwandaLocations = {
+  Kigali: ["Gasabo", "Kicukiro", "Nyarugenge"],
+  Northern: ["Musanze", "Burera", "Gakenke", "Gicumbi", "Rulindo"],
+  Southern: [
+    "Huye",
+    "Muhanga",
+    "Nyanza",
+    "Gisagara",
+    "Nyamagabe",
+    "Ruhango",
+    "Kamonyi",
+    "Nyaruguru",
+  ],
+  Eastern: [
+    "Kayonza",
+    "Kirehe",
+    "Ngoma",
+    "Bugesera",
+    "Nyagatare",
+    "Rwamagana",
+    "Gatsibo",
+  ],
+  Western: ["Rubavu", "Rusizi", "Karongi", "Nyamasheke", "Ngororero", "Rutsiro"],
+};
+
 const initialProperties = [
   {
     id: "1",
@@ -33,6 +58,24 @@ const initialProperties = [
     verified: true,
     image:
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80",
+  },
+  {
+    id: "2",
+    title: "Inzu yo guturamo i Gacuriro",
+    province: "Kigali",
+    district: "Gasabo",
+    sector: "Kinyinya",
+    location: "Kigali, Gasabo, Kinyinya",
+    price: 120000000,
+    displayPrice: "120,000,000 RWF",
+    deal: "Kigurishwa",
+    type: "Inzu yo guturamo",
+    bedrooms: "5",
+    size: "420 sqm",
+    agent: "Elite Homes Rwanda",
+    verified: true,
+    image:
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
   },
 ];
 
@@ -80,13 +123,8 @@ export default function Marketplace() {
           ? property.deal === "Ikodeshwa"
           : true;
 
-      const provinceMatch =
-        province === "" ||
-        property.province.toLowerCase().includes(province.toLowerCase());
-
-      const districtMatch =
-        district === "" ||
-        property.district.toLowerCase().includes(district.toLowerCase());
+      const provinceMatch = province === "" || property.province === province;
+      const districtMatch = district === "" || property.district === district;
 
       const sectorMatch =
         sector === "" ||
@@ -161,7 +199,6 @@ export default function Marketplace() {
 
   return (
     <div className="min-h-screen bg-[#f7f8fb] text-[#050816]">
-      {/* HEADER */}
       <section className="bg-white border-b border-slate-200 px-6 py-5">
         <div className="flex flex-wrap items-center justify-between gap-5">
           <div className="flex flex-wrap items-center gap-8 font-black text-lg">
@@ -203,7 +240,6 @@ export default function Marketplace() {
         </div>
       </section>
 
-      {/* SEARCH - ntabwo igaragara iyo uri kuri Publish Property */}
       {!isPublishMode && (
         <section className="px-6 pt-8">
           <div className="bg-white rounded-[32px] shadow-xl border border-slate-200 p-6">
@@ -214,19 +250,36 @@ export default function Marketplace() {
             </h2>
 
             <div className="grid md:grid-cols-6 gap-4">
-              <input
-                placeholder="Province"
+              <select
                 value={province}
-                onChange={(e) => setProvince(e.target.value)}
+                onChange={(e) => {
+                  setProvince(e.target.value);
+                  setDistrict("");
+                }}
                 className="bg-slate-50 rounded-2xl px-4 py-4 outline-none"
-              />
+              >
+                <option value="">Hitamo Province</option>
+                {Object.keys(rwandaLocations).map((prov) => (
+                  <option key={prov} value={prov}>
+                    {prov}
+                  </option>
+                ))}
+              </select>
 
-              <input
-                placeholder="Akarere"
+              <select
                 value={district}
                 onChange={(e) => setDistrict(e.target.value)}
-                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none"
-              />
+                disabled={!province}
+                className="bg-slate-50 rounded-2xl px-4 py-4 outline-none disabled:opacity-50"
+              >
+                <option value="">Hitamo District</option>
+                {province &&
+                  rwandaLocations[province].map((dist) => (
+                    <option key={dist} value={dist}>
+                      {dist}
+                    </option>
+                  ))}
+              </select>
 
               <input
                 placeholder="Umurenge"
@@ -271,7 +324,6 @@ export default function Marketplace() {
         </section>
       )}
 
-      {/* PUBLISH PROPERTY */}
       {isPublishMode && (
         <section className="px-6 pt-10">
           <div className="bg-white rounded-[32px] border border-slate-200 shadow-xl p-8">
@@ -308,21 +360,37 @@ export default function Marketplace() {
                 <option>Ikodeshwa</option>
               </select>
 
-              <input
+              <select
                 required
-                placeholder="Province"
                 value={form.province}
-                onChange={(e) => setForm({ ...form, province: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, province: e.target.value, district: "" })
+                }
                 className="bg-slate-50 rounded-2xl px-5 py-4 outline-none"
-              />
+              >
+                <option value="">Hitamo Province</option>
+                {Object.keys(rwandaLocations).map((prov) => (
+                  <option key={prov} value={prov}>
+                    {prov}
+                  </option>
+                ))}
+              </select>
 
-              <input
+              <select
                 required
-                placeholder="Akarere"
                 value={form.district}
                 onChange={(e) => setForm({ ...form, district: e.target.value })}
-                className="bg-slate-50 rounded-2xl px-5 py-4 outline-none"
-              />
+                disabled={!form.province}
+                className="bg-slate-50 rounded-2xl px-5 py-4 outline-none disabled:opacity-50"
+              >
+                <option value="">Hitamo District</option>
+                {form.province &&
+                  rwandaLocations[form.province].map((dist) => (
+                    <option key={dist} value={dist}>
+                      {dist}
+                    </option>
+                  ))}
+              </select>
 
               <input
                 required
@@ -377,7 +445,6 @@ export default function Marketplace() {
         </section>
       )}
 
-      {/* LISTINGS */}
       <section className="px-6 py-10">
         <div className="mb-8">
           <h2 className="text-4xl font-black">Property Listings</h2>
