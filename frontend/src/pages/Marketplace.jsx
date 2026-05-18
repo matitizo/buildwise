@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Search,
   MapPin,
@@ -37,22 +37,10 @@ const rwandaLocations = {
     "Rwamagana",
     "Gatsibo",
   ],
-  Western: [
-    "Rubavu",
-    "Rusizi",
-    "Karongi",
-    "Nyamasheke",
-    "Ngororero",
-    "Rutsiro",
-  ],
+  Western: ["Rubavu", "Rusizi", "Karongi", "Nyamasheke", "Ngororero", "Rutsiro"],
 };
 
-const saleTypes = [
-  "Ikibanza",
-  "Farm",
-  "Inzu yo kubamo",
-  "Inzu y’ubucuruzi",
-];
+const saleTypes = ["Ikibanza", "Farm", "Inzu yo kubamo", "Inzu y’ubucuruzi"];
 
 const rentTypes = [
   "Farm",
@@ -83,6 +71,7 @@ const initialProperties = [
     description: "Ikibanza kiri ahantu heza hafi y’umuhanda.",
     image:
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=80",
+    video: "",
   },
 ];
 
@@ -107,7 +96,11 @@ const emptyForm = {
 };
 
 export default function Marketplace() {
-  const [properties, setProperties] = useState(initialProperties);
+  const [properties, setProperties] = useState(() => {
+    const saved = localStorage.getItem("buildwise_properties");
+    return saved ? JSON.parse(saved) : initialProperties;
+  });
+
   const [mode, setMode] = useState("buy");
   const [province, setProvince] = useState("");
   const [district, setDistrict] = useState("");
@@ -118,6 +111,10 @@ export default function Marketplace() {
 
   const isPublishMode = mode === "publish";
   const activeTypes = form.propertyFor === "Sale" ? saleTypes : rentTypes;
+
+  useEffect(() => {
+    localStorage.setItem("buildwise_properties", JSON.stringify(properties));
+  }, [properties]);
 
   const filteredProperties = useMemo(() => {
     return properties.filter((property) => {
@@ -134,7 +131,14 @@ export default function Marketplace() {
       const minMatch = minPrice === "" || property.price >= Number(minPrice);
       const maxMatch = maxPrice === "" || property.price <= Number(maxPrice);
 
-      return dealMatch && provinceMatch && districtMatch && typeMatch && minMatch && maxMatch;
+      return (
+        dealMatch &&
+        provinceMatch &&
+        districtMatch &&
+        typeMatch &&
+        minMatch &&
+        maxMatch
+      );
     });
   }, [properties, mode, province, district, type, minPrice, maxPrice]);
 
@@ -229,7 +233,9 @@ export default function Marketplace() {
         <section className="px-6 pt-8">
           <div className="bg-white rounded-[32px] shadow-xl border border-slate-200 p-6">
             <h2 className="text-3xl font-black mb-6">
-              {mode === "rent" ? "Shakisha Property yo Gukodesha" : "Shakisha Property yo Kugura"}
+              {mode === "rent"
+                ? "Shakisha Property yo Gukodesha"
+                : "Shakisha Property yo Kugura"}
             </h2>
 
             <div className="grid md:grid-cols-5 gap-4">
@@ -374,7 +380,7 @@ export default function Marketplace() {
                 {property.verified && (
                   <div className="absolute bottom-4 right-4 bg-emerald-600 text-white px-4 py-2 rounded-xl font-black flex items-center gap-2 text-sm">
                     <ShieldCheck size={16} />
-                    Verified
+                    Verified Seller
                   </div>
                 )}
               </div>
@@ -390,6 +396,12 @@ export default function Marketplace() {
                 <h4 className="text-emerald-600 text-3xl font-black mb-5">
                   {property.displayPrice}
                 </h4>
+
+                {property.description && (
+                  <p className="text-slate-600 leading-7 mb-5">
+                    {property.description}
+                  </p>
+                )}
 
                 <div className="grid grid-cols-2 gap-3 mb-5">
                   <div className="bg-slate-50 rounded-2xl p-3 flex items-center gap-2">
@@ -454,6 +466,7 @@ export default function Marketplace() {
 
 function DynamicFields({ form, setForm }) {
   const isRent = form.propertyFor === "Rent";
+
   const priceLabel =
     isRent && ["Lodging Room", "Hotel Room", "Maison de Passage"].includes(form.type)
       ? "Price per day"
@@ -548,17 +561,37 @@ function DynamicFields({ form, setForm }) {
         onChange={(v) => setForm({ ...form, price: v })}
       />
 
-      <Input
-        placeholder="Upload Photo URL"
-        value={form.image}
-        onChange={(v) => setForm({ ...form, image: v })}
-      />
+      <div className="space-y-3">
+        <Input
+          placeholder="Image URL"
+          value={form.image}
+          onChange={(v) => setForm({ ...form, image: v })}
+        />
 
-      <Input
-        placeholder="Upload Video URL"
-        value={form.video}
-        onChange={(v) => setForm({ ...form, video: v })}
-      />
+        {form.image && (
+          <img
+            src={form.image}
+            alt="preview"
+            className="w-full h-52 object-cover rounded-2xl border"
+          />
+        )}
+      </div>
+
+      <div className="space-y-3">
+        <Input
+          placeholder="Video URL"
+          value={form.video}
+          onChange={(v) => setForm({ ...form, video: v })}
+        />
+
+        {form.video && (
+          <video
+            src={form.video}
+            controls
+            className="w-full h-52 rounded-2xl object-cover"
+          />
+        )}
+      </div>
 
       <textarea
         placeholder="Description"
