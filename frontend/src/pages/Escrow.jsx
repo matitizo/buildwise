@@ -5,7 +5,6 @@ import {
   Wallet,
   UserRound,
   FileCheck,
-  CheckCircle,
   Clock,
   LockKeyhole,
   Send,
@@ -18,25 +17,25 @@ import {
 const defaultEscrows = [
   {
     id: "1",
-    title: "Reserve Ikibanza i Kanombe",
+    title: "Kubitsa ikibanza i Kanombe",
     buyer: "Jean Claude",
     seller: "Kigali Prime Brokers",
     amount: 35000000,
-    type: "Property Purchase",
-    milestone: "Documents Verification",
-    status: "Pending Verification",
+    type: "Kugura Umutungo",
+    milestone: "Kugenzura Documents",
+    status: "Biracyasuzumwa",
     contractVerified: true,
     createdAt: "2026-05-18",
   },
   {
     id: "2",
-    title: "Construction Milestone Payment",
+    title: "Kwishyura icyiciro cy’ubwubatsi",
     buyer: "Aline Uwase",
     seller: "Prime Contractors Ltd",
     amount: 12000000,
-    type: "Construction Milestone",
-    milestone: "Foundation Completed",
-    status: "Ready to Release",
+    type: "Icyiciro cy’Ubwubatsi",
+    milestone: "Fondation yarangiye",
+    status: "Byemewe kwishyurwa",
     contractVerified: true,
     createdAt: "2026-05-20",
   },
@@ -47,25 +46,25 @@ const emptyForm = {
   buyer: "",
   seller: "",
   amount: "",
-  type: "Property Purchase",
-  milestone: "Documents Verification",
-  status: "Pending Verification",
+  type: "Kugura Umutungo",
+  milestone: "Kugenzura Documents",
+  status: "Biracyasuzumwa",
   contractVerified: true,
 };
 
 const statuses = [
-  "Pending Verification",
-  "Funds Secured",
-  "Ready to Release",
-  "Released",
-  "Disputed",
+  "Biracyasuzumwa",
+  "Amafaranga yabitswe",
+  "Byemewe kwishyurwa",
+  "Yishyuwe",
+  "Hari ikibazo",
 ];
 
 const types = [
-  "Property Purchase",
-  "Property Rent",
-  "Construction Milestone",
-  "Materials Payment",
+  "Kugura Umutungo",
+  "Gukodesha Umutungo",
+  "Icyiciro cy’Ubwubatsi",
+  "Kwishyura Ibikoresho",
 ];
 
 export default function Escrow() {
@@ -76,7 +75,7 @@ export default function Escrow() {
 
   const [form, setForm] = useState(emptyForm);
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("Byose");
 
   useEffect(() => {
     localStorage.setItem("buildwise_escrows", JSON.stringify(escrows));
@@ -91,7 +90,7 @@ export default function Escrow() {
         item.type.toLowerCase().includes(search.toLowerCase());
 
       const matchStatus =
-        statusFilter === "All" || item.status === statusFilter;
+        statusFilter === "Byose" || item.status === statusFilter;
 
       return matchSearch && matchStatus;
     });
@@ -103,12 +102,10 @@ export default function Escrow() {
   );
 
   const releasedTotal = escrows
-    .filter((item) => item.status === "Released")
+    .filter((item) => item.status === "Yishyuwe")
     .reduce((sum, item) => sum + Number(item.amount || 0), 0);
 
-  const pendingCount = escrows.filter(
-    (item) => item.status !== "Released"
-  ).length;
+  const pendingCount = escrows.filter((item) => item.status !== "Yishyuwe").length;
 
   function money(value) {
     return `${Number(value || 0).toLocaleString()} RWF`;
@@ -135,7 +132,7 @@ export default function Escrow() {
   function releasePayment(id) {
     setEscrows(
       escrows.map((item) =>
-        item.id === id ? { ...item, status: "Released" } : item
+        item.id === id ? { ...item, status: "Yishyuwe" } : item
       )
     );
   }
@@ -143,21 +140,21 @@ export default function Escrow() {
   function markFundsSecured(id) {
     setEscrows(
       escrows.map((item) =>
-        item.id === id ? { ...item, status: "Funds Secured" } : item
+        item.id === id ? { ...item, status: "Amafaranga yabitswe" } : item
       )
     );
   }
 
   function resetFilters() {
     setSearch("");
-    setStatusFilter("All");
+    setStatusFilter("Byose");
   }
 
   function statusClass(status) {
-    if (status === "Released") return "bg-emerald-600 text-white";
-    if (status === "Ready to Release") return "bg-pink-600 text-white";
-    if (status === "Funds Secured") return "bg-blue-600 text-white";
-    if (status === "Disputed") return "bg-red-500 text-white";
+    if (status === "Yishyuwe") return "bg-emerald-600 text-white";
+    if (status === "Byemewe kwishyurwa") return "bg-pink-600 text-white";
+    if (status === "Amafaranga yabitswe") return "bg-blue-600 text-white";
+    if (status === "Hari ikibazo") return "bg-red-500 text-white";
     return "bg-yellow-400 text-[#050816]";
   }
 
@@ -167,19 +164,20 @@ export default function Escrow() {
         <p className="text-pink-500 font-black mb-3">BUILDWISE ESCROW</p>
 
         <h1 className="text-4xl md:text-5xl font-black mb-4">
-          Secure payments for property and construction.
+          Kwishyura mu mutekano ku mitungo no ku mishinga y’ubwubatsi.
         </h1>
 
         <p className="text-slate-300 max-w-3xl leading-8">
-          Bika amafaranga mu mutekano, wemeze contracts, ukurikirane milestones,
-          hanyuma urekure payment igihe documents cyangwa akazi byemejwe.
+          Bika amafaranga mu mutekano, wemeze contracts, ukurikirane ibyiciro
+          by’umushinga, hanyuma urekure payment igihe documents cyangwa akazi
+          byemejwe.
         </p>
       </section>
 
       <section className="grid md:grid-cols-4 gap-5 mb-8">
-        <StatCard icon={Wallet} label="Total Secured" value={money(totalSecured)} />
-        <StatCard icon={Send} label="Released" value={money(releasedTotal)} />
-        <StatCard icon={Clock} label="Pending" value={pendingCount} />
+        <StatCard icon={Wallet} label="Amafaranga Yabitswe" value={money(totalSecured)} />
+        <StatCard icon={Send} label="Ayamaze Kwishyurwa" value={money(releasedTotal)} />
+        <StatCard icon={Clock} label="Ibitararangira" value={pendingCount} />
         <StatCard icon={ShieldCheck} label="Transactions" value={escrows.length} />
       </section>
 
@@ -187,13 +185,13 @@ export default function Escrow() {
         <section className="bg-white border border-slate-200 rounded-[28px] p-6 shadow-sm">
           <div className="flex items-center gap-3 mb-6">
             <PlusCircle className="text-pink-600" size={28} />
-            <h2 className="text-3xl font-black">Create Escrow</h2>
+            <h2 className="text-3xl font-black">Kora Escrow Nshya</h2>
           </div>
 
           <form onSubmit={createEscrow} className="space-y-4">
             <input
               required
-              placeholder="Transaction Title"
+              placeholder="Izina rya Transaction"
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               className="input"
@@ -201,7 +199,7 @@ export default function Escrow() {
 
             <input
               required
-              placeholder="Buyer / Client"
+              placeholder="Umuguzi / Client"
               value={form.buyer}
               onChange={(e) => setForm({ ...form, buyer: e.target.value })}
               className="input"
@@ -209,7 +207,7 @@ export default function Escrow() {
 
             <input
               required
-              placeholder="Seller / Contractor"
+              placeholder="Umugurisha / Contractor"
               value={form.seller}
               onChange={(e) => setForm({ ...form, seller: e.target.value })}
               className="input"
@@ -218,7 +216,7 @@ export default function Escrow() {
             <input
               required
               type="number"
-              placeholder="Amount"
+              placeholder="Amafaranga"
               value={form.amount}
               onChange={(e) => setForm({ ...form, amount: e.target.value })}
               className="input"
@@ -236,7 +234,7 @@ export default function Escrow() {
 
             <input
               required
-              placeholder="Milestone / Reason"
+              placeholder="Icyiciro / Impamvu yo kwishyura"
               value={form.milestone}
               onChange={(e) => setForm({ ...form, milestone: e.target.value })}
               className="input"
@@ -254,7 +252,7 @@ export default function Escrow() {
 
             <button className="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-xl font-black flex items-center justify-center gap-2">
               <LockKeyhole size={18} />
-              Create Secure Escrow
+              Bika Amafaranga mu Mutekano
             </button>
           </form>
         </section>
@@ -267,7 +265,7 @@ export default function Escrow() {
                 <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search escrow, buyer, seller, type..."
+                  placeholder="Shakisha escrow, umuguzi, umugurisha..."
                   className="bg-transparent outline-none w-full font-semibold"
                 />
               </div>
@@ -277,7 +275,7 @@ export default function Escrow() {
                 onChange={(e) => setStatusFilter(e.target.value)}
                 className="bg-slate-50 rounded-xl px-4 py-3 outline-none font-semibold"
               >
-                <option>All</option>
+                <option>Byose</option>
                 {statuses.map((status) => (
                   <option key={status}>{status}</option>
                 ))}
@@ -289,7 +287,7 @@ export default function Escrow() {
               className="mt-4 border border-slate-300 px-4 py-2 rounded-xl font-black inline-flex items-center gap-2 hover:bg-slate-50"
             >
               <RefreshCcw size={17} />
-              Reset Filters
+              Siba Filters
             </button>
           </div>
 
@@ -313,9 +311,7 @@ export default function Escrow() {
                   <div className="flex items-start justify-between gap-4 mb-5">
                     <div>
                       <h3 className="text-2xl font-black mb-2">{item.title}</h3>
-                      <p className="text-slate-500 font-semibold">
-                        {item.type}
-                      </p>
+                      <p className="text-slate-500 font-semibold">{item.type}</p>
                     </div>
 
                     <button
@@ -327,10 +323,10 @@ export default function Escrow() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3 mb-5">
-                    <InfoCard icon={UserRound} label="Buyer" value={item.buyer} />
-                    <InfoCard icon={UserRound} label="Seller" value={item.seller} />
-                    <InfoCard icon={Wallet} label="Amount" value={money(item.amount)} />
-                    <InfoCard icon={FileCheck} label="Milestone" value={item.milestone} />
+                    <InfoCard icon={UserRound} label="Umuguzi" value={item.buyer} />
+                    <InfoCard icon={UserRound} label="Umugurisha" value={item.seller} />
+                    <InfoCard icon={Wallet} label="Amafaranga" value={money(item.amount)} />
+                    <InfoCard icon={FileCheck} label="Icyiciro" value={item.milestone} />
                   </div>
 
                   <div className="bg-slate-50 rounded-2xl p-4 mb-5">
@@ -345,18 +341,18 @@ export default function Escrow() {
 
                       <div className="flex items-center gap-2 text-emerald-600 font-black">
                         <BadgeCheck size={18} />
-                        Contract Verified
+                        Contract Yemejwe
                       </div>
                     </div>
 
                     <div className="mt-4 h-3 bg-slate-200 rounded-full overflow-hidden">
                       <div
                         className={`h-full rounded-full ${
-                          item.status === "Released"
+                          item.status === "Yishyuwe"
                             ? "bg-emerald-600 w-full"
-                            : item.status === "Ready to Release"
+                            : item.status === "Byemewe kwishyurwa"
                             ? "bg-pink-600 w-3/4"
-                            : item.status === "Funds Secured"
+                            : item.status === "Amafaranga yabitswe"
                             ? "bg-blue-600 w-1/2"
                             : "bg-yellow-400 w-1/4"
                         }`}
@@ -369,14 +365,14 @@ export default function Escrow() {
                       onClick={() => markFundsSecured(item.id)}
                       className="bg-[#050816] hover:bg-black text-white py-3 rounded-xl font-black"
                     >
-                      Funds Secured
+                      Amafaranga Yabitswe
                     </button>
 
                     <button
                       onClick={() => releasePayment(item.id)}
                       className="bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-black"
                     >
-                      Release Payment
+                      Rekura Payment
                     </button>
                   </div>
                 </div>
@@ -387,13 +383,13 @@ export default function Escrow() {
       </div>
 
       <section className="mt-8 bg-[#050816] text-white rounded-[30px] p-8">
-        <h2 className="text-3xl font-black mb-5">Escrow Workflow</h2>
+        <h2 className="text-3xl font-black mb-5">Uko Escrow Ikora</h2>
 
         <div className="grid md:grid-cols-4 gap-5">
-          <Workflow number="1" title="Buyer deposits funds" />
-          <Workflow number="2" title="Contract is verified" />
-          <Workflow number="3" title="Milestone is approved" />
-          <Workflow number="4" title="Payment is released" />
+          <Workflow number="1" title="Umuguzi abitsa amafaranga" />
+          <Workflow number="2" title="Contract irasuzumwa ikemezwa" />
+          <Workflow number="3" title="Icyiciro cy’umushinga kiremezwa" />
+          <Workflow number="4" title="Amafaranga arekurwa" />
         </div>
       </section>
 
