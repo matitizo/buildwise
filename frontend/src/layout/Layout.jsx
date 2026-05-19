@@ -16,8 +16,14 @@ export default function Layout() {
   const [openMenu, setOpenMenu] = useState(false);
 
   const navClass = ({ isActive }) =>
-    `flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-black transition
-    ${
+    `flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-black transition ${
+      isActive
+        ? "bg-pink-50 text-pink-600"
+        : "text-[#050816] hover:bg-slate-100"
+    }`;
+
+  const mobileNavClass = ({ isActive }) =>
+    `flex items-center gap-3 px-4 py-3 rounded-xl font-black transition ${
       isActive
         ? "bg-pink-50 text-pink-600"
         : "text-[#050816] hover:bg-slate-100"
@@ -25,167 +31,171 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-[#f7f8fb]">
-
-      <header className="bg-white border-b sticky top-0 z-50 shadow-sm">
-
-        <div className="px-6 h-[75px] flex items-center justify-between">
-
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-
-            <div className="w-11 h-11 rounded-xl bg-pink-600 text-white flex items-center justify-center font-black text-xl">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div className="px-5 lg:px-6 h-[68px] flex items-center justify-between gap-4">
+          <Link to="/" className="flex items-center gap-3 shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-pink-600 text-white flex items-center justify-center font-black">
               B
             </div>
 
             <div>
-              <h1 className="text-2xl font-black">
-                BuildWise
-              </h1>
-
-              <p className="text-xs text-slate-500">
+              <h1 className="text-xl font-black leading-none">BuildWise</h1>
+              <p className="text-[11px] text-slate-500 mt-1">
                 Construction Platform
               </p>
             </div>
+          </Link>
 
-          </div>
-
-
-          {/* Desktop Nav */}
-
-          <nav className="hidden lg:flex items-center gap-2">
-
+          <nav className="hidden lg:flex items-center gap-1.5">
             <NavLink to="/" className={navClass}>
-              <Home size={17}/>
+              <Home size={16} />
               Home
             </NavLink>
 
             <NavLink to="/marketplace" className={navClass}>
-              <Building2 size={17}/>
+              <Building2 size={16} />
               Marketplace
             </NavLink>
 
             <NavLink to="/materials" className={navClass}>
-              <ShoppingCart size={17}/>
+              <ShoppingCart size={16} />
               Materials
             </NavLink>
 
             <NavLink to="/services" className={navClass}>
-              <Wrench size={17}/>
+              <Wrench size={16} />
               Services
             </NavLink>
 
             <NavLink to="/admin" className={navClass}>
-              <LayoutDashboard size={17}/>
+              <LayoutDashboard size={16} />
               Admin
             </NavLink>
 
             <NavLink to="/profile" className={navClass}>
-              <UserRound size={17}/>
+              <UserRound size={16} />
               Profile
             </NavLink>
-
           </nav>
 
-
-          {/* Right Side */}
-
-          <div className="flex items-center gap-3">
-
-            <button className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center relative">
-
-              <Bell size={18}/>
-
-              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-pink-600"></span>
-
+          <div className="flex items-center gap-2 shrink-0">
+            <button className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center relative hover:bg-slate-200">
+              <Bell size={16} />
+              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-pink-600" />
             </button>
 
             <Link
               to="/login"
-              className="hidden md:flex bg-[#050816] text-white px-4 py-2 rounded-xl text-sm font-black"
+              className="hidden md:flex bg-[#050816] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-black"
             >
               Login
             </Link>
 
             <Link
               to="/register"
-              className="hidden md:flex bg-pink-600 text-white px-4 py-2 rounded-xl text-sm font-black"
+              className="hidden md:flex bg-pink-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-pink-700"
             >
               Register
             </Link>
 
-
-            {/* Mobile button */}
+            <Link
+              to="/profile"
+              className="hidden md:flex w-10 h-10 rounded-full bg-[#050816] text-white items-center justify-center font-black"
+            >
+              B
+            </Link>
 
             <button
               onClick={() => setOpenMenu(!openMenu)}
-              className="lg:hidden w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center"
+              className="lg:hidden w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center"
             >
-              {openMenu ? <X size={20}/> : <Menu size={20}/>}
+              {openMenu ? <X size={19} /> : <Menu size={19} />}
             </button>
-
           </div>
-
         </div>
 
-
-        {/* Mobile Menu */}
-
         {openMenu && (
-
-          <div className="lg:hidden px-5 py-4 border-t bg-white">
-
-            <nav className="flex flex-col gap-3">
-
-              <NavLink to="/" className={navClass}>
+          <div className="lg:hidden px-5 py-4 border-t border-slate-100 bg-white">
+            <nav className="flex flex-col gap-2">
+              <NavLink
+                to="/"
+                onClick={() => setOpenMenu(false)}
+                className={mobileNavClass}
+              >
+                <Home size={18} />
                 Home
               </NavLink>
 
-              <NavLink to="/marketplace" className={navClass}>
+              <NavLink
+                to="/marketplace"
+                onClick={() => setOpenMenu(false)}
+                className={mobileNavClass}
+              >
+                <Building2 size={18} />
                 Marketplace
               </NavLink>
 
-              <NavLink to="/materials" className={navClass}>
+              <NavLink
+                to="/materials"
+                onClick={() => setOpenMenu(false)}
+                className={mobileNavClass}
+              >
+                <ShoppingCart size={18} />
                 Materials
               </NavLink>
 
-              <NavLink to="/services" className={navClass}>
+              <NavLink
+                to="/services"
+                onClick={() => setOpenMenu(false)}
+                className={mobileNavClass}
+              >
+                <Wrench size={18} />
                 Services
               </NavLink>
 
-              <NavLink to="/admin" className={navClass}>
+              <NavLink
+                to="/admin"
+                onClick={() => setOpenMenu(false)}
+                className={mobileNavClass}
+              >
+                <LayoutDashboard size={18} />
                 Admin
               </NavLink>
 
-              <NavLink to="/profile" className={navClass}>
+              <NavLink
+                to="/profile"
+                onClick={() => setOpenMenu(false)}
+                className={mobileNavClass}
+              >
+                <UserRound size={18} />
                 Profile
               </NavLink>
 
-              <Link
-                to="/login"
-                className="bg-[#050816] text-white p-3 rounded-xl text-center font-black"
-              >
-                Login
-              </Link>
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <Link
+                  to="/login"
+                  onClick={() => setOpenMenu(false)}
+                  className="bg-[#050816] text-white p-3 rounded-xl text-center font-black"
+                >
+                  Login
+                </Link>
 
-              <Link
-                to="/register"
-                className="bg-pink-600 text-white p-3 rounded-xl text-center font-black"
-              >
-                Register
-              </Link>
-
+                <Link
+                  to="/register"
+                  onClick={() => setOpenMenu(false)}
+                  className="bg-pink-600 text-white p-3 rounded-xl text-center font-black"
+                >
+                  Register
+                </Link>
+              </div>
             </nav>
-
           </div>
-
         )}
-
       </header>
 
       <main className="p-5">
         <Outlet />
       </main>
-
     </div>
   );
 }
