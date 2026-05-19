@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Layout from "./layout/Layout";
 
 import Home from "./pages/Home";
@@ -13,56 +13,18 @@ import Settings from "./pages/Settings";
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-
-        <Route path="/" element={<Layout />}>
-
-          <Route index element={<Home />} />
-
-          <Route
-            path="/marketplace"
-            element={<Marketplace />}
-          />
-
-          <Route
-            path="/materials"
-            element={<Materials />}
-          />
-
-          <Route
-            path="/services"
-            element={<Services />}
-          />
-
-          <Route
-            path="/projects"
-            element={<Projects />}
-          />
-
-          <Route
-            path="/escrow"
-            element={<Escrow />}
-          />
-
-          <Route
-            path="/estimator"
-            element={<CostEstimator />}
-          />
-
-          <Route
-            path="/reports"
-            element={<Reports />}
-          />
-
-          <Route
-            path="/settings"
-            element={<Settings />}
-          />
-
-        </Route>
-
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/marketplace" element={<Marketplace />} />
+        <Route path="/materials" element={<Materials />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/escrow" element={<Escrow />} />
+        <Route path="/estimator" element={<CostEstimator />} />
+        <Route path="/reports" element={<Reports />} />
+        <Route path="/settings" element={<Settings />} />
+      </Route>
+    </Routes>
   );
 }
