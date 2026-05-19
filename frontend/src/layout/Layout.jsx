@@ -15,8 +15,7 @@ export default function Layout() {
   const [openMenu, setOpenMenu] = useState(false);
 
   const navClass = ({ isActive }) =>
-    `flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-black transition
-    ${
+    `flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-black transition ${
       isActive
         ? "bg-pink-50 text-pink-600"
         : "text-[#050816] hover:bg-slate-100"
@@ -24,99 +23,51 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-[#f7f8fb]">
-
-      {/* Navbar */}
-
       <header className="bg-white border-b sticky top-0 z-50 shadow-sm">
-
         <div className="px-6 h-[80px] flex items-center justify-between">
-
-          {/* Logo */}
-
           <div className="flex items-center gap-3">
-
             <div className="w-12 h-12 rounded-xl bg-pink-600 text-white flex items-center justify-center font-black text-xl">
               B
             </div>
 
             <div>
-
-              <h1 className="text-2xl font-black">
-                BuildWise
-              </h1>
-
-              <p className="text-xs text-slate-500">
-                Construction Platform
-              </p>
-
+              <h1 className="text-2xl font-black">BuildWise</h1>
+              <p className="text-xs text-slate-500">Construction Platform</p>
             </div>
-
           </div>
 
-
-          {/* Desktop Menu */}
-
           <nav className="hidden lg:flex items-center gap-2">
-
-            <NavLink
-              to="/"
-              className={navClass}
-            >
-              <Home size={18}/>
+            <NavLink to="/" className={navClass}>
+              <Home size={18} />
               Home
             </NavLink>
 
-
-            <NavLink
-              to="/marketplace"
-              className={navClass}
-            >
-              <Building2 size={18}/>
+            <NavLink to="/marketplace" className={navClass}>
+              <Building2 size={18} />
               Marketplace
             </NavLink>
 
-
-            <NavLink
-              to="/materials"
-              className={navClass}
-            >
-              <ShoppingCart size={18}/>
+            <NavLink to="/materials" className={navClass}>
+              <ShoppingCart size={18} />
               Materials
             </NavLink>
 
-
-            <NavLink
-              to="/services"
-              className={navClass}
-            >
-              <Wrench size={18}/>
+            <NavLink to="/services" className={navClass}>
+              <Wrench size={18} />
               Services
             </NavLink>
 
-
-            <NavLink
-              to="/admin"
-              className={navClass}
-            >
-              <LayoutDashboard size={18}/>
+            <NavLink to="/admin" className={navClass}>
+              <LayoutDashboard size={18} />
               Admin
             </NavLink>
-
           </nav>
 
-
-          {/* Right side */}
-
           <div className="flex items-center gap-3">
-
             <button className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center relative">
-
-              <Bell size={18}/>
-
-              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-pink-600"></span>
-
+              <Bell size={18} />
+              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-pink-600" />
             </button>
-
 
             <Link
               to="/login"
@@ -125,7 +76,6 @@ export default function Layout() {
               Login
             </Link>
 
-
             <Link
               to="/register"
               className="hidden md:flex bg-pink-600 text-white px-4 py-2 rounded-xl font-black text-sm hover:bg-pink-700"
@@ -133,63 +83,61 @@ export default function Layout() {
               Register
             </Link>
 
-
-            <div className="hidden md:flex w-11 h-11 rounded-full bg-[#050816] text-white items-center justify-center font-black">
-
+            <Link
+              to="/profile"
+              className="hidden md:flex w-11 h-11 rounded-full bg-[#050816] text-white items-center justify-center font-black"
+            >
               B
-
-            </div>
-
-
-            {/* Mobile menu button */}
+            </Link>
 
             <button
               onClick={() => setOpenMenu(!openMenu)}
               className="lg:hidden w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center"
             >
-              {openMenu ? <X size={20}/> : <Menu size={20}/>}
+              {openMenu ? <X size={20} /> : <Menu size={20} />}
             </button>
-
           </div>
-
         </div>
 
-
-        {/* Mobile menu */}
-
         {openMenu && (
-
           <div className="lg:hidden px-5 py-4 border-t bg-white">
-
             <nav className="flex flex-col gap-3">
-
               <NavLink to="/" className={navClass}>
-                <Home size={18}/>
+                <Home size={18} />
                 Home
               </NavLink>
 
               <NavLink to="/marketplace" className={navClass}>
-                <Building2 size={18}/>
+                <Building2 size={18} />
                 Marketplace
               </NavLink>
 
               <NavLink to="/materials" className={navClass}>
-                <ShoppingCart size={18}/>
+                <ShoppingCart size={18} />
                 Materials
               </NavLink>
 
               <NavLink to="/services" className={navClass}>
-                <Wrench size={18}/>
+                <Wrench size={18} />
                 Services
               </NavLink>
 
               <NavLink to="/admin" className={navClass}>
-                <LayoutDashboard size={18}/>
+                <LayoutDashboard size={18} />
                 Admin
               </NavLink>
 
               <Link
+                to="/profile"
+                onClick={() => setOpenMenu(false)}
+                className="bg-slate-100 text-[#050816] p-3 rounded-xl font-black text-center"
+              >
+                Profile
+              </Link>
+
+              <Link
                 to="/login"
+                onClick={() => setOpenMenu(false)}
                 className="bg-[#050816] text-white p-3 rounded-xl font-black text-center"
               >
                 Login
@@ -197,23 +145,19 @@ export default function Layout() {
 
               <Link
                 to="/register"
+                onClick={() => setOpenMenu(false)}
                 className="bg-pink-600 text-white p-3 rounded-xl font-black text-center"
               >
                 Register
               </Link>
-
             </nav>
-
           </div>
-
         )}
-
       </header>
 
       <main className="p-5">
         <Outlet />
       </main>
-
     </div>
   );
 }
